@@ -2,7 +2,7 @@ package transmission;
 
 public class Functions_Client implements Requestable {
 	DTO dto = new DTO();
-	
+	Access access = new Access();
 	
 	@Override
 	public int register() {
@@ -17,6 +17,7 @@ public class Functions_Client implements Requestable {
 		//액세스 클래스로 dto 넘긴후 액세스클래스에서 dto전송
 		dto.setId(id);
 		dto.setPassword(password);
+		access.request(dto);
 		
 	}
 
