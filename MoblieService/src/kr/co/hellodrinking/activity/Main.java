@@ -1,5 +1,7 @@
-package kr.co.twoam;
+package kr.co.hellodrinking.activity;
 
+import kr.co.hellodrinking.R;
+import kr.co.hellodrinking.R.layout;
 import android.app.Activity;
 import android.os.Bundle;
 
