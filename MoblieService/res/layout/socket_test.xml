@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <EditText android:layout_weight="1" android:inputType="textPostalAddress"
+	android:id="@+id/socket_test_resultview" android:layout_height="fill_parent" android:layout_width="fill_parent" android:clickable="false" android:focusable="false" android:editable="false" android:autoText="false" android:enabled="false">
+	<requestFocus></requestFocus>
+</EditText>
+    <Button android:layout_weight="1" android:text="Button" android:layout_height="wrap_content" android:id="@+id/socket_test_button" android:layout_width="fill_parent"></Button>
+    
+    
+    
+</LinearLayout>
