@@ -22,7 +22,6 @@ public class MainThread extends Thread{
 	this.socket=socket;
 	}
     
-	
 	@Override
 	public void run() {
 		
@@ -41,11 +40,11 @@ public class MainThread extends Thread{
 		conn=DBConnection.Connect();
 		
 		switch (option){ 
-			case 0 : 
+			case 0 : //회원가입
 					send_dto.setResult(f.register(receive_dto,conn));//요청처리 &결과저장
 					oos.writeObject(send_dto);//결과전송
 					ois.close();oos.close();
-				break;//회원가입
+				break;
 				
 			case 1 : break;//로그인
 			case 2 : break;//게시물 검색(여자,남자,거리?)
