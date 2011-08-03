@@ -3,34 +3,31 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#964b00"
+    android:padding="20dip"
     >
     <LinearLayout
-    android:background="@drawable/main_title_bg"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
-    
-    
-    <LinearLayout>
-    
-    </LinearLayout>
-    
-    </LinearLayout>
-    
-    
-    <LinearLayout
-    android:orientation="vertical"
+	android:padding="10dip"
+	android:background="#FF0000"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
     
+    <ImageView
+    android:background="@drawable/main_title_bg"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="left"
+    />    
     
+    <ImageButton
+    android:id="@+id/main_enter_button"
+    android:src="@drawable/main_enter_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    />
     
     </LinearLayout>
-    
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
 </LinearLayout>
