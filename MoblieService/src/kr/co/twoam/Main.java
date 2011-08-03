@@ -1,7 +1,7 @@
 package kr.co.twoam;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.app.*;
+import android.os.*;
 
 public class Main extends Activity {
     /** Called when the activity is first created. */
