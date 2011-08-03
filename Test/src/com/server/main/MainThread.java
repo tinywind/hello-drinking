@@ -8,7 +8,8 @@ import java.net.Socket;
 public class MainThread extends Thread{
 	int option;
 	Socket socket = null;
-	
+	DTO receive_dto;
+	DTO send_dto;
 	private ObjectInputStream ois = null;
 	private ObjectOutputStream oos = null;
 		
@@ -28,9 +29,19 @@ public class MainThread extends Thread{
 			e.printStackTrace();
 		}
 		
+		try {
+			receive_dto =(DTO)ois.readObject();
+		
+		
+		option = receive_dto.getOption();
+		Functions f= new Functions();
 		
 		switch (option){ 
-			case 0 : break;//회원가입
+			case 0 : 
+					f.register();
+					send_dto.setResult(1);
+					oos.writeObject(send_dto);
+				break;//회원가입
 			case 1 : break;//로그인
 			case 2 : break;//게시물 검색(여자,남자,거리?)
 			case 3 : break;//게시물 등록
@@ -44,8 +55,14 @@ public class MainThread extends Thread{
 			case 11 : break;//로그아웃
 			case 12 : break;//회원탈퇴
 		}
-	}
-
-	
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
 	
 }
