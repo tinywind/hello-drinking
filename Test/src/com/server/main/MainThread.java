@@ -38,7 +38,7 @@ public class MainThread extends Thread{
 		receive_dto =(DTO)ois.readObject();
 		
 		option = receive_dto.getOption();
-		Functions f= new Functions();
+		Functions_Server f= new Functions_Server();
 		conn=DBConnection.Connect();
 		
 		switch (option){ 
