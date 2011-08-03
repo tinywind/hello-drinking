@@ -1,33 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#964b00"
-    android:padding="20dip"
-    >
-    <LinearLayout
-	android:padding="10dip"
-	android:background="#FF0000"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    
-    <ImageView
-    android:background="@drawable/main_title_bg"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    />    
-    
-    <ImageButton
-    android:id="@+id/main_enter_button"
-    android:src="@drawable/main_enter_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="right"
-    />
-    
-    </LinearLayout>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#964b00"
+	android:padding="20dip">
+	<LinearLayout
+		android:padding="10dip"
+		android:background="#000000"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_weight="1">
+		<ImageView
+			android:background="@drawable/main_title_bg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+			
+			
+<!--			재형아				s(..)a-->
+<!--			여기가 로그인 버튼-->			
+		<ImageButton
+			android:id="@+id/main_login_button"
+			android:src="@drawable/main_login_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />			
+<!--			재형아				s('')a-->
+<!--			여기가 로그인 버튼-->		
+
+			
+	</LinearLayout>
+	<LinearLayout
+		android:padding="10dip"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_weight="1">
+		<LinearLayout
+			android:padding="10dip"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_weight="1">
+	
+	
+<!--	재형아-->
+<!--	보시다시피 아이디 입력 부분		s(..)a-->
+			<TextView
+				android:text="아이디"
+				android:textColor="#FFFFFF"
+				android:layout_width="70dip"
+				android:layout_height="wrap_content" />
+			<EditText
+				android:id="@+id/main_user_id"
+				android:layout_width="150dip"
+				android:layout_height="40dip" />
+<!--	재형아-->
+<!--	보시다시피 아이디 입력 부분		s('')a-->
+
+
+
+		</LinearLayout>
+		<LinearLayout
+			android:padding="10dip"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_weight="1">
+
+
+
+
+<!--	재형아-->
+<!--	보시다시피 비밀번호 입력 부분		s(..)a-->
+			<TextView
+				android:text="비밀번호"
+				android:textColor="#FFFFFF"
+				android:layout_width="70dip"
+				android:layout_height="wrap_content" />
+			<EditText
+				android:id="@+id/main_user_password"
+				android:layout_width="150dip"
+				android:layout_height="40dip" />
+<!--	재형아-->
+<!--	보시다시피 비밀번호 입력 부분		s('')a-->
+
+
+
+		</LinearLayout>
+	</LinearLayout>
 </LinearLayout>
+
+
+
