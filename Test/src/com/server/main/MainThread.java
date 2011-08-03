@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import com.db.connection.DBConnection;
 
 public class MainThread extends Thread{
 	int option;
@@ -12,6 +16,7 @@ public class MainThread extends Thread{
 	DTO send_dto;
 	private ObjectInputStream ois = null;
 	private ObjectOutputStream oos = null;
+	Connection conn=null;
 		
 	public MainThread(Socket socket) {
 	this.socket=socket;
@@ -28,20 +33,20 @@ public class MainThread extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		try {
-			receive_dto =(DTO)ois.readObject();
-		
+		receive_dto =(DTO)ois.readObject();
 		
 		option = receive_dto.getOption();
 		Functions f= new Functions();
+		conn=DBConnection.Connect();
 		
 		switch (option){ 
 			case 0 : 
-					f.register();
-					send_dto.setResult(1);
-					oos.writeObject(send_dto);
+					send_dto.setResult(f.register(receive_dto,conn));//요청처리 &결과저장
+					oos.writeObject(send_dto);//결과전송
+					ois.close();oos.close();
 				break;//회원가입
+				
 			case 1 : break;//로그인
 			case 2 : break;//게시물 검색(여자,남자,거리?)
 			case 3 : break;//게시물 등록
@@ -61,8 +66,11 @@ public class MainThread extends Thread{
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}	
-	
 }
