@@ -1,7 +1,7 @@
 package transmission;
 
 public class Functions_Client implements Requestable {
-
+	
 	@Override
 	public int register() {
 		// TODO Auto-generated method stub
@@ -11,6 +11,7 @@ public class Functions_Client implements Requestable {
 	@Override
 	public void logIn() {
 		// TODO Auto-generated method stub
+		
 		
 	}
 
