@@ -13,7 +13,6 @@ public class Functions {
 		
 		try {
 		pstmt = conn.prepareStatement("insert into userinfo values(?,?,?,?,?,?,?,?,?)");
-	
 		pstmt.setString(1, receive_dto.getId());
 		pstmt.setString(2, receive_dto.getName());
 		pstmt.setString(3, receive_dto.getPassword());
