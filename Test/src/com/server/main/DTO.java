@@ -1,6 +1,13 @@
 package com.server.main;
 
-public class DTO {
+import java.io.Serializable;
+
+public class DTO implements Serializable {
+	
+	/**
+	 * 
+	 */
+	
 	int option;
 	/*
 	case 0    회원가입
@@ -17,8 +24,8 @@ public class DTO {
 	case 11   로그아웃
 	case 12   회원탈퇴
 	*/
-	int result;
-	//서버가 클라이언트에게 보내는 결과 0 실패, 1 성공
+	boolean result;
+	//서버가 클라이언트에게 보내는 결과 
 	
 	public String id;
 	public String name;
@@ -30,10 +37,11 @@ public class DTO {
 	public String job;
 	public String log;
 
-	public int getResult() {
+
+	public boolean isResult() {
 		return result;
 	}
-	public void setResult(int result) {
+	public void setResult(boolean result) {
 		this.result = result;
 	}
 	public int getOption() {

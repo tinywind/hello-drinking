@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class StartServer {
 
-		private static final int PORT = 5555;
+		private static final int PORT = 5557;
 		private static ServerSocket server;
 
 		public StartServer() throws Exception{
@@ -15,10 +15,11 @@ public class StartServer {
 		public void start() {
 			Socket client = null;
 			MainThread thread;
+			System.out.println("서버시작");
 			while (true) {
 				try {
-					System.out.println("서버시작");
 					client = server.accept();
+					System.out.println("클라이언트 접속");
 					thread = new MainThread(client);
 					thread.start();
 					System.err.println("socket accept : "+client.getInetAddress().toString());

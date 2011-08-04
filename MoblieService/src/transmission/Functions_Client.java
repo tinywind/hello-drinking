@@ -1,7 +1,8 @@
 package transmission;
 
 public class Functions_Client implements Requestable {
-	DTO dto = new DTO();
+	DTO send_dto = new DTO();
+	DTO receive_dto = new DTO();
 	Access access = new Access();
 	
 	@Override
@@ -12,13 +13,14 @@ public class Functions_Client implements Requestable {
 	}
 
 	@Override
-	public void logIn(String id, String password) {
+	public DTO logIn(String id, String password) {
 		// TODO Auto-generated method stub
 		//액세스 클래스로 dto 넘긴후 액세스클래스에서 dto전송
-		dto.setId(id);
-		dto.setPassword(password);
-		access.request(dto);
-		
+		send_dto.setId(id);
+		send_dto.setPassword(password);
+		receive_dto=access.request(send_dto);
+	
+		return receive_dto;
 	}
 
 	@Override
