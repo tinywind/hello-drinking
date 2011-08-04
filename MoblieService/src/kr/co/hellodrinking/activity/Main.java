@@ -1,8 +1,8 @@
 package kr.co.hellodrinking.activity;
 
-import kr.co.hellodrinking.*;
-import android.app.*;
-import android.os.*;
+import kr.co.hellodrinking.R;
+import android.app.Activity;
+import android.os.Bundle;
 
 public class Main extends Activity {
     /** Called when the activity is first created. */
@@ -10,6 +10,6 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+        
     }
 }
