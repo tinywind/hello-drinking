@@ -46,9 +46,16 @@ public class MainThread extends Thread{
 					send_dto.setResult(f.register(receive_dto,conn));//요청처리 &결과저장
 					oos.writeObject(send_dto);//결과전송
 					ois.close();oos.close();
+					System.out.println("회원가입완료");
 				break;//회원가입
 				
-			case 1 : break;//로그인
+			case 1 : 
+					 send_dto.setResult(f.logIn(receive_dto,conn));
+				     oos.writeObject(send_dto);//결과전송
+				     ois.close();oos.close();
+				     System.out.println("로그인성공");
+				break;//로그인
+			
 			case 2 : break;//게시물 검색(여자,남자,거리?)
 			case 3 : break;//게시물 등록
 			case 4 : break;//게시물 수정

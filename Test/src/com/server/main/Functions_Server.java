@@ -2,13 +2,14 @@ package com.server.main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Functions_Server {
 	
 	
-	public int register(DTO receive_dto,Connection conn){
-		int result=1;
+	public boolean register(DTO receive_dto,Connection conn){
+		
 		PreparedStatement pstmt=null;
 		
 		try {
@@ -26,13 +27,32 @@ public class Functions_Server {
 		pstmt.executeUpdate();
 		conn.commit();
 		} catch (SQLException e) {
-			result =0;
 			e.printStackTrace();
+			return false;
 		}	
-		return result;
+		return true;
 	}//회원가입
 	
-	public void logIn(){
+	public boolean logIn(DTO receive_dto, Connection conn){
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+			pstmt=conn.prepareStatement("select id,password from userinfo where id=? AND password =?");
+			pstmt.setString(1,receive_dto.getId());
+			pstmt.setString(2,receive_dto.getPassword());
+			
+			rs= pstmt.executeQuery();
+				if(rs.getString(1).equals(receive_dto.getId())
+						&& rs.getString(2).equals(receive_dto.getPassword())){
+					return true;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 return false;	
 		
 	}//로그인
 	public void search(){

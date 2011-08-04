@@ -5,7 +5,7 @@ public interface Requestable {
 	
 	int register();        //회원가입
 	
-    void logIn(String id,String password);          //로그인
+    DTO logIn(String id,String password);          //로그인
    
 	void search();         //게시물검색     
 	
