@@ -1,6 +1,6 @@
 package com.server.main;
 
-public class Main {
+public class MainServer {
 
 	public static void main(String[] args) throws Exception {
 	StartServer server = new StartServer();

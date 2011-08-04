@@ -2,23 +2,9 @@ package transmission;
 
 public class DTO {
 	int option;
-	/*
-	case 0    회원가입
-	case 1    로그인
-	case 2    게시물 검색
-	case 3    게시물 등록
-	case 4    게시물 수정
-	case 5    게시물 삭제
-	case 6    게시물 상세 정보
-	case 7    게시물에 대한 관심자로 등록(하나의 게시물에 대한 복수의 관심자)
-	case 8    프로필 확인
-	case 9    프로필 수정
-	case 10   메세지 발신, 수신
-	case 11   로그아웃
-	case 12   회원탈퇴
-	*/
-	int result;
-	//서버가 클라이언트에게 보내는 결과 0 실패, 1 성공
+	
+	boolean result;
+	
 	
 	public String id;
 	public String name;
@@ -30,10 +16,11 @@ public class DTO {
 	public String job;
 	public String log;
 
-	public int getResult() {
+	
+	public boolean isResult() {
 		return result;
 	}
-	public void setResult(int result) {
+	public void setResult(boolean result) {
 		this.result = result;
 	}
 	public int getOption() {
