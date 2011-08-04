@@ -9,7 +9,12 @@ public class Main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
+        setContentView(R.layout.member_join);
+
+=======
         setContentView(R.layout.main);
         
+>>>>>>> branch 'master' of git@github.com:tinywind/HelloDrinking.git
     }
 }
