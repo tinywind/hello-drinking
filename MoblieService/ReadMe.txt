@@ -7,7 +7,7 @@ Android sdk 2.1 update1 = version 7.
 
 signed. 정길수, Jeon jae heung
 ===========================================
-11.08.04 전재형
+11.08.04 Jeon jae heung
 
 로그인 View 
 class : LoginActivity.class
@@ -26,7 +26,22 @@ layout : membermodify.xml
 class : MemberWithdrawalActivity.class
 layout : memberwithdrawal.xml 
 
+List View
+class : PostsListActivity.class
+layout : postslist.xml
+
+Map View
+class : MapActivity.class
+layout : map.xml
+
+AR View
+class : ARActivity.class
+layout : ar.xml
+
+Memberinfo View
+class : memberinfoActivity.class
+layout : memberinfo.xml
 
 --------------------------------------------
 
-FrameActivity : List, Map, AR, Memberinfo의 View가 링크된 격자 View
+FrameActivity : PostsList, Map, AR, Memberinfo의 View가 링크된 격자 View
