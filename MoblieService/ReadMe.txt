@@ -53,5 +53,5 @@ layout : memberinfo.xml
 
 --------------------------------------------
 
-FrameActivity : PostsList, Map, AR, Memberinfo의 View가 링크된 격자 View
+FrameActivity : Posts, Map, AR, Memberinfo의 View가 링크된 격자 View
 >>>>>>> branch 'master' of git@github.com:tinywind/HelloDrinking.git

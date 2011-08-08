@@ -1,12 +1,12 @@
 package kr.co.hellodrinking.activity;
 
-import android.view.ViewGroup;
 import kr.co.hellodrinking.R;
+import android.view.ViewGroup;
 
 public class SampleFrameActivity extends FrameActivity{
-	@Override
-	void loadContent() {
-		inflater.inflate(R.layout.postslist, (ViewGroup) findViewById(R.id.frame_layout_contents));
+
+	protected void loadContent() {
+		inflater.inflate(R.layout.posts, (ViewGroup) findViewById(R.id.frame_linear_contents));
 		
 	}
 }

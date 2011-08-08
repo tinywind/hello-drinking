@@ -4,13 +4,17 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<Layout
+	
+	<ScrollView
 		android:layout_width="fill_parent"
-		android:id="@+id/frame_layout_contents"
-		android:orientation="vertical"
-		android:layout_weight="8"
-		android:layout_height="wrap_content">
-	</Layout>
+		android:layout_height="wrap_content"
+		android:layout_weight="8">
+		<LinearLayout
+			android:id="@+id/frame_linear_contents"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical"/>
+	</ScrollView>
 
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -19,6 +23,7 @@
 		android:layout_weight="1">
 
 		<LinearLayout
+			android:id="@+id/frame_linear_posts"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_width="wrap_content"
@@ -26,11 +31,11 @@
 			<TextView
 				android:text="List"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-
+				android:layout_height="wrap_content" />
 		</LinearLayout>
 
 		<LinearLayout
+			android:id="@+id/frame_linear_map"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_width="wrap_content"
@@ -38,10 +43,11 @@
 			<TextView
 				android:text="Map"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content" />
 		</LinearLayout>
 
 		<LinearLayout
+			android:id="@+id/frame_linear_ar"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_width="wrap_content"
@@ -49,7 +55,7 @@
 			<TextView
 				android:text="AR"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -60,7 +66,7 @@
 			<TextView
 				android:text="Member"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content" />
 		</LinearLayout>
 
 
