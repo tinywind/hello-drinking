@@ -1,7 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-</LinearLayout>
+
+	<!--	★ID : XXX 의정보수정 텍스트★	-->
+	<TextView
+		android:id="@+id/membermodify_title"
+		android:background="#0000FF"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text=" 님의 정보수정"
+		android:textSize="20dp"
+		android:layout_centerHorizontal="true"/>
+
+	<!--	★ID : XXX를 호출하는 곳★	-->
+	<TextView
+		android:id="@+id/membermodify_id"
+		android:background="#00FF00"
+		android:layout_toLeftOf="@id/membermodify_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20dp"
+		android:textColor="#000000"
+		android:text="drdog"
+		android:layout_marginBottom="20dip" />
+
+	<!--	★비밀번호★	-->
+	<EditText
+		android:id="@+id/membermodify_pw"
+		android:layout_below="@id/membermodify_id"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:text="비밀번호 : " />
+
+	<!--	★성별★	-->
+	<EditText
+		android:id="@+id/membermodify_sex"
+		android:layout_below="@id/membermodify_pw"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:text="성별 : " />
+
+	<!--	♥♥필수입력사항과 선택입력사항을 구분짓는 구분선♥♥	-->
+	<RelativeLayout
+		android:layout_below="@id/membermodify_sex"
+		android:background="#0000FF"
+		android:layout_width="fill_parent"
+		android:layout_alignRight="@id/membermodify_sex"
+		android:layout_height="10dip"
+		android:layout_marginTop="10dip" />
+		
+	<!--	★이름★	-->
+	<EditText
+		android:id="@+id/membermodify_name"
+		android:layout_below="@id/membermodify_sex"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:layout_marginTop="30dip"
+		android:text="이름 : " />
+
+	<!--	★나이★	-->
+	<EditText
+		android:id="@+id/membermodify_age"
+		android:layout_below="@id/membermodify_name"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:text="나이 : " />
+
+	<!--	★사진★	-->
+	<EditText
+		android:id="@+id/membermodify_photo"
+		android:layout_below="@id/membermodify_age"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:text="사진 : " />
+
+	<!--	★홈페이지★	-->
+	<EditText
+		android:id="@+id/membermodify_homepage"
+		android:layout_below="@id/membermodify_photo"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:text="홈페이지 : " />
+
+	<!--	★전화번호★	-->
+	<EditText
+		android:id="@+id/membermodify_phone"
+		android:layout_below="@id/membermodify_homepage"
+		android:layout_width="250dip"
+		android:layout_height="40dip"
+		android:text="전화번호 : " />
+
+	<!--	★전송버튼★	-->
+	<ImageButton
+		android:id="@+id/membermodify_commit_button"
+		android:src="@drawable/membermodify_commit_button"
+		android:layout_below="@id/membermodify_phone"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
+
+	<!--	★취소버튼★	-->
+	<Button
+		android:id="@+id/membermodify_cancel_button"
+		android:text="취소"
+		android:textSize="25dip"
+		android:layout_below="@id/membermodify_phone"
+		android:layout_alignRight="@id/membermodify_phone"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="20dip"
+		android:paddingRight="20dip"/>
+
+</RelativeLayout>
