@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class FrameActivity extends Activity implements OnClickListener{
-	protected LayoutInflater inflater;
-	protected ViewGroup viewgroup;
-	protected LinearLayout buttonPosts, buttonMap, buttonAR;
+	protected LayoutInflater mInflater;
+	protected ViewGroup mViewgroup;
+	protected LinearLayout mButtonPosts, mButtonMap, mButtonAR;
 	
 	
 	/** Called when the activity is first created. */
@@ -23,16 +23,16 @@ public abstract class FrameActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.frame);
         
-        inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        viewgroup = (ViewGroup) findViewById(R.id.frame_linear_contents);
+        mInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mViewgroup = (ViewGroup) findViewById(R.id.frame_linear_contents);
         
-        buttonPosts = (LinearLayout) findViewById(R.id.frame_linear_posts);
-        buttonMap = (LinearLayout) findViewById(R.id.frame_linear_map);
-        buttonAR = (LinearLayout) findViewById(R.id.frame_linear_ar);
+        mButtonPosts = (LinearLayout) findViewById(R.id.frame_linear_posts);
+        mButtonMap = (LinearLayout) findViewById(R.id.frame_linear_map);
+        mButtonAR = (LinearLayout) findViewById(R.id.frame_linear_ar);
         
-        buttonPosts.setOnClickListener(this);
-        buttonMap.setOnClickListener(this);
-        buttonAR.setOnClickListener(this);
+        mButtonPosts.setOnClickListener(this);
+        mButtonMap.setOnClickListener(this);
+        mButtonAR.setOnClickListener(this);
         
         loadContent();
     }

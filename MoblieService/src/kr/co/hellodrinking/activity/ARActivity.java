@@ -7,7 +7,7 @@ public class ARActivity extends FrameActivity {
 
 	@Override
 	protected void loadContent() {
-		inflater.inflate(R.layout.ar, viewgroup);
-		buttonAR.setClickable(false);
+		mInflater.inflate(R.layout.ar, mViewgroup);
+		mButtonAR.setClickable(false);
 	}
 }
