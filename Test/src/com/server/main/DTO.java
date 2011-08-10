@@ -1,5 +1,4 @@
 package com.server.main;
-
 import java.io.Serializable;
 
 public class DTO implements Serializable {

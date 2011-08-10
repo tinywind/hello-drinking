@@ -1,5 +1,4 @@
 package com.server.main;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.db.connection.DBConnection;
+
 
 public class MainThread extends Thread {
 	int option;
@@ -20,7 +20,7 @@ public class MainThread extends Thread {
 
 	public MainThread(Socket socket) {
 		this.socket = socket;
-
+		send_dto = new DTO();
 	}
 
 	@Override
@@ -35,41 +35,31 @@ public class MainThread extends Thread {
 			e.printStackTrace();
 		}
 		try {
-
-			System.out.println("서버분기1");
-			receive_dto = (DTO) ois.readObject();// 여기가문제
-			System.out.println("서버분기2");
+			receive_dto = (DTO) ois.readObject();
 			option = receive_dto.getOption();
-			System.out.println("서버분기3");
 			Functions_Server f = new Functions_Server();
-			System.out.println("서버분기4");
 			conn = DBConnection.Connect();
 
 			switch (option) {
 			case 0:
 				send_dto.setResult(f.register(receive_dto, conn));// 요청처리 &결과저장
 				oos.writeObject(send_dto);// 결과전송
-				ois.close();
-				oos.close();
-				System.out.println("회원가입완료");
+				ois.close();oos.close();
+				//이미지를 전송받을 함수를 정의하여 받은후 데이터베이스에 저장;
 				break;// 회원가입
 
 			case 1:
-				System.out.println("서버 로그인 분기1");
 				send_dto.setResult(f.logIn(receive_dto, conn));
-				System.out.println("서버 로그인 분기1");
 				oos.writeObject(send_dto);// 결과전송
-				ois.close();
-				oos.close();
-				System.out.println("로그인성공");
+				ois.close();oos.close();
 				break;// 로그인
 
 			case 2:
-				break;// 게시물 검색(여자,남자,거리?)
+				break;// 게시물 검색
 			case 3:
-				break;// 게시물 등록
+				break;// 게시물 등록(이미지 처리)
 			case 4:
-				break;// 게시물 수정
+				break;// 게시물 수정(이미지처리)
 			case 5:
 				break;// 게시물 삭제
 			case 6:
@@ -79,10 +69,14 @@ public class MainThread extends Thread {
 			case 8:
 				break;// 프로필 확인
 			case 9:
-				break;// 프로필 수정
+				
+				break;// 프로필 수정(이미지 처리)
 			case 10:
 				break;// 메세지 발신, 수신
 			case 11:
+				send_dto.setResult(f.logOut(receive_dto,conn));
+				oos.writeObject(send_dto);// 결과전송
+				ois.close();oos.close();
 				break;// 로그아웃
 			case 12:
 				break;// 회원탈퇴
