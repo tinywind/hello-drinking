@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -47,7 +46,7 @@
 				android:text="아이디 : "
 				android:textSize="30dip" />
 
-			<!--	★ID : XXX에다 apairon 처럼 실제 id를 호출해서 넣어주는곳★	-->
+			<!-- ★ID : XXX에다 apairon 처럼 실제 id를 호출해서 넣어주는곳★ -->
 			<TextView
 				android:id="@+id/memberwithdrawal_id"
 				android:layout_width="fill_parent"
@@ -75,18 +74,17 @@
 		</TableRow>
 	</TableLayout>
 
-<RelativeLayout	
+	<RelativeLayout
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:background="#FF00FF">
-		
+
 		<TextView
-		android:id="@+id/memberwithdrawal_blank"
-		android:layout_width="fill_parent"
-		android:layout_height="50dip"
-		/>
-		
+			android:id="@+id/memberwithdrawal_blank"
+			android:layout_width="fill_parent"
+			android:layout_height="50dip" />
+
 		<ImageButton
 			android:id="@+id/memberwithdrawal_quitButton"
 			android:src="@drawable/memberwithdrawal_quit_button"
@@ -97,42 +95,5 @@
 
 
 	</RelativeLayout>
-	</LinearLayout>
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-
-	<TableRow
-		android:id="@+id/memberwithdrawal_title">
-
-		<TextView
-			android:id="@+id/memberwithdrawal_id"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:text="아이디" />
-
-		<TextView
-
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent" />
-	</TableRow>
-
-	<TableRow
-		android:id="@+id/memberwithdrawal_title">
-
-		<TextView
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:text="아이디" />
-
-		<EditText
-			android:id="@+id/memberwithdrawal_id"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent" />
-	</TableRow>
-</TableLayout>
->>>>>>> branch 'master' of git@github.com:tinywind/HelloDrinking.git
+</LinearLayout>
+	
