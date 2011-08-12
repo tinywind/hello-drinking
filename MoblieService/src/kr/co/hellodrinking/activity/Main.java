@@ -1,33 +1,45 @@
 package kr.co.hellodrinking.activity;
 
-import kr.co.hellodrinking.R;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import java.io.*;
+import java.util.*;
+
+import kr.co.hellodrinking.*;
+import android.app.*;
+import android.os.*;
 
 public class Main extends Activity {
+	private List<File> mImageFiles;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.listview);
 		
-		ImageButton button = (ImageButton) findViewById(R.id.main_login_button);
-		button.setOnClickListener(onClickListener);
-	}
-
-	OnClickListener onClickListener = new OnClickListener() {
-		public void onClick(View view) {
-			if(view.getId() == R.id.main_login_button){
-				Toast.makeText(Main.this, "click", Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(Main.this, SampleFrameActivity.class);
-				startActivity(intent);			
-			}
-			
+		mImageFiles = new ArrayList<File>();
+		
+		
+		File sdcardRoot = Environment.getExternalStorageDirectory();
+		
+		File[] children = sdcardRoot.listFiles();
+		
+		for(int index=0;index<children.length;index++){
+			if(children[index].isDirectory()){
+				//만약 디렉토리
+			}else{
+				//실제 파일
+				//이미지파일이 맞나?
+				mImageFiles.add(children[index]);
+				
+			}			
 		}
-	};
+		////////////////////////////////////////////
+		
+		//뿌려주기 :: 그리드뷰
+		
+		
+	}
+	
+	///////////////////////////////
+	///콜백 :: 경로받기
 }

@@ -43,6 +43,7 @@
 			android:name=".activity.ARActivity"></activity>
 		<activity
 			android:name=".activity.SampleFrameActivity"></activity>
+		<activity android:name="activity.List"></activity>
 
 	</application>
 </manifest>

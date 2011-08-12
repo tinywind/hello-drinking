@@ -5,12 +5,13 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
 
+	<!--	★★아이디와 비밀번호가 테이블 레이아웃으로 구성되어진다★★	-->
 	<TableLayout
-
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 
+		<!--	★★제목 : 회원 탈퇴★★ -->
 		<TextView
 			android:text="회원 탈퇴"
 			android:layout_width="wrap_content"
@@ -19,12 +20,14 @@
 			android:textColor="#FFFFFF"
 			android:layout_gravity="center_horizontal" />
 
+		<!--	★★회원 탈퇴하는 사람에게 남기는 약관 메세지를 위한 스크롤 뷰★★	-->
 		<ScrollView
 			android:layout_width="200dip"
 			android:layout_height="200dip"
 			android:layout_marginBottom="20dip"
 			android:scrollbarThumbVertical="@drawable/memberwithdrawal_quit_button">
 
+			<!--	★★회원 탈퇴하는 사람에게 남기는 메세지★★	-->
 			<TextView
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
@@ -37,40 +40,36 @@
 				android:textSize="30dip" />
 		</ScrollView>
 
-
 		<TableRow>
-
 			<TextView
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:text="아이디 : "
 				android:textSize="30dip" />
-
-			<!-- ★ID : XXX에다 apairon 처럼 실제 id를 호출해서 넣어주는곳★ -->
+				
+			<!--	★★현재 로그인된 아이디가 표시되는 부분★★					-->
+			<!--	★★ID : XXX에다 apairon 처럼 실제 id를 호출해서 넣어주는곳★	-->
 			<TextView
 				android:id="@+id/memberwithdrawal_id"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:textSize="30dip"
-
 				android:text="@string/id" />
-
 		</TableRow>
 
 		<TableRow>
-
 			<TextView
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:text="비밀번호 : "
 				android:textSize="30dip" />
 
+			<!--	★★비밀번호를 입력 하는곳, 그래야만 탈퇴신청을 할 수 있다	★★-->
 			<EditText
 				android:id="@+id/memberwithdrawal_password"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:text="@string/password" />
-
 		</TableRow>
 	</TableLayout>
 
@@ -85,6 +84,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="50dip" />
 
+		<!--	★★탈퇴하기 버튼★★	-->
 		<ImageButton
 			android:id="@+id/memberwithdrawal_quitButton"
 			android:src="@drawable/memberwithdrawal_quit_button"
@@ -92,8 +92,6 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/memberwithdrawal_blank"
 			android:layout_alignRight="@id/memberwithdrawal_blank" />
-
-
 	</RelativeLayout>
 </LinearLayout>
 	

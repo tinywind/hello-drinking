@@ -1,43 +1,19 @@
 package kr.co.hellodrinking.activity;
 
-import map.NMapPOIflagType;
-import map.NMapViewerResourceProvider;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Rect;
-import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SubMenu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import map.*;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.provider.*;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
 
-import com.nhn.android.maps.NMapActivity;
-import com.nhn.android.maps.NMapCompassManager;
-import com.nhn.android.maps.NMapController;
-import com.nhn.android.maps.NMapLocationManager;
-import com.nhn.android.maps.NMapOverlay;
-import com.nhn.android.maps.NMapOverlayItem;
-import com.nhn.android.maps.NMapView;
-import com.nhn.android.maps.maplib.NGeoPoint;
-import com.nhn.android.maps.nmapmodel.NMapError;
-import com.nhn.android.maps.nmapmodel.NMapPlacemark;
-import com.nhn.android.maps.overlay.NMapPOIdata;
-import com.nhn.android.maps.overlay.NMapPOIitem;
-import com.nhn.android.maps.overlay.NMapPathData;
-import com.nhn.android.maps.overlay.NMapPathLineStyle;
-import com.nhn.android.mapviewer.overlay.NMapCalloutCustomOverlay;
-import com.nhn.android.mapviewer.overlay.NMapCalloutOverlay;
-import com.nhn.android.mapviewer.overlay.NMapMyLocationOverlay;
-import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
-import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
-import com.nhn.android.mapviewer.overlay.NMapPathDataOverlay;
+import com.nhn.android.maps.*;
+import com.nhn.android.maps.maplib.*;
+import com.nhn.android.maps.nmapmodel.*;
+import com.nhn.android.maps.overlay.*;
+import com.nhn.android.mapviewer.overlay.*;
 
 public class MapActivity extends NMapActivity {
 	private static final String LOG_TAG = "NMapViewer";
