@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<command>
+	<header>
+		<opcode>0000001</opcode>
+		<myposx>30103010</myposx>
+		<myposy>30103010</myposy>
+		<phnum>01012345678</phnum>
+		<result>0000</result>
+		<resultCode>0000</resultCode>
+		<msg>0000</msg>
+	</header>
+	<body>
+		<noPage>01</noPage>
+		</body>
+</command>

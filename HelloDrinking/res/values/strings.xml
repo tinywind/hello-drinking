@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_done">완료</string>
+    <string name="hello">Hello World, Main!</string>
+    <string name="app_name">MoblieService</string>
+    <string name="id">apairon</string>
+    <string name="password">********</string>
+</resources>
