@@ -41,7 +41,7 @@
 		<activity
 			android:name=".activity.PostsActivity"></activity>
 		<activity
-			android:name=".activity.MapActivity"></activity>
+			android:name=".activity.map.MapActivity"></activity>
 		<activity
 			android:name=".activity.ARActivity"></activity>
 		<activity

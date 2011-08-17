@@ -1,6 +1,7 @@
 package kr.co.hellodrinking.activity;
 
 import kr.co.hellodrinking.R;
+import kr.co.hellodrinking.activity.map.MapActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
