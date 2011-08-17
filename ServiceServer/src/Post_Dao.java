@@ -1,8 +1,8 @@
-package com.server.dao;
+
 import java.util.ArrayList;
 
 
-public class Post_Dao implements Dao{
+public class Post_Dao implements DAO{
 	
 	@Override // 게시정보리스트를 가져온다.
 	public ArrayList<Object> getList() {
