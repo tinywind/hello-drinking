@@ -4,20 +4,23 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="Press the button, take a photo , and enjoy!" />
+
+	<Button
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnButton"
+		android:text="Take Photo"></Button>
+
 	<ImageView
 		android:layout_width="wrap_content"
-		android:src="@drawable/test"
 		android:layout_height="wrap_content"
-		android:id="@+id/userinfo_imageview"></ImageView>
-	<TextView
-		android:id="@+id/userinfo_textview_name"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="id"></TextView>
-	<TextView
-		android:text="TextView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/userinfo_textview_comment"></TextView>
+		android:id="@+id/imgView"></ImageView>
 
-</LinearLayout> 
+</LinearLayout>
+
+
+

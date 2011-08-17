@@ -2,6 +2,8 @@ package kr.co.hellodrinking.activity;
 
 import kr.co.hellodrinking.R;
 import kr.co.hellodrinking.activity.map.MapActivity;
+import kr.co.hellodrinking.activity.map.PostsModel;
+import kr.co.hellodrinking.ar.BasicOpenARDemoActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class FrameActivity extends Activity implements OnClickListener{
+	public static PostsModel mPostsModel;
+
 	protected LayoutInflater mInflater;
 	protected ViewGroup mViewgroup;
 	protected LinearLayout mButtonPosts, mButtonMap, mButtonAR;
@@ -35,6 +39,8 @@ public abstract class FrameActivity extends Activity implements OnClickListener{
         mButtonMap.setOnClickListener(this);
         mButtonAR.setOnClickListener(this);
         
+        mPostsModel = new PostsModel();
+        
         loadContent();
     }
 
@@ -45,7 +51,7 @@ public abstract class FrameActivity extends Activity implements OnClickListener{
 		}else if(view.getId() == R.id.frame_linear_map){
 			startActivity(new Intent(this, MapActivity.class));			
 		}else if(view.getId() == R.id.frame_linear_ar){
-			startActivity(new Intent(this, ARActivity.class));			
+			startActivity(new Intent(this, BasicOpenARDemoActivity.class));			
 		}
 	}
 

@@ -1,17 +1,21 @@
 package transmission;
 
+import com.nhn.android.maps.maplib.NGeoPoint;
+
 public class PostInfo {
-	String id;
-	String name;
-	String Image;
-	String NumberOfPeople;
-	String comment;
-	String date;
-	String matching;
+	private String id;
+	private String name;
+	private String Image;
+	private String NumberOfPeople;
+	private String comment;
+	private String date;
+	private String matching;
+	private NGeoPoint point;
 
 	public PostInfo(String id, String filepath, double x, double y) {
 		this.id = id;
 		this.Image = filepath;
+		setPoint(new NGeoPoint(x, y));
 	}
 
 	public String getId() {
@@ -68,6 +72,14 @@ public class PostInfo {
 
 	public void setMatching(String matching) {
 		this.matching = matching;
+	}
+
+	public void setPoint(NGeoPoint point) {
+		this.point = point;
+	}
+
+	public NGeoPoint getPoint() {
+		return point;
 	}
 
 }

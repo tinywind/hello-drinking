@@ -6,6 +6,10 @@ public class DTO implements Serializable {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1479657108122747157L;
+	/**
+	 * 
+	 */
 	
 	int option;
 	/*

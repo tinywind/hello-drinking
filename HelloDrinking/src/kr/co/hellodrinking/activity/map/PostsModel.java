@@ -54,7 +54,7 @@ public class PostsModel {
 		Iterator<PostsListener> it = mListeners.iterator();
 		while(it.hasNext()){
 			PostsListener listener = it.next();
-			listener.dateChanged(new ValueChangeEvent(this));
+			listener.modelChanged(new ValueChangeEvent(this));
 		}
 	}
 	

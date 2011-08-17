@@ -1,6 +1,5 @@
 package kr.co.hellodrinking.activity;
 
-import com.nhn.android.maps.NMapController;
 import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.maplib.NGeoPoint;
 
@@ -8,7 +7,6 @@ import kr.co.hellodrinking.R;
 import android.content.Intent;
 import android.provider.Settings;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PostsActivity extends FrameActivity{
 	private TextView text;
