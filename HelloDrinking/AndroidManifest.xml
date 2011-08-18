@@ -6,67 +6,58 @@
 	android:versionName="1.0">
 	<uses-sdk
 		android:minSdkVersion="7" />
-
-
-
 	<uses-feature
 		android:name="android.hardware.camera" />
 	<uses-feature
 		android:name="android.hardware.camera.autofocus" />
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.INSTALL_PACKAGES"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.CHANGE_NETWORK_STATE"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.DELETE_PACKAGES"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.INTERNET"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.RESTART_PACKAGES"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.CAMERA"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.ACCESS_SURFACE_FLINGER"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.BRICK"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.FLASHLIGHT"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.INTERNAL_SYSTEM_WINDOW"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.MASTER_CLEAR"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.READ_FRAME_BUFFER"></uses-permission>
-	<uses-permission
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
+	<uses-feature
+		android:name="android.hardware.location" />
+	<uses-feature
+		android:name="android.hardware.sensor.accelerometer" />
+	<uses-feature
+		android:name="android.hardware.sensor.compass" />
 
-	<uses-permission
-		android:name="android.permission.INTERNET" />
 	<uses-permission
 		android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission
 		android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission
+		android:name="android.permission.ACCESS_GPS" />
+	<uses-permission
+		android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission
+		android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission
+		android:name="android.permission.ACCESS_SURFACE_FLINGER" />
+	<uses-permission
+		android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission
+		android:name="android.permission.BRICK" />
+	<uses-permission
+		android:name="android.permission.CAMERA" />
+	<uses-permission
+		android:name="android.permission.CHANGE_NETWORK_STATE" />
+	<uses-permission
+		android:name="android.permission.DELETE_PACKAGES" />
+	<uses-permission
+		android:name="android.permission.FLASHLIGHT" />
+	<uses-permission
+		android:name="android.permission.INSTALL_PACKAGES" />
+	<uses-permission
+		android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
+	<uses-permission
+		android:name="android.permission.INTERNET" />
+	<uses-permission
+		android:name="android.permission.MASTER_CLEAR" />
+	<uses-permission
+		android:name="android.permission.READ_FRAME_BUFFER" />
+	<uses-permission
+		android:name="android.permission.RESTART_PACKAGES" />
+	<uses-permission
+		android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 	<application
+		android:name=".HelloDrinkingApplication"
 		android:icon="@drawable/icon"
 		android:label="@string/app_name">
 		<activity
@@ -94,17 +85,23 @@
 		<activity
 			android:name=".activity.map.MapActivity"></activity>
 		<activity
-			android:name=".ar.ARActivity"
+			android:name="test.ARActivity"
 			android:screenOrientation="landscape"></activity>
 		<activity
 			android:name=".activity.SampleFrameActivity"></activity>
 		<activity
-			android:theme="@android:style/Theme.Dialog"
-			android:name=".activity.UserInfoDialog"></activity>
+			android:name=".activity.UserInfoDialog"
+			android:theme="@android:style/Theme.Dialog"></activity>
 		<activity
-			android:name=".ar.BasicOpenARDemoActivity"></activity>
-		<activity
-			android:name=".ar.CallBackActivity"></activity>
+			android:name=".ar.CallBackActivity"
+			android:theme="@android:style/Theme.Dialog">
+			<intent-filter>
+				<action
+					android:name="wikitudeapi.mycallbackactivity" />
+				<category
+					android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 
 
 	</application>

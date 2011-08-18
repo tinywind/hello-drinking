@@ -1,9 +1,8 @@
 package kr.co.hellodrinking.activity;
 
 import kr.co.hellodrinking.R;
-import kr.co.hellodrinking.activity.map.MapActivity;
-import kr.co.hellodrinking.activity.map.PostsModel;
-import kr.co.hellodrinking.ar.BasicOpenARDemoActivity;
+import kr.co.hellodrinking.ar.ARActivity;
+import kr.co.hellodrinking.map.PostsModel;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +50,7 @@ public abstract class FrameActivity extends Activity implements OnClickListener{
 		}else if(view.getId() == R.id.frame_linear_map){
 			startActivity(new Intent(this, MapActivity.class));			
 		}else if(view.getId() == R.id.frame_linear_ar){
-			startActivity(new Intent(this, BasicOpenARDemoActivity.class));			
+			startActivity(new Intent(this, ARActivity.class));
 		}
 	}
 

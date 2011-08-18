@@ -1,12 +1,19 @@
 package kr.co.hellodrinking.activity;
 
-import java.util.HashMap;
+import java.util.List;
 
 import kr.co.hellodrinking.R;
+import kr.co.hellodrinking.map.PostsListener;
+import kr.co.hellodrinking.map.PostsModel;
+import kr.co.hellodrinking.map.ValueChangeEvent;
+import transmission.PostInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -25,7 +32,6 @@ import com.nhn.android.maps.NMapController;
 import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.NMapOverlay;
 import com.nhn.android.maps.NMapOverlayItem;
-import com.nhn.android.maps.NMapPOIflagType;
 import com.nhn.android.maps.NMapView;
 import com.nhn.android.maps.NMapViewerResourceProvider;
 import com.nhn.android.maps.maplib.NGeoPoint;
@@ -38,10 +44,11 @@ import com.nhn.android.mapviewer.overlay.NMapMyLocationOverlay;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 
-public class MapActivity extends NMapActivity {
+public class MapActivity extends NMapActivity implements PostsListener {
 	private static final String LOG_TAG = "NMapViewer";
 	private static final boolean DEBUG = false;
 	private static final String API_KEY = "256346acd36e9be8ef5438ba3e524b54";
+	private static Drawable DEFAULT_IMAGE;
 	private MapContainerView mMapContainerView;
 	private NMapView mMapView;
 	private NMapController mMapController;
@@ -59,8 +66,8 @@ public class MapActivity extends NMapActivity {
 	private NMapPOIdataOverlay mFloatingPOIdataOverlay;
 	private NMapPOIitem mFloatingPOIitem;
 	private NMapPOIdataOverlay mPoiDataOverlay;
-	private HashMap<String,Integer> mPoiItemIdMap;
-
+	private PostsModel mPostsModel;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,6 +85,8 @@ public class MapActivity extends NMapActivity {
 				NMapView.LayoutParams.WRAP_CONTENT,
 				NMapView.LayoutParams.WRAP_CONTENT,
 				NMapView.LayoutParams.BOTTOM_RIGHT));
+		
+		DEFAULT_IMAGE = getResources().getDrawable(R.drawable.ic_pin_01);
 
 		mMapContainerView = new MapContainerView(this);
 		mMapContainerView.addView(mMapView);
@@ -93,10 +102,22 @@ public class MapActivity extends NMapActivity {
 
 		mMapCompassManager = new NMapCompassManager(this);
 		mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
+
 		startMyLocation();
-		
-		testPOIdataOverlay();
+		setModel();
 	}
+
+
+	private void setModel(){
+		mPostsModel = FrameActivity.mPostsModel;
+		//////Test///////////////////
+		mPostsModel.addPost(new PostInfo("전재형","",126.8989265, 37.4859410));
+		mPostsModel.addPost(new PostInfo("전재형","",126.8989265, 37.4856410));
+		mPostsModel.addPost(new PostInfo("전재형","",126.8989265, 37.4853410));
+		/////////////////////////////
+		mPostsModel.addListener(this);
+		modelChanged(new ValueChangeEvent(mPostsModel));		
+	}	
 
 	@Override
 	protected void onStop() {
@@ -109,7 +130,7 @@ public class MapActivity extends NMapActivity {
 		saveInstanceState();
 		super.onDestroy();
 	}
-
+	
 	private void startMyLocation() {
 		if (mMyLocationOverlay != null) {
 			if (!mOverlayManager.hasOverlay(mMyLocationOverlay)){ 
@@ -147,33 +168,6 @@ public class MapActivity extends NMapActivity {
 				mMapContainerView.requestLayout();
 			}
 		}
-	}
-
-	//테스트 : 지도에서 사람 표시 테스트
-	private void testPOIdataOverlay() {
-		mPoiItemIdMap = new HashMap<String, Integer>();
-		int tempId = 0;
-		int markerId = NMapPOIflagType.PIN;
-		// set POI data
-		NMapPOIdata poiData = new NMapPOIdata(3, mMapViewerResourceProvider);
-		poiData.beginPOIdata(3);
-		poiData.addPOIitem(126.8989265, 37.4859410, "정찬규", markerId, tempId);
-		mPoiItemIdMap.put("정찬규", tempId++);
-		
-		poiData.addPOIitem(126.8987265, 37.4857410, "정길수", markerId, tempId);
-		mPoiItemIdMap.put("정길수", tempId++);
-		
-		Drawable picture = getResources().getDrawable(R.drawable.test);
-		picture.setAlpha(180);
-		picture.setBounds(-50, -50, 0, 0);
-
-		poiData.addPOIitem(126.8999265, 37.4869410, "전재형", picture, tempId);
-		mPoiItemIdMap.put("전재형", tempId++);
-		
-		poiData.endPOIdata();
-		mPoiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-		mPoiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
-		mPoiDataOverlay.selectPOIitem(0, true);
 	}
 	
 	private final NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
@@ -286,8 +280,7 @@ public class MapActivity extends NMapActivity {
 				}
 			} 
 			
-			int id = mPoiItemIdMap.get(overlayItem.getTitle());
-			mMapController.animateTo(mPoiDataOverlay.getPOIdata().findItemWith(id).getPoint());
+			mMapController.animateTo(overlayItem.getPoint());
 //			return new NMapCalloutCustomOverlay(itemOverlay, overlayItem, itemBounds, mMapViewerResourceProvider);
 			return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
 		}
@@ -386,4 +379,34 @@ public class MapActivity extends NMapActivity {
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}
 	}
+
+	@Override
+	public void modelChanged(ValueChangeEvent e) {
+		List<PostInfo> list = ((PostsModel) e.getSource()).getModel();
+		
+		NMapPOIdata poiData = new NMapPOIdata(list.size(), mMapViewerResourceProvider);
+		poiData.beginPOIdata(list.size());		
+		for(int index=0;index<list.size();index++){
+			PostInfo post = list.get(index);
+			
+			Drawable image;
+			Bitmap bitmap = BitmapFactory.decodeFile(post.getImage());
+			if(bitmap != null)	image = new BitmapDrawable(bitmap);
+			else				image = DEFAULT_IMAGE;
+			image.setAlpha(180);
+			
+			poiData.addPOIitem(post.getPoint(), post.getName(), image, post);
+		}
+		poiData.endPOIdata();
+		
+		mPoiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+		mPoiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+		mPoiDataOverlay.selectPOIitem(0, true);
+	}
+
+	@Override
+	public void postAdded(ValueChangeEvent e) {}
+
+	@Override
+	public void postRemoved(ValueChangeEvent e) {}
 }
