@@ -83,9 +83,9 @@
 		<activity
 			android:name=".activity.PostsActivity"></activity>
 		<activity
-			android:name=".activity.map.MapActivity"></activity>
+			android:name=".map.MapActivity"></activity>
 		<activity
-			android:name="test.ARActivity"
+			android:name=".ar.ARActivity"
 			android:screenOrientation="landscape"></activity>
 		<activity
 			android:name=".activity.SampleFrameActivity"></activity>

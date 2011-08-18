@@ -4,7 +4,7 @@
 	android:id="@+id/ar_frame"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<kr.co.hellodrinking.test.Preview
+	<kr.co.hellodrinking.ar.Preview
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
 	<kr.co.hellodrinking.ar.DrawOnTop
