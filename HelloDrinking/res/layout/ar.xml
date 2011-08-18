@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/ar_frame"
-	android:layout_width="fill_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/ar_frame" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<kr.co.hellodrinking.ar.Preview
-		android:layout_width="fill_parent"
+ 	<kr.android.hellodrinking.ar.CameraView
+		android:layout_width="fill_parent" android:layout_height="fill_parent" /> 
+	<kr.android.hellodrinking.ar.CompassView
+		android:id="@+id/ar_compass" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
-	<kr.co.hellodrinking.ar.DrawOnTop
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+	<AbsoluteLayout
+		android:id="@+id/ar_layout_pois" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />	
 </FrameLayout>

@@ -7,7 +7,7 @@
 
 package com.nhn.android.maps;
 
-import kr.co.hellodrinking.R;
+import kr.android.hellodrinking.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

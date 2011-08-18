@@ -1,6 +1,6 @@
 package test;
 
-import kr.co.hellodrinking.R;
+import kr.android.hellodrinking.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;

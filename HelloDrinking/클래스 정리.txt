@@ -25,3 +25,7 @@ static int distanceBetweenTwoGeoPoints(NGeoPoint p1, NGeoPoint p2) : p1과 p2 사�
 
 클래스 관계:
 PoiOverlay->PoiData ->PostInfo <- PostsModel -> PostsListener
+===============================================
+AR 클래스
+Intent <- AbstractARIntent <--- (ARIntent) 	-> ARActivity
+											-> HelloDrinkingApplication <>-> POI
