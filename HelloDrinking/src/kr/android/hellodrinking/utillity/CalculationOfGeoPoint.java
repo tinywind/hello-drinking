@@ -25,6 +25,6 @@ public class CalculationOfGeoPoint {
         ret = EARTH_R * Math.acos(distance);
 
         return  Math.round(Math.round(ret));
-        //¸®ÅÏ °ªÀÇ ´ÜÀ§´Â ¹ÌÅÍ(m)ÀÌ´Ù.
+        //ë‹¨ìœ„: m
     }
 }

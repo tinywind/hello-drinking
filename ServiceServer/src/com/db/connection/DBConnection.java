@@ -1,11 +1,12 @@
 package com.db.connection;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class DBConnection {//¿À¶óÅ¬Á¢¼Ó¸¸ ÇÒ°ÍÀÌ¹Ç·Î interface¸¦ ÀÌ¿ëÇÏÁö ¾ÊÀ½.
+public class DBConnection {//ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½Ó¸ï¿½ ï¿½Ò°ï¿½ï¿½Ì¹Ç·ï¿½ interfaceï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	
 	public static Connection Connect() throws ClassNotFoundException, SQLException{
 		Class.forName("oracle.jdbc.driver.OracleDriver");

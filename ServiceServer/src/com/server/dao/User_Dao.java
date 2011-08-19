@@ -1,27 +1,29 @@
 package com.server.dao;
+
 import java.util.ArrayList;
 
 
-public class User_Dao implements Dao{
 
-	@Override //È¸¿øÁ¤º¸¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+public class User_Dao implements DAO{
+
+	@Override //È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 	public ArrayList<Object> getList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override //È¸¿øÁ¤º¸¸¦ ¼öÁ¤ÇÑ´Ù.
+	@Override //È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	public void ModifyList() { 
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override //È¸¿øÁ¤º¸¸¦ ÀÔ·ÂÇÑ´Ù.
+	@Override //È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ñ´ï¿½.
 	public void setList() {
 		// TODO Auto-generated method stub
 	}
 
-	@Override //È¸¿øÁ¤º¸¸¦ »èÁ¦ÇÑ´Ù.
+	@Override //È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	public void DeleteList() { 
 		// TODO Auto-generated method stub
 	}

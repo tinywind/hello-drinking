@@ -1,7 +1,9 @@
 package com.server.main;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 
 public class StartServer {
 
@@ -14,11 +16,10 @@ public class StartServer {
 		public void start() {
 			Socket client = null;
 			MainThread thread;
-			System.out.println("서버시작");
+			System.out.println("Server Start");
 			while (true) {
 				try {
 					client = server.accept();
-					System.out.println("클라이언트 접속");
 					thread = new MainThread(client);
 					thread.start();
 					System.err.println("socket accept : "+client.getInetAddress().toString());

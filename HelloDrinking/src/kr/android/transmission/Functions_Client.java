@@ -1,26 +1,48 @@
 package kr.android.transmission;
 
 public class Functions_Client implements Requestable {
-	DTO send_dto = new DTO();
-	DTO receive_dto = new DTO();
-	Access access = new Access();
-	
+	DTO send_dto; 
+	DTO receive_dto; 
+	Access access; 
+	//(ID, Name, Password, Image, age, sex, phone_number, job, log)
+
 	@Override
-	public int register() {
-		// TODO Auto-generated method stub
+	public boolean register(String id, String name, String password, String age, String sex, String phoneNumber,String job) {
+		access = new Access();
 		
-		return 0;
+		send_dto= new DTO();
+		receive_dto =new DTO();
+		
+		send_dto.setOption(0);
+		send_dto.setId(id);
+		send_dto.setName(name);
+		send_dto.setPassword(password);
+		send_dto.setAge(age);
+		send_dto.setSex(sex);
+		send_dto.setPhoneNumber(phoneNumber);
+		send_dto.setJob(job);
+		String a="a";//ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ß´ï¿½.
+		receive_dto=access.request(send_dto);
+		
+		return receive_dto.isResult();
 	}
 
 	@Override
-	public DTO logIn(String id, String password) {
-		// TODO Auto-generated method stub
-		//¾×¼¼½º Å¬·¡½º·Î dto ³Ñ±äÈÄ ¾×¼¼½ºÅ¬·¡½º¿¡¼­ dtoÀü¼Û
+	public boolean logIn(String id, String password) {//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		//ï¿½×¼ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ dto ï¿½Ñ±ï¿½ï¿½ï¿½ ï¿½×¼ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ dtoï¿½ï¿½ï¿½
+		access = new Access();
+		send_dto =new DTO();
+		receive_dto = new DTO();
+		
+		send_dto.setOption(1);
 		send_dto.setId(id);
+		
 		send_dto.setPassword(password);
+		
 		receive_dto=access.request(send_dto);
-	
-		return receive_dto;
+		return receive_dto.isResult();
+		
+		
 	}
 
 	@Override
@@ -30,21 +52,57 @@ public class Functions_Client implements Requestable {
 	}
 
 	@Override
-	public void post() {
-		// TODO Auto-generated method stub
+	public boolean post(String id, String comment) {
+		access = new Access();
+		send_dto=new DTO();
+		receive_dto= new DTO();
+		
+		send_dto.setOption(3);
+		send_dto.setId(id);
+		send_dto.setComment(comment);
+		String path="a";
+		receive_dto=access.request(send_dto,path);
+		
+		return receive_dto.isResult();
 		
 	}
 
 	@Override
-	public void modify_Post() {
+	public boolean modify_Post(String id,String postNum,String comment) {
 		// TODO Auto-generated method stub
+		access = new Access();
+		send_dto=new DTO();
+		receive_dto= new DTO();
+		
+		send_dto.setOption(4);
+		send_dto.setId(id);
+		send_dto.setPostNum(postNum);
+		send_dto.setComment(comment);
+		
+		String path="a";
+		if (path=="a")//ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½ 
+			receive_dto=access.request(send_dto,path);
+		else
+			receive_dto=access.request(send_dto);
+		
+		return receive_dto.isResult();
 		
 	}
 
 	@Override
-	public void delete_Post() {
+	public boolean delete_Post(String id,String postNum) {
 		// TODO Auto-generated method stub
 		
+		access = new Access();
+		send_dto=new DTO();
+		receive_dto= new DTO();
+		
+		send_dto.setOption(5);
+		send_dto.setId(id);
+		send_dto.setPostNum(postNum);
+		
+		receive_dto=access.request(send_dto);
+		return receive_dto.isResult();
 	}
 
 	@Override
@@ -60,15 +118,43 @@ public class Functions_Client implements Requestable {
 	}
 
 	@Override
-	public void detail_Profile() {
+	public String detail_Profile(String id) {
 		// TODO Auto-generated method stub
+		access= new Access();
+		send_dto=new DTO();
 		
+		send_dto.setOption(8);
+		send_dto.setImage(true);
+		send_dto.setId(id);
+		
+		receive_dto=access.request(send_dto);
+		
+		return receive_dto.getName();		
 	}
 
 	@Override
-	public void modify_Profile() {
+	public boolean modify_Profile(String id, String name, String password, String age, String sex, String phoneNumber,String job) {
 		// TODO Auto-generated method stub
+       access = new Access();
 		
+		send_dto= new DTO();
+		receive_dto =new DTO();
+		
+		send_dto.setOption(9);
+		send_dto.setId(id);
+		send_dto.setName(name);
+		send_dto.setPassword(password);
+		send_dto.setAge(age);
+		send_dto.setSex(sex);
+		send_dto.setPhoneNumber(phoneNumber);
+		send_dto.setJob(job);
+		
+		String path="a";//ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ß´ï¿½.(ï¿½Ê¿ï¿½ï¿½Ï´Ù¸ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æµï¿½ï¿½ï¿½)
+		if (path=="a")//ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½ 
+			receive_dto=access.request(send_dto,path);
+		else
+			receive_dto=access.request(send_dto);
+		return receive_dto.isResult();	
 	}
 
 	@Override
@@ -78,15 +164,33 @@ public class Functions_Client implements Requestable {
 	}
 
 	@Override
-	public void logOut() {
+	public boolean logOut(String id) {
 		// TODO Auto-generated method stub
+		access = new Access();
+		send_dto =new DTO();
+		receive_dto = new DTO();
 		
+		send_dto.setOption(11);
+		send_dto.setId(id);
+		
+		receive_dto=access.request(send_dto);
+		
+		return receive_dto.isResult();		
 	}
 
 	@Override
-	public void out_Member() {
+	public boolean out_Member(String id, String password) {
 		// TODO Auto-generated method stub
 		
+		access = new Access();
+		send_dto =new DTO();
+		receive_dto = new DTO();
+		
+		send_dto.setOption(12);
+		send_dto.setId(id);
+		send_dto.setPassword(password);
+		
+		receive_dto=access.request(send_dto);
+		return receive_dto.isResult();		
 	}
-	     
 }

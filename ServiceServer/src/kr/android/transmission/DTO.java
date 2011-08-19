@@ -1,6 +1,5 @@
 package kr.android.transmission;
 
-
 import java.io.Serializable;
 
 public class DTO implements Serializable {
@@ -78,7 +77,7 @@ public class DTO implements Serializable {
 		this.isImage = isImage;
 	
 	}
-	
+
 	public String getPostNum() {
 		return postNum;
 	}
@@ -120,7 +119,7 @@ public class DTO implements Serializable {
 	case 12   ȸ��Ż��
 	*/
 	boolean result;	//������ Ŭ���̾�Ʈ���� ������ ��� 
-	boolean isImage; //�����̹����� �ִ��� ����� ����	
+	public boolean isImage; //�����̹����� �ִ��� ����� ����	
 	public String id;
 	public String postNum;//�Խ��� ��ȣ
 	public String name;

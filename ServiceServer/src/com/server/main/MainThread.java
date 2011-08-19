@@ -1,12 +1,30 @@
 package com.server.main;
+
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import kr.android.transmission.DTO;
 
 import com.db.connection.DBConnection;
+import com.server.dao.Functions_Server;
+
 
 
 public class MainThread extends Thread {
@@ -25,61 +43,104 @@ public class MainThread extends Thread {
 
 	@Override
 	public void run() {
-
+		
 		try {
+
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			oos.flush();
 			ois = new ObjectInputStream(socket.getInputStream());
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
+		   			
 			receive_dto = (DTO) ois.readObject();
+				
 			option = receive_dto.getOption();
 			Functions_Server f = new Functions_Server();
+			
 			conn = DBConnection.Connect();
-
-			switch (option) {
-			case 0:
-				send_dto.setResult(f.register(receive_dto, conn));// ¿äÃ»Ã³¸® &°á°úÀúÀå
-				oos.writeObject(send_dto);// °á°úÀü¼Û
+			
+		switch (option) {
+		
+			case 0://È¸ï¿½ï¿½ï¿½ï¿½			
+				send_dto.setResult(f.register(receive_dto, conn));// ï¿½ï¿½Ã»Ã³ï¿½ï¿½ &ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				oos.writeObject(send_dto);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			
+				if(receive_dto.isImage()){//ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					receive_Image();
+				}
 				ois.close();oos.close();
-				//ÀÌ¹ÌÁö¸¦ Àü¼Û¹ÞÀ» ÇÔ¼ö¸¦ Á¤ÀÇÇÏ¿© ¹ÞÀºÈÄ µ¥ÀÌÅÍº£ÀÌ½º¿¡ ÀúÀå;
-				break;// È¸¿ø°¡ÀÔ
+				break;
 
-			case 1:
+			case 1:// ï¿½Î±ï¿½ï¿½ï¿½
 				send_dto.setResult(f.logIn(receive_dto, conn));
-				oos.writeObject(send_dto);// °á°úÀü¼Û
+				oos.writeObject(send_dto);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				ois.close();oos.close();
-				break;// ·Î±×ÀÎ
-
+				break;
+			
 			case 2:
-				break;// °Ô½Ã¹° °Ë»ö
-			case 3:
-				break;// °Ô½Ã¹° µî·Ï(ÀÌ¹ÌÁö Ã³¸®)
-			case 4:
-				break;// °Ô½Ã¹° ¼öÁ¤(ÀÌ¹ÌÁöÃ³¸®)
-			case 5:
-				break;// °Ô½Ã¹° »èÁ¦
-			case 6:
-				break;// °Ô½Ã¹° »ó¼¼ Á¤º¸
-			case 7:
-				break;// °Ô½Ã¹°¿¡ ´ëÇÑ °ü½ÉÀÚ·Î µî·Ï(ÇÏ³ªÀÇ °Ô½Ã¹°¿¡ ´ëÇÑ º¹¼öÀÇ °ü½ÉÀÚ)
-			case 8:
-				break;// ÇÁ·ÎÇÊ È®ÀÎ
-			case 9:
-				
-				break;// ÇÁ·ÎÇÊ ¼öÁ¤(ÀÌ¹ÌÁö Ã³¸®)
-			case 10:
-				break;// ¸Þ¼¼Áö ¹ß½Å, ¼ö½Å
-			case 11:
-				send_dto.setResult(f.logOut(receive_dto,conn));
-				oos.writeObject(send_dto);// °á°úÀü¼Û
+				break;// ï¿½Ô½Ã¹ï¿½ ï¿½Ë»ï¿½
+			
+			case 3:// ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½(ï¿½Ì¹ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½)
+				send_dto.setResult(f.post(receive_dto,conn));
+				oos.writeObject(send_dto);
+				if(receive_dto.isImage()){
+					receive_Image();					
+				}
 				ois.close();oos.close();
-				break;// ·Î±×¾Æ¿ô
-			case 12:
-				break;// È¸¿øÅ»Åð
+				break;			
+			case 4:// ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ì¹ï¿½ï¿½ï¿½Ã³ï¿½ï¿½)
+				send_dto.setResult(f.modify_Post(receive_dto,conn));
+				oos.writeObject(send_dto);
+				if(receive_dto.isImage()){
+					receive_Image();					
+				}
+				ois.close();oos.close();
+				break;
+			case 5:// ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+				send_dto.setResult(f.delete_Post(receive_dto,conn));
+				oos.writeObject(send_dto);
+				ois.close();oos.close();				
+				break;
+			case 6:// ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			
+				
+				break;
+			case 7:// ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½(ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½)
+			
+				
+				break;
+			case 8:// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+				 
+				 send_dto=(f.detail_Profile(receive_dto,conn));
+				 String imageName =send_dto.getImageName();
+				 oos.writeObject(send_dto);
+				 
+				 if(receive_dto.isImage()){
+				 send_Image(imageName);
+								 }
+				 ois.close();oos.close();
+				break;
+				
+			case 9:// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ì¹ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½)
+				send_dto.setResult(f.modify_Post(receive_dto,conn));
+				oos.writeObject(send_dto);
+				if(receive_dto.isImage()){
+					receive_Image();					
+				}
+				ois.close();oos.close();
+				break;
+			
+			case 10:// ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ß½ï¿½, ï¿½ï¿½ï¿½ï¿½
+				break;
+			
+			case 11: // ï¿½Î±×¾Æ¿ï¿½
+				send_dto.setResult(f.logOut(receive_dto,conn));
+				oos.writeObject(send_dto);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				ois.close();oos.close();
+				break;
+			case 12:// È¸ï¿½ï¿½Å»ï¿½ï¿½
+				send_dto.setResult(f.out_Member(receive_dto,conn));
+				oos.writeObject(send_dto);
+				ois.close();oos.close();				
+				break;
 			}
 
 		} catch (IOException e) {
@@ -94,4 +155,60 @@ public class MainThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	public void receive_Image(){
+		InputStream is;
+		BufferedReader br;
+		try {
+			is = socket.getInputStream();
+			br=new BufferedReader(new InputStreamReader(is));
+			
+			String fileName=br.readLine();
+			
+			File file=new File("c:/image/"+receive_dto.getId()+".png");
+			FileOutputStream fos=new FileOutputStream(file);
+			    		
+			int i=0;
+			while((i=is.read())!=-1){
+			  fos.write((char)i); fos.flush();
+	     		}
+			br.close();	is.close(); fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+	public void send_Image(String name){
+		File file = new File(name+".png");
+				 	
+		try {							  
+		    BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		    System.out.println("ï¿½ï¿½ï¿½Ï¸ï¿½ : "+file);
+		    bw.write(file+"\n"); bw.flush();
+		   
+		    FileInputStream dis=(new FileInputStream(file));
+		    DataOutputStream dos=new DataOutputStream(socket.getOutputStream());
+		    				    				  
+		    int b=0;
+		    int index =0; 
+		    
+		    while( (b=dis.read()) != -1 ){
+		     dos.writeByte(b);
+			    dos.flush();
+		     index++;
+		    }		
+		    System.out.println("index:"+index);
+		    dis.close(); dos.close(); 
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

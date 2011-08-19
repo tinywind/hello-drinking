@@ -1,24 +1,26 @@
 package com.server.dao;
+
 import java.util.ArrayList;
 
 
-public class Post_Dao implements Dao{
+
+public class Post_Dao implements DAO{
 	
-	@Override // °Ô½ÃÁ¤º¸¸®½ºÆ®¸¦ °¡Á®¿Â´Ù.
+	@Override // ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 	public ArrayList<Object> getList() {
 		// TODO Auto-generated method stub
 			
 		return null;
 	}
-	@Override //°Ô½Ã¹° Á¤º¸¸¦ ¼öÁ¤
+	@Override //ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void ModifyList() {
 		// TODO Auto-generated method stub
 	}
-	@Override //°Ô½Ã¹°À» µî·ÏÇÑ´Ù.
+	@Override //ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	public void setList() {
 		// TODO Auto-generated method stub
 	}
-	@Override //°Ô½Ã¹°À» »èÁ¦ÇÑ´Ù.
+	@Override //ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	public void DeleteList() {
 		// TODO Auto-generated method stub
 	}

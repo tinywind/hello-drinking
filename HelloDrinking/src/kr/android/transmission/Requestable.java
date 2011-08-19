@@ -3,29 +3,29 @@ package kr.android.transmission;
 
 public interface Requestable {
 	
-	int register();        //È¸¿ø°¡ÀÔ
+	boolean register(String id, String name, String password, String age, String sex, String phone_Number,String job);        //È¸ï¿½ï¿½ï¿½ï¿½
 	
-    DTO logIn(String id,String password);          //·Î±×ÀÎ
+    boolean logIn(String id,String password);          //ï¿½Î±ï¿½ï¿½ï¿½
    
-	void search();         //°Ô½Ã¹°°Ë»ö     
+	void search();         //ï¿½Ô½Ã¹ï¿½ï¿½Ë»ï¿½     
 	
-	void post();	          //°Ô½Ã¹°µî·Ï    
+	boolean post(String id, String commnet);	          //ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ï¿½    
 	
-	void modify_Post();    //°Ô½Ã¹° ¼öÁ¤
+	boolean modify_Post(String id,String postNum,String comment);    //ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	void delete_Post();    //°Ô½Ã¹° »èÁ¦ 
+	boolean delete_Post(String id,String postNum);    //ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 
-	void detail_Post();    //°Ô½Ã¹° »ó¼¼ Á¤º¸
+	void detail_Post();    //ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
-	void add_following(); //°Ô½Ã¹°¿¡ ´ëÇÑ °ü½ÉÀÚ·Î µî·Ï
+	void add_following(); //ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½
 	
-	void detail_Profile();//ÇÁ·ÎÇÊÈ®ÀÎ
+	String detail_Profile(String id);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È®ï¿½ï¿½
 	
-	void modify_Profile(); //ÇÁ·ÎÇÊ ¼öÁ¤
+	boolean modify_Profile(String id, String name, String password, String age, String sex, String phone_Number,String job); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
-	void send_Message();   //¸Þ¼¼Áö ¹ß½Å
+	void send_Message();   //ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ß½ï¿½
 	
-	void logOut();    //·Î±×¾Æ¿ô     
+	boolean logOut(String id);    //ï¿½Î±×¾Æ¿ï¿½     
 	
-	void out_Member();     //È¸¿øÅ»Åð
+	boolean out_Member(String id,String password);     //È¸ï¿½ï¿½Å»ï¿½ï¿½
 }

@@ -47,7 +47,7 @@ import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 public class MapActivity extends NMapActivity implements PostsListener {
 	private static final String LOG_TAG = "NMapViewer";
 	private static final boolean DEBUG = false;
-	private static final String API_KEY = "256346acd36e9be8ef5438ba3e524b54";
+	private static final String API_KEY = "6dff5a14ec0abea130009332080cc6fc";
 	private static Drawable DEFAULT_IMAGE;
 	private MapContainerView mMapContainerView;
 	private NMapView mMapView;
@@ -111,9 +111,8 @@ public class MapActivity extends NMapActivity implements PostsListener {
 	private void setModel(){
 		mPostsModel = FrameActivity.mPostsModel;
 		//////Test///////////////////
-		mPostsModel.addPost(new PostInfo("전재형","",126.8989265, 37.4859410));
-		mPostsModel.addPost(new PostInfo("전재형","",126.8989265, 37.4856410));
-		mPostsModel.addPost(new PostInfo("전재형","",126.8989265, 37.4853410));
+		mPostsModel.addPost(new PostInfo("you","",127, 38));
+		mPostsModel.addPost(new PostInfo("me","",126.9, 37.5));
 		/////////////////////////////
 		mPostsModel.addListener(this);
 		modelChanged(new ValueChangeEvent(mPostsModel));		

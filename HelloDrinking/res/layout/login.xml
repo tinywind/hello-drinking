@@ -3,5 +3,84 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="fill_parent"
+	android:background="#964b00"
+	android:padding="20dip">
+	<LinearLayout
+		android:padding="10dip"
+		android:background="#000000"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_weight="1">
+		<ImageView
+			android:background="@drawable/main_title_bg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_weight="1">
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:orientation="vertical"
+			android:padding="10dip"
+			android:layout_height="fill_parent"
+			android:layout_weight="1">
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:orientation="vertical"
+				android:padding="10dip"
+				android:layout_height="fill_parent"
+				android:layout_weight="1">
+				<TextView
+					android:textColor="#FFFFFF"
+					android:layout_width="70dip"
+					android:layout_height="wrap_content"
+					android:text="아이디"></TextView>
+				<EditText
+					android:layout_width="150dip"
+					android:layout_height="40dip"
+					android:id="@+id/main_user_id">
+					<requestFocus></requestFocus>
+				</EditText>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:orientation="vertical"
+				android:padding="10dip"
+				android:layout_height="fill_parent"
+				android:layout_weight="1">
+				<TextView
+					android:textColor="#FFFFFF"
+					android:layout_width="70dip"
+					android:layout_height="wrap_content"
+					android:text="비밀번호"></TextView>
+				<EditText
+					android:layout_width="150dip"
+					android:layout_height="40dip"
+					android:id="@+id/main_user_password"></EditText>
+			</LinearLayout>
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+			android:orientation="vertical">
+			<ImageButton
+				android:id="@+id/main_login_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/main_login_button" />
+			<Button
+				android:id="@+id/main_button_join" 
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="JOIN" />
+		</LinearLayout>
+	</LinearLayout>
 </LinearLayout>
+
+
+

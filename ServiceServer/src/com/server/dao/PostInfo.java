@@ -1,4 +1,5 @@
 package com.server.dao;
+
 public class PostInfo {
 String id;
 String name;
