@@ -1,56 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="kr.android.hellodrinking" android:versionCode="1"
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="kr.android.hellodrinking"
+	android:versionCode="1"
 	android:versionName="1.0">
-	<uses-sdk android:minSdkVersion="7" />
-	<uses-feature android:name="android.hardware.camera" />
-	<uses-feature android:name="android.hardware.camera.autofocus" />
-	<uses-feature android:name="android.hardware.location" />
-	<uses-feature android:name="android.hardware.sensor.accelerometer" />
-	<uses-feature android:name="android.hardware.sensor.compass" />
+	<uses-sdk
+		android:minSdkVersion="8" />
+	<uses-feature
+		android:name="android.hardware.camera" />
+	<uses-feature
+		android:name="android.hardware.camera.autofocus" />
+	<uses-feature
+		android:name="android.hardware.location" />
+	<uses-feature
+		android:name="android.hardware.sensor.accelerometer" />
+	<uses-feature
+		android:name="android.hardware.sensor.compass" />
 
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_GPS" />
-	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.BRICK" />
-	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.DELETE_PACKAGES" />
-	<uses-permission android:name="android.permission.FLASHLIGHT" />
-	<uses-permission android:name="android.permission.INSTALL_PACKAGES" />
-	<uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.MASTER_CLEAR" />
-	<uses-permission android:name="android.permission.READ_FRAME_BUFFER" />
-	<uses-permission android:name="android.permission.RESTART_PACKAGES" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission
+		android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission
+		android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission
+		android:name="android.permission.ACCESS_GPS" />
+	<uses-permission
+		android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission
+		android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission
+		android:name="android.permission.ACCESS_SURFACE_FLINGER" />
+	<uses-permission
+		android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission
+		android:name="android.permission.BRICK" />
+	<uses-permission
+		android:name="android.permission.CAMERA" />
+	<uses-permission
+		android:name="android.permission.CHANGE_NETWORK_STATE" />
+	<uses-permission
+		android:name="android.permission.DELETE_PACKAGES" />
+	<uses-permission
+		android:name="android.permission.FLASHLIGHT" />
+	<uses-permission
+		android:name="android.permission.INSTALL_PACKAGES" />
+	<uses-permission
+		android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
+	<uses-permission
+		android:name="android.permission.INTERNET" />
+	<uses-permission
+		android:name="android.permission.MASTER_CLEAR" />
+	<uses-permission
+		android:name="android.permission.READ_FRAME_BUFFER" />
+	<uses-permission
+		android:name="android.permission.RESTART_PACKAGES" />
+	<uses-permission
+		android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-	<application android:name=".HelloDrinkingApplication"
-		android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".activity.LoginActivity" android:label="@string/app_name">
+	<application
+		android:name=".HelloDrinkingApplication"
+		android:icon="@drawable/icon"
+		android:label="@string/app_name"
+		android:screenOrientation="portrait">
+		<activity
+			android:name=".activity.LoginActivity"
+			android:label="@string/app_name">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
+				<action
+					android:name="android.intent.action.MAIN" />
+				<category
+					android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".activity.MemberJoinActivity"></activity>
-		<activity android:name=".activity.MemberinfoActivity"></activity>
-		<activity android:name=".activity.MemberModifyActivity"></activity>
-		<activity android:name=".activity.MemberWithdrawalActivity"></activity>
-		<activity android:name=".activity.PostsActivity"></activity>
-		<activity android:name=".activity.MapActivity"></activity>
-		<activity android:name=".ar.ARActivity"
-			android:screenOrientation="landscape">
+		<activity
+			android:name=".activity.MemberJoinActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity
+			android:name=".activity.MemberinfoActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity
+			android:name=".activity.MemberModifyActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity
+			android:name=".activity.MemberWithdrawalActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity
+			android:name=".activity.PostsActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity
+			android:name=".activity.MapActivity"
+			android:screenOrientation="portrait"></activity>
+		<activity
+			android:name=".ar.ARActivity"
+			android:screenOrientation="portrait">
 			<intent-filter>
-				<action android:name="kr.android.hellodrinking.action.AR_VIEW" />
+				<action
+					android:name="kr.android.hellodrinking.action.AR_VIEW" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".activity.SampleFrameActivity"></activity>
-		<activity android:name=".activity.UserInfoDialog"
+		<activity
+			android:name=".activity.UserInfoDialog"
+			android:screenOrientation="portrait"
 			android:theme="@android:style/Theme.Dialog"></activity>
 	</application>
 </manifest>

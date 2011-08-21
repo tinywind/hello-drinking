@@ -12,8 +12,7 @@ public class ARIntent extends AbstractARIntent {
 	private String[] name;
 	private String[] link;
 	private String[] description;
-	private String[] iconresource;
-	private String[] iconuri;
+	private String[] imagefilepath;
 	private String[] detailAction;
 	
 	public ARIntent(Application application) {
@@ -81,21 +80,18 @@ public class ARIntent extends AbstractARIntent {
 			if (poi != null) {
 				this.latitude[i] = new Float(poi.getLatitude()).floatValue();
 				this.longitude[i] = new Float(poi.getLongitude()).floatValue();
-				this.altitude[i] = new Float(poi.getAltitude()).floatValue();
 				this.name[i] = poi.getName();				
-				this.detailAction[i] = poi.getDetailAction();
+				this.detailAction[i] = poi.getComment();
 				this.link[i] = poi.getLink();
 				this.description[i] = poi.getDescription();
-				this.iconresource[i] = poi.getIconresource();
-				this.iconuri[i] = poi.getIconuri();
+				this.imagefilepath[i] = poi.getImageFilePath();
 			}
 		}
-		putExtra("kr.android.hellodrinking.extra.NAME_ARRAY", this.name);
-		putExtra("kr.android.hellodrinking.extra.LINKS_ARRAY", this.link);
-		putExtra("com.mobilizy.wikitude.DETAIL_ACTION_ARRAY", this.detailAction);
-		putExtra("kr.android.hellodrinking.extra.DESCRIPTION_ARRAY", this.description);
-		putExtra("kr.android.hellodrinking.extra.ICON_RESOURCE_ARRAY", this.iconresource);
-		putExtra("kr.android.hellodrinking.extra.ICON_URI_ARRAY", this.iconuri);
+		putExtra("kr.android.extra.NAME_ARRAY", this.name);
+		putExtra("kr.android.extra.LINKS_ARRAY", this.link);
+		putExtra("kr.android.extra.DETAIL_ACTION_ARRAY", this.detailAction);
+		putExtra("kr.android.extra.DESCRIPTION_ARRAY", this.description);
+		putExtra("kr.android.extra.IMAGE_FILE_PATH_ARRAY", this.imagefilepath);
 		super.commitChangeToIntent();
 	}
 
@@ -110,8 +106,7 @@ public class ARIntent extends AbstractARIntent {
 		this.detailAction = new String[size];
 		this.link = new String[size];
 		this.description = new String[size];
-		this.iconresource = new String[size];
-		this.iconuri = new String[size];
+		this.imagefilepath = new String[size];
 	}
 
 	public void setPrintMarkerSubText(boolean printMarkerSubText) {

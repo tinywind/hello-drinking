@@ -1,61 +1,55 @@
 package kr.android.hellodrinking.ar;
 
-import android.graphics.Bitmap;
+import java.io.Serializable;
 
-public class POI {
+public class POI implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2635756434208656575L;
+
 	private double latitude;
 	private double longitude;
-	private double altitude;
 	private String name;
 	private String description;
 	private String link;
-	private String iconresource;
-	private String iconuri;
-	private String detailAction;
+	private String imagefilepath;
+	private String comment;
 
 	public POI(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
-	public POI(double latitude, double longitude, double altitude, String name) {
+	public POI(double latitude, double longitude, String name) {
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.altitude = altitude;
 		this.name = name;
 	}
 
-	public POI(double latitude, double longitude, double altitude, String name,	String description) {
+	public POI(double latitude, double longitude, String name, String description) {
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.altitude = altitude;
 		this.name = name;
 		this.description = description;
 	}
 
-	public POI(double latitude, double longitude, double altitude, String name,
-			String description, String iconresource, String iconuri) {
+	public POI(double latitude, double longitude, String name, String description, String imagefilepath) {
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.altitude = altitude;
 		this.name = name;
 		this.description = description;
-		this.iconresource = iconresource;
-		this.iconuri = iconuri;
+		this.imagefilepath = imagefilepath;
 	}
 
-	public POI(double latitude, double longitude, double altitude, String name,
-			String description, String link, String detailAction,
-			String iconresource, String iconuri) {
+	public POI(double latitude, double longitude, String name, String description, String link, String comment, String imagefilepath) {
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.altitude = altitude;
 		this.name = name;
 		this.link = link;
-		this.detailAction = detailAction;
+		this.comment = comment;
 		this.description = description;
-		this.iconresource = iconresource;
-		this.iconuri = iconuri;
+		this.imagefilepath = imagefilepath;
 	}
 
 	public double getLatitude() {
@@ -74,14 +68,6 @@ public class POI {
 		this.longitude = longitude;
 	}
 
-	public double getAltitude() {
-		return this.altitude;
-	}
-
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
-	}
-
 	public String getName() {
 		return this.name;
 	}
@@ -98,20 +84,12 @@ public class POI {
 		this.description = description;
 	}
 
-	public String getIconresource() {
-		return this.iconresource;
+	public String getImageFilePath() {
+		return this.imagefilepath;
 	}
 
-	public void setIconresource(String iconresource) {
-		this.iconresource = iconresource;
-	}
-
-	public String getIconuri() {
-		return this.iconuri;
-	}
-
-	public void setIconuri(String iconuri) {
-		this.iconuri = iconuri;
+	public void setIconuri(String imagefilepath) {
+		this.imagefilepath = imagefilepath;
 	}
 
 	public String getLink() {
@@ -122,11 +100,11 @@ public class POI {
 		this.link = link;
 	}
 
-	public String getDetailAction() {
-		return this.detailAction;
+	public String getComment() {
+		return this.comment;
 	}
 
-	public void setDetailAction(String detailAction) {
-		this.detailAction = detailAction;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

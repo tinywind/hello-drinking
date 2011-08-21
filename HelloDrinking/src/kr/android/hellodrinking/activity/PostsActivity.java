@@ -23,7 +23,7 @@ public class PostsActivity extends FrameActivity{
 		
 		boolean isMyLocationEnabled = mMapLocationManager.enableMyLocation(false);
 		if (!isMyLocationEnabled) {
-			text.setText("Please enable a My Location source in system settings");
+			text.setText("Please enable a My Location source in system settings.");
 			Intent goToSettings = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivity(goToSettings);
 			return;

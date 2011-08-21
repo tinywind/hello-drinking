@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/ar_frame" android:layout_width="fill_parent"
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/ar_frame"
+	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
- 	<kr.android.hellodrinking.ar.CameraView
-		android:layout_width="fill_parent" android:layout_height="fill_parent" /> 
-	<kr.android.hellodrinking.ar.CompassView
-		android:id="@+id/ar_compass" android:layout_width="fill_parent"
+	<kr.android.hellodrinking.ar.CameraView
+		android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
 	<AbsoluteLayout
-		android:id="@+id/ar_layout_pois" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" />	
+		android:id="@+id/ar_layout_pois"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />
+	<LinearLayout
+		android:id="@+id/ar_layout_test"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
+		<kr.android.hellodrinking.ar.CompassView
+			android:id="@+id/ar_compass"
+			android:layout_width="100dip"
+			android:layout_height="100dip" />
+		<TextView
+			android:id="@+id/ar_text_test"
+			android:text="TEST"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
 </FrameLayout>

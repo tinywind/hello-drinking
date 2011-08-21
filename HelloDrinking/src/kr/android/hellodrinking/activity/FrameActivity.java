@@ -2,7 +2,6 @@ package kr.android.hellodrinking.activity;
 
 import kr.android.hellodrinking.R;
 import kr.android.hellodrinking.ar.ARActivity;
-import kr.android.hellodrinking.map.PostsModel;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +13,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class FrameActivity extends Activity implements OnClickListener{
-	public static PostsModel mPostsModel;
-
 	protected LayoutInflater mInflater;
 	protected ViewGroup mViewgroup;
 	protected LinearLayout mButtonPosts, mButtonMap, mButtonAR;
-	
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -37,8 +33,6 @@ public abstract class FrameActivity extends Activity implements OnClickListener{
         mButtonPosts.setOnClickListener(this);
         mButtonMap.setOnClickListener(this);
         mButtonAR.setOnClickListener(this);
-        
-        mPostsModel = new PostsModel();
         
         loadContent();
     }

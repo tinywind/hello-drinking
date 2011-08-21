@@ -6,8 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class DBConnection {//����Ŭ���Ӹ� �Ұ��̹Ƿ� interface�� �̿����� ����.
-	
+public class DBConnection {
 	public static Connection Connect() throws ClassNotFoundException, SQLException{
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		return DriverManager.getConnection(

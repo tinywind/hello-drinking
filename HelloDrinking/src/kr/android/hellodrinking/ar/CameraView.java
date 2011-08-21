@@ -3,7 +3,9 @@ package kr.android.hellodrinking.ar;
 import java.io.IOException;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -20,8 +22,8 @@ public class CameraView extends SurfaceView implements Callback {
 		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	}
 
-	public CameraView(Context context, AttributeSet attri){
-		super(context, attri);	
+	public CameraView(Context context, AttributeSet attri) {
+		super(context, attri);
 		mSurfaceHolder = getHolder();
 		mSurfaceHolder.addCallback(this);
 		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -30,23 +32,35 @@ public class CameraView extends SurfaceView implements Callback {
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		mCamera = Camera.open();
+		Parameters param = mCamera.getParameters();
+		param.set("orientation", "portrait");
+		param.setPreviewSize(getWidth(), getHeight());
+		param.setPictureFormat(PixelFormat.JPEG);
+		mCamera.setParameters(param);
+		mCamera.setDisplayOrientation(90);
 		try {
 			mCamera.setPreviewDisplay(mSurfaceHolder);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,	int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		Parameters param = mCamera.getParameters();
+		param.set("orientation", "portrait");
+		param.setPreviewSize(width, height);
+		param.setPictureFormat(PixelFormat.JPEG);
+		mCamera.setParameters(param);
+		mCamera.setDisplayOrientation(90);
 		mCamera.startPreview();
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		mCamera.setPreviewCallback(null);// 콜백 null초기화
-		mCamera.stopPreview();// 뷰정지
-		mCamera.release();// 카메라 자원해제
-		mCamera = null;// 카메라 객체 null초기화
+		mCamera.setPreviewCallback(null);
+		mCamera.stopPreview();
+		mCamera.release();
+		mCamera = null;
 	}
 }

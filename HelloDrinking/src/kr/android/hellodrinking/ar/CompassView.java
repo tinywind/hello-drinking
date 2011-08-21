@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 public class CompassView extends ImageView implements SensorEventListener {
+
 	private Bitmap mBitmapBackground;
 	private Bitmap mBitmapOrient;
 	private float[] mValues;
@@ -27,37 +28,42 @@ public class CompassView extends ImageView implements SensorEventListener {
 	public CompassView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
-	public void setCompass(Compass compass){
+
+	public void setCompass(Compass compass) {
 		compass.addListener(this);
 	}
 
 	public void setBackgroundBitmap(Bitmap bitmap) {
-		mBitmapBackground = bitmap;
+		mBitmapBackground = Bitmap.createScaledBitmap(bitmap, getLayoutParams().width, getLayoutParams().height, true);
 	}
 
 	public void setOrientationBitmap(Bitmap bitmap) {
-		mBitmapOrient = bitmap;
+		mBitmapOrient = Bitmap.createScaledBitmap(bitmap, getLayoutParams().width, getLayoutParams().height, true);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (mValues != null) {
-			if (mBitmapBackground != null){
-				canvas.drawBitmap(mBitmapBackground, 0, 0, null); 
-				canvas.rotate(mValues[0], mBitmapBackground.getWidth()/2, mBitmapBackground.getHeight()/2);
-			}else{ 
-				canvas.rotate(mValues[0], getWidth() / 2, getHeight() / 2);
+			if (mBitmapBackground != null) {
+				canvas.drawBitmap(mBitmapBackground, 0, 0, null);
 			}
-			
-			if (mBitmapOrient != null)
-				canvas.drawBitmap(mBitmapOrient, 0, 0, null);
 
 			Paint paint = new Paint();
 			paint.setStyle(Paint.Style.FILL);
-			paint.setColor(Color.RED); // ?ìƒ‰
-			paint.setStrokeWidth(10); // ?¬ê¸° 10
-			canvas.drawText("" + mValues[0], 10, 10, paint); // ?ìŠ¤???œì‹œ
+			paint.setColor(Color.RED);
+			paint.setStrokeWidth(10);
+
+			int degree = (int) mValues[0];
+			if (degree > 360)
+				degree -= 360;
+
+			canvas.drawText(degree + "Âº", 10, 10, paint);
+
+			canvas.rotate(mValues[0], getLayoutParams().width / 2, getLayoutParams().height / 2);
+
+			if (mBitmapOrient != null) {
+				canvas.drawBitmap(mBitmapOrient, 0, 0, null);
+			}
 		}
 		super.onDraw(canvas);
 	}
@@ -67,7 +73,7 @@ public class CompassView extends ImageView implements SensorEventListener {
 		mValues = event.values;
 		invalidate();
 	}
-	
+
 	@Override
 	public void onAccuracyChanged(Sensor paramSensor, int paramInt) {
 	}

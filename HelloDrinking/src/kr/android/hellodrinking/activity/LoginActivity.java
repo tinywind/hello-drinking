@@ -37,12 +37,13 @@ public class LoginActivity extends Activity {
 				Functions_Client fc = new Functions_Client();
 				Intent intent = new Intent(LoginActivity.this, PostsActivity.class);
 
-				if (fc.logIn(mEditId.getText().toString(), mEditPw.getText()
-						.toString()))
+//				if (fc.logIn(mEditId.getText().toString(), mEditPw.getText()
+//						.toString()))
 					startActivity(intent);
-				else
-					Toast.makeText(LoginActivity.this, "아이디가 없거나, 암호와 일치하지 않습니다.",
-							Toast.LENGTH_SHORT).show();
+//				else
+//					Toast.makeText(LoginActivity.this,
+//							"아이디가 없거나, 암호와 일치하지 않습니다.", Toast.LENGTH_SHORT)
+//							.show();
 
 			}else if (view.getId() == R.id.main_button_join){
 				Intent intent = new Intent(LoginActivity.this, MemberJoinActivity.class);
