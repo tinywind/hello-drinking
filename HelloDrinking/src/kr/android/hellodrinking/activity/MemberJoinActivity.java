@@ -1,7 +1,6 @@
 package kr.android.hellodrinking.activity;
 
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.transmission.Request;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;

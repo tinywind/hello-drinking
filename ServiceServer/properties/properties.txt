@@ -1,0 +1,9 @@
+[Default DB Setting]
+ip=127.0.0.1
+port=1521
+user=Project
+password=kitri
+[Default JDBC Setting]
+driver=oracle:thin
+id=xe
+class=oracle.jdbc.driver.OracleDriver

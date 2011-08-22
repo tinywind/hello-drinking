@@ -1,7 +1,6 @@
 package kr.android.hellodrinking.activity;
 
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.transmission.Request;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,12 +33,11 @@ public class LoginActivity extends Activity {
 	OnClickListener onClickListener = new OnClickListener() {
 		public void onClick(View view) {
 			if (view.getId() == R.id.main_login_button) {
-				Request fc = new Request();
-				Intent intent = new Intent(LoginActivity.this, PostsActivity.class);
-
+//				Request fc = new Request();
+//				Intent intent = new Intent(LoginActivity.this, PostsActivity.class);
 //				if (fc.logIn(mEditId.getText().toString(), mEditPw.getText()
 //						.toString()))
-					startActivity(intent);
+//					startActivity(intent);
 //				else
 //					Toast.makeText(LoginActivity.this,
 //							"아이디가 없거나, 암호와 일치하지 않습니다.", Toast.LENGTH_SHORT)

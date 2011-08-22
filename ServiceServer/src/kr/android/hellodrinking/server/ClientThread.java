@@ -20,30 +20,43 @@ public class ClientThread extends Thread {
 
 	public ClientThread(Socket socket) throws IOException, ClassNotFoundException, SQLException {
 		mSocket = socket;
-		mReader = socket.getInputStream();
-		mWriter = socket.getOutputStream();
-		mWriter.flush();	
 		mConnection = DefaultConnect.getInstance().getConnection();
+		mReader = mSocket.getInputStream();
+		mWriter = mSocket.getOutputStream();
+		mWriter.flush();
 	}
 
 	@Override
 	public void run() {
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
 		try {
-			ObjectInputStream ois = new ObjectInputStream(mReader);
-			ObjectOutputStream oos = new ObjectOutputStream(mWriter);
-			
-			while(true){
-				BeanController controller = (BeanController) ois.readObject();
-				(new RequestProcess(controller, mReader, mWriter)).run();
-			}
+			ois = new ObjectInputStream(mSocket.getInputStream());
+			oos = new ObjectOutputStream(mSocket.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		try {
+			while (true) {
+				BeanController controller = (BeanController) ois.readObject();
+				// (new RequestProcess(controller, mReader, mWriter)).run();
+				
+				
+				//TEST
+				oos.writeObject(controller);
+				oos.flush();
+
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}		
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
 	}
-	
-	public void close(){
+
+	public void close() {
 		try {
 			mSocket.close();
 			mReader.close();

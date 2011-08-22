@@ -12,7 +12,6 @@ import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.StringTokenizer;
 
 import kr.android.hellodrinking.server.HelloDrinkingServer;
 
@@ -50,139 +49,119 @@ public class DefaultConnect implements Connectable {
 		}
 
 		Class.forName(jdbc_class);
-		return DriverManager.getConnection("jdbc:"+jdbc_driver+":@"+db_ip+":"+db_port+":"+jdbc_id, db_user, db_password);
+
+		//DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","Project_Test","1122");
+		
+		return DriverManager.getConnection("jdbc:" + jdbc_driver + ":@" + db_ip + ":" + db_port + ":" + jdbc_id, db_user, db_password);
+		
 	}
 
 	private void readSettingFile(File file) throws FileNotFoundException, IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		String properties = "";
-		String token;
-		while ((token = reader.readLine()) != null) {
-			properties += token;
-		}
-
-		StringTokenizer tokenizer = new StringTokenizer(properties);
-		while (tokenizer.hasMoreTokens()) {
-			token = tokenizer.nextToken();
+		String token = reader.readLine();
+		while (token != null) {
 			if (token.startsWith("[") && token.endsWith("]")) {
 				if (token.equals("[Default DB Setting]")) {
-					readDBSetting(tokenizer);
-				}
-			} else if (token.startsWith("[") && token.endsWith("]")) {
-				if (token.equals("[Default JDBC Setting]")) {
-					readJDBCSetting(tokenizer);
+					token = readDBSetting(reader);
+				} else if (token.equals("[Default JDBC Setting]")) {
+					token = readJDBCSetting(reader);
 				}
 			}
 		}
 	}
 
-	private void readJDBCSetting(StringTokenizer tokenizer) throws IOException {
+	private String readJDBCSetting(BufferedReader reader) throws IOException {
 		String token;
 		StreamTokenizer elementPaser;
-		while (tokenizer.hasMoreTokens() && (token = tokenizer.nextToken()).startsWith("[")) {
-			elementPaser = new StreamTokenizer(new StringReader(token));
-			elementPaser.commentChar(';');
-			elementPaser.ordinaryChars('1', '9');
-			elementPaser.ordinaryChar('0');
+		while ((token = reader.readLine()) != null && !token.startsWith("[")) {
+			elementPaser = createTokenizer(token);
 
 			while (elementPaser.nextToken() != StreamTokenizer.TT_EOF) {
-				if (elementPaser.sval.equals("driver")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						jdbc_driver = elementPaser.sval;
-					}
+				if (elementPaser.sval != null && elementPaser.sval.equals("driver")) {
+					jdbc_driver = getValue(elementPaser);
 					continue;
-				} else if (elementPaser.sval.equals("id")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						jdbc_id = elementPaser.sval;
-					}
+				} else if (elementPaser.sval != null && elementPaser.sval.equals("id")) {
+					jdbc_id = getValue(elementPaser);
 					continue;
-				} else if (elementPaser.sval.equals("class")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						jdbc_class = elementPaser.sval;
-					}
+				} else if (elementPaser.sval != null && elementPaser.sval.equals("class")) {
+					jdbc_class = getValue(elementPaser);
 					continue;
 				}
 			}
 		}
+		return token;
 	}
 
-	private void readDBSetting(StringTokenizer tokenizer) throws IOException {
+	private String readDBSetting(BufferedReader reader) throws IOException {
 		String token;
 		StreamTokenizer elementPaser;
-		while (tokenizer.hasMoreTokens() && (token = tokenizer.nextToken()).startsWith("[")) {
-			elementPaser = new StreamTokenizer(new StringReader(token));
-			elementPaser.commentChar(';');
-			elementPaser.ordinaryChars('1', '9');
-			elementPaser.ordinaryChar('0');
+		while ((token = reader.readLine()) != null && !token.startsWith("[")) {
+			elementPaser = createTokenizer(token);
 
 			while (elementPaser.nextToken() != StreamTokenizer.TT_EOF) {
-				if (elementPaser.sval.equals("ip")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						db_ip = elementPaser.sval;
-					}
+				if (elementPaser.sval != null && elementPaser.sval.equals("ip")) {
+					db_ip = getValue(elementPaser);
 					continue;
-				} else if (elementPaser.sval.equals("port")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						db_port = Integer.parseInt(elementPaser.sval);
-					}
+				} else if (elementPaser.sval != null && elementPaser.sval.equals("port")) {
+					String value = getValue(elementPaser);
+					if (value != null)
+						db_port = Integer.parseInt(value);
 					continue;
-				} else if (elementPaser.sval.equals("user")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						db_user = elementPaser.sval;
-					}
+				} else if (elementPaser.sval != null && elementPaser.sval.equals("user")) {
+					db_user = getValue(elementPaser);
 					continue;
-				} else if (elementPaser.sval.equals("password")) {
-					if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-						break;
-					if (elementPaser.sval.equals("=")) {
-						if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-							break;
-						db_password = elementPaser.sval;
-					}
+				} else if (elementPaser.sval != null && elementPaser.sval.equals("password")) {
+					db_password = getValue(elementPaser);
 					continue;
 				}
 			}
 		}
+		return token;
+	}
+
+	private StreamTokenizer createTokenizer(String token) {
+		StreamTokenizer elementPaser;
+		elementPaser = new StreamTokenizer(new StringReader(token));
+		elementPaser.commentChar(';');
+		elementPaser.ordinaryChar('=');
+
+		elementPaser.ordinaryChars('1', '9');
+		elementPaser.ordinaryChar('0');
+
+		elementPaser.wordChars('1', '9');
+		elementPaser.wordChars('0', '0');
+		elementPaser.wordChars(':', ':');
+		return elementPaser;
+	}
+
+	private String getValue(StreamTokenizer elementPaser) throws IOException {
+		if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
+			return null;
+		if (elementPaser.ttype == '=') {
+			if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
+				return null;
+			if (elementPaser.ttype == StreamTokenizer.TT_WORD)
+				return elementPaser.sval;
+		}
+		return null;
 	}
 
 	private void createDefaultFile(File file) throws IOException {
+		if (!file.getParentFile().exists())
+			file.getParentFile().mkdir();
 		file.createNewFile();
 		FileWriter fos = new FileWriter(file);
 		fos.write("[Default DB Setting]\n");
-		fos.write("ip=" + HelloDrinkingServer.DEFAULT_DB_IP);
-		fos.write("port=" + HelloDrinkingServer.DEFAULT_DB_PORT);
-		fos.write("user=" + HelloDrinkingServer.DEFAULT_DB_USER);
-		fos.write("password=" + HelloDrinkingServer.DEFAULT_DB_PASSWORD);
+		fos.write("ip=" + HelloDrinkingServer.DEFAULT_DB_IP + "\n");
+		fos.write("port=" + HelloDrinkingServer.DEFAULT_DB_PORT + "\n");
+		fos.write("user=" + HelloDrinkingServer.DEFAULT_DB_USER + "\n");
+		fos.write("password=" + HelloDrinkingServer.DEFAULT_DB_PASSWORD + "\n");
 		fos.flush();
 
 		fos.write("[Default JDBC Setting]\n");
-		fos.write("driver=" + HelloDrinkingServer.DEFAULT_JDBC_DRIVER);
-		fos.write("id=" + HelloDrinkingServer.DEFAULT_JDBC_ID);
-		fos.write("class=" + HelloDrinkingServer.DEFAULT_JDBC_CLASS);
+		fos.write("driver=" + HelloDrinkingServer.DEFAULT_JDBC_DRIVER + "\n");
+		fos.write("id=" + HelloDrinkingServer.DEFAULT_JDBC_ID + "\n");
+		fos.write("class=" + HelloDrinkingServer.DEFAULT_JDBC_CLASS + "\n");
 		fos.flush();
 
 		fos.close();

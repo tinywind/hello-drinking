@@ -6,8 +6,8 @@ import java.net.Socket;
 import java.sql.SQLException;
 
 public class HelloDrinkingServer {
-	public static final String DEFAULT_IMAGEFILE_DIRECTORY = "C:/HelloDrinking/Image/";
-	public static final String PROPERTIES_FILE_PATH = "../../properties/properties.txt";
+	public static final String DEFAULT_IMAGEFILE_DIRECTORY = "Image";
+	public static final String PROPERTIES_FILE_PATH = "properties/properties.txt";
 	public static final int DEFAULT_DB_PORT = 1521;
 	public static final String DEFAULT_DB_IP = "127.0.0.1";
 	public static final String DEFAULT_DB_USER = "Project";
@@ -16,7 +16,7 @@ public class HelloDrinkingServer {
 	public static final String DEFAULT_JDBC_ID = "xe";
 	public static final String DEFAULT_JDBC_CLASS = "oracle.jdbc.driver.OracleDriver";
 	
-	private static final int PORT = 5557;
+	private static final int PORT = 18080;
 	private static ServerSocket server;
 
 	public HelloDrinkingServer() throws Exception {

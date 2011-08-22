@@ -3,30 +3,31 @@ package kr.android.hellodrinking.transmission;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.StringTokenizer;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.transmission.dto.BeanController;
 import kr.android.hellodrinking.transmission.dto.UserBean;
 
 public class Request implements Requestable {
-	public static final String PROPERTIES_FILE_PATH = "../../properties/properties.txt";
+	public static final String PROPERTIES_FILE_PATH = "properties/properties.txt";
 
 	private Socket mSocket = null;
 	private InputStream mReader = null;
 	private OutputStream mWriter = null;
 
-	private String server = "";
+	private String serverip = "";
 	private int port = 0;
 
 	private boolean isUsable = false;
@@ -35,64 +36,13 @@ public class Request implements Requestable {
 		try {
 			File file = new File(PROPERTIES_FILE_PATH);
 			if (!file.exists()) {
-				file.createNewFile();
-				FileWriter fos = new FileWriter(file);
-				fos.write("[Default Server Setting]\n");
-				fos.write("ip=" + HelloDrinkingApplication.DEFAULT_SERVER);
-				fos.write("port=" + HelloDrinkingApplication.DEFAULT_PORT);
-				fos.flush();
-				fos.close();
-				server = HelloDrinkingApplication.DEFAULT_SERVER;
-				port = HelloDrinkingApplication.DEFAULT_PORT;
+				createPropertiesFile(file);
 			} else {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				String properties = "";
-				String token;
-				while ((token = reader.readLine()) != null) {
-					properties += token;
-				}
-
-				StringTokenizer tokenizer = new StringTokenizer(properties);
-				StreamTokenizer elementPaser;
-				while (tokenizer.hasMoreTokens()) {
-					token = tokenizer.nextToken();
-					if (token.startsWith("[") && token.endsWith("]")) {
-						if (token.equals("[Default Server Setting]")) {
-							while (tokenizer.hasMoreTokens() && (token = tokenizer.nextToken()).startsWith("[")) {
-								elementPaser = new StreamTokenizer(new StringReader(token));
-								elementPaser.commentChar(';');
-								elementPaser.ordinaryChars('1', '9');
-								elementPaser.ordinaryChar('0');
-
-								while (elementPaser.nextToken() != StreamTokenizer.TT_EOF) {
-									if (elementPaser.sval.equals("ip")) {
-										if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-											break;
-										if (elementPaser.sval.equals("=")) {
-											if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-												break;
-											server = elementPaser.sval;
-										}
-										continue;
-									} else if (elementPaser.sval.equals("port")) {
-										if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-											break;
-										if (elementPaser.sval.equals("=")) {
-											if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
-												break;
-											port = Integer.parseInt(elementPaser.sval);
-										}
-										continue;
-									}
-								}
-							}
-						}
-					}
-				}
+				readSettingFile(file);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			server = HelloDrinkingApplication.DEFAULT_SERVER;
+			serverip = HelloDrinkingApplication.DEFAULT_SERVER;
 			port = HelloDrinkingApplication.DEFAULT_PORT;
 		}
 
@@ -105,8 +55,82 @@ public class Request implements Requestable {
 		}
 	}
 
+	private void readSettingFile(File file) throws FileNotFoundException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		String token = reader.readLine();
+		while (token != null) {
+			if (token.startsWith("[") && token.endsWith("]")) {
+				if (token.equals("[Default Server Setting]")) {
+					token = readServerSetting(reader);
+				}
+			}
+		}
+	}
+
+	private String readServerSetting(BufferedReader reader) throws IOException {
+		String token;
+		StreamTokenizer elementPaser;
+		while ((token = reader.readLine()) != null && !token.startsWith("[")) {
+			elementPaser = createTokenizer(token);
+
+			while (elementPaser.nextToken() != StreamTokenizer.TT_EOF) {
+				if (elementPaser.sval != null && elementPaser.sval.equals("ip")) {
+					serverip = getValue(elementPaser);
+					continue;
+				} else if (elementPaser.sval != null && elementPaser.sval.equals("port")) {
+					String value = getValue(elementPaser);
+					if(value != null)
+						port = Integer.parseInt(value);
+					continue;
+				}
+			}
+		}
+		return token;
+	}
+
+	private StreamTokenizer createTokenizer(String token) {
+		StreamTokenizer elementPaser;
+		elementPaser = new StreamTokenizer(new StringReader(token));
+		elementPaser.commentChar(';');
+		elementPaser.ordinaryChar('=');
+
+		elementPaser.ordinaryChars('1', '9');
+		elementPaser.ordinaryChar('0');
+
+		elementPaser.wordChars('1', '9');
+		elementPaser.wordChars('0', '0');
+		elementPaser.wordChars(':', ':');
+		return elementPaser;
+	}
+
+	private String getValue(StreamTokenizer elementPaser) throws IOException {
+		if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
+			return null;
+		if (elementPaser.ttype == '=') {
+			if (elementPaser.nextToken() == StreamTokenizer.TT_EOF)
+				return null;
+			if (elementPaser.ttype == StreamTokenizer.TT_WORD)
+				return elementPaser.sval;
+		}
+		return null;
+	}
+
+	private void createPropertiesFile(File file) throws IOException {
+		if (!file.getParentFile().exists())
+			file.getParentFile().mkdir();
+		file.createNewFile();
+		FileWriter fos = new FileWriter(file);
+		fos.write("[Default Server Setting]\n");
+		fos.write("ip=" + HelloDrinkingApplication.DEFAULT_SERVER + "\n");
+		fos.write("port=" + HelloDrinkingApplication.DEFAULT_PORT + "\n");
+		fos.flush();
+		fos.close();
+		serverip = HelloDrinkingApplication.DEFAULT_SERVER;
+		port = HelloDrinkingApplication.DEFAULT_PORT;
+	}
+
 	public Request(String server, int port) {
-		this.server = server;
+		this.serverip = server;
 		this.port = port;
 
 		try {
@@ -119,9 +143,10 @@ public class Request implements Requestable {
 	}
 
 	private void createSocekt() throws UnknownHostException, IOException {
-		mSocket = new Socket(server, port);
+		mSocket = new Socket(serverip, port);
 		mReader = mSocket.getInputStream();
 		mWriter = mSocket.getOutputStream();
+		mWriter.flush();
 	}
 
 	public void close() {
@@ -142,12 +167,19 @@ public class Request implements Requestable {
 
 	@Override
 	public void register(UserBean user) {
-		BeanController dto = new BeanController(BeanController.Request.Register, user);
+		BeanController controller = new BeanController(BeanController.Request.Register, user);
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(mWriter);
+			oos.writeObject(controller);
 			oos.flush();
-			oos.writeObject(dto);
+			
+			//TEST
+			ObjectInputStream ois = new ObjectInputStream(mReader);
+			BeanController object = (BeanController) ois.readObject();
+			System.out.println(object.toString());
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
