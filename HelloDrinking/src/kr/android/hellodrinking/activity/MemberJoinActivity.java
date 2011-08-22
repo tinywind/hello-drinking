@@ -1,7 +1,7 @@
 package kr.android.hellodrinking.activity;
 
 import kr.android.hellodrinking.R;
-import kr.android.transmission.Functions_Client;
+import kr.android.hellodrinking.transmission.Request;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -73,14 +73,14 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 			//////////예외 확인
 			//////////Bitmap 객체 -> 파일 저장
 			
-			Functions_Client fc = new Functions_Client();
-			fc.register(mEditId.getText().toString(), 
-					mEditName.getText().toString(), 
-					mEditPw.getText().toString(), 
-					mEditAge.getText().toString(), 
-					mEditSex.getText().toString(), 
-					mEditPhone.getText().toString(), 
-					mEditJob.getText().toString());
+//			Request fc = new Request();
+//			fc.register(mEditId.getText().toString(), 
+//					mEditName.getText().toString(), 
+//					mEditPw.getText().toString(), 
+//					mEditAge.getText().toString(), 
+//					mEditSex.getText().toString(), 
+//					mEditPhone.getText().toString(), 
+//					mEditJob.getText().toString());
 		}
 	}
 }

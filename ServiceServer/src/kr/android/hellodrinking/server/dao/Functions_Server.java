@@ -1,4 +1,4 @@
-package com.server.dao;
+package kr.android.hellodrinking.server.dao;
 
 
 import java.sql.Connection;
@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import kr.android.transmission.DTO;
+import kr.android.hellodrinking.transmission.DTO;
 
 public class Functions_Server {
 	//ȸ����

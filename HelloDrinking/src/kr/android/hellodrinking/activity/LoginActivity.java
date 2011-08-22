@@ -1,7 +1,7 @@
 package kr.android.hellodrinking.activity;
 
 import kr.android.hellodrinking.R;
-import kr.android.transmission.Functions_Client;
+import kr.android.hellodrinking.transmission.Request;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +34,7 @@ public class LoginActivity extends Activity {
 	OnClickListener onClickListener = new OnClickListener() {
 		public void onClick(View view) {
 			if (view.getId() == R.id.main_login_button) {
-				Functions_Client fc = new Functions_Client();
+				Request fc = new Request();
 				Intent intent = new Intent(LoginActivity.this, PostsActivity.class);
 
 //				if (fc.logIn(mEditId.getText().toString(), mEditPw.getText()

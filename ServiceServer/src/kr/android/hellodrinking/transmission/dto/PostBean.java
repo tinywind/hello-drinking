@@ -1,8 +1,14 @@
-package kr.android.transmission;
+package kr.android.hellodrinking.transmission.dto;
+
+import java.io.Serializable;
 
 import com.nhn.android.maps.maplib.NGeoPoint;
 
-public class PostInfo {
+public class PostBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6460998503969733840L;
 	private String id;
 	private String name;
 	private String Image;
@@ -12,7 +18,7 @@ public class PostInfo {
 	private String matching;
 	private NGeoPoint point;
 
-	public PostInfo(String id, String filepath, double x, double y) {
+	public PostBean(String id, String filepath, double x, double y) {
 		this.id = id;
 		this.Image = filepath;
 		setPoint(new NGeoPoint(x, y));

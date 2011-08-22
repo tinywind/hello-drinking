@@ -1,4 +1,4 @@
-package kr.android.transmission;
+package kr.android.hellodrinking.transmission;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.server.dao;
+package kr.android.hellodrinking.server.dao;
 
 import java.util.ArrayList;
 
