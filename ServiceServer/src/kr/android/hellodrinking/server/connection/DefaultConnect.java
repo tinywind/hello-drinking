@@ -49,11 +49,7 @@ public class DefaultConnect implements Connectable {
 		}
 
 		Class.forName(jdbc_class);
-
-		//DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","Project_Test","1122");
-		
 		return DriverManager.getConnection("jdbc:" + jdbc_driver + ":@" + db_ip + ":" + db_port + ":" + jdbc_id, db_user, db_password);
-		
 	}
 
 	private void readSettingFile(File file) throws FileNotFoundException, IOException {

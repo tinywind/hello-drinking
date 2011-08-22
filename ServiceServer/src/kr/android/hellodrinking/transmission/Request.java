@@ -79,7 +79,7 @@ public class Request implements Requestable {
 					continue;
 				} else if (elementPaser.sval != null && elementPaser.sval.equals("port")) {
 					String value = getValue(elementPaser);
-					if(value != null)
+					if (value != null)
 						port = Integer.parseInt(value);
 					continue;
 				}
@@ -171,19 +171,17 @@ public class Request implements Requestable {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(mWriter);
 			oos.writeObject(controller);
-			oos.flush();
-			
-			//TEST
 			ObjectInputStream ois = new ObjectInputStream(mReader);
+			oos.flush();
+
+			// TEST : receive
 			BeanController object = (BeanController) ois.readObject();
 			System.out.println(object.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
-
-		// 다시 받는 과정이 필요
+		} 
 	}
 
 	@Override

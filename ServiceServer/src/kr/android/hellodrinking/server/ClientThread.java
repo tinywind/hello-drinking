@@ -23,7 +23,6 @@ public class ClientThread extends Thread {
 		mConnection = DefaultConnect.getInstance().getConnection();
 		mReader = mSocket.getInputStream();
 		mWriter = mSocket.getOutputStream();
-		mWriter.flush();
 	}
 
 	@Override
@@ -31,27 +30,23 @@ public class ClientThread extends Thread {
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(mSocket.getInputStream());
 			oos = new ObjectOutputStream(mSocket.getOutputStream());
+			oos.flush();
+			ois = new ObjectInputStream(mSocket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
 			while (true) {
 				BeanController controller = (BeanController) ois.readObject();
-				// (new RequestProcess(controller, mReader, mWriter)).run();
-				
-				
-				//TEST
-				oos.writeObject(controller);
-				oos.flush();
-
+				(new RequestProcess(controller, mConnection, ois, oos)).processing();
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			System.out.println(mSocket.getInetAddress() + " : " + e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(mSocket.getInetAddress() + " : " + e.getMessage());
 		} finally {
+			System.err.println("socket close : " + mSocket.getInetAddress());
 			close();
 		}
 	}

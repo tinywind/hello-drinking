@@ -4,54 +4,88 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
 
 import kr.android.hellodrinking.transmission.dto.BeanController;
 
-public class RequestProcess extends Thread {
-	public static final String DEFAULT_IMAGEFILE_DIRECTORY = "C:/HelloDrinking/Image/";
+public class RequestProcess {
 	private BeanController mController;
-	private InputStream mReader;
-	private OutputStream mWriter;
+	private ObjectInputStream mReader;
+	private ObjectOutputStream mWriter;
+	private Connection mConnection;
 
-	public RequestProcess(BeanController controller, InputStream reader, OutputStream writer) throws IOException {
+	public RequestProcess(BeanController controller, Connection connection, ObjectInputStream reader, ObjectOutputStream writer) throws IOException {
 		mController = controller;
+		mConnection = connection;
 		mReader = reader;
 		mWriter = writer;
 	}
 
-	@Override
-	public void run() {
+	public void processing() {
 		if (mController.request == BeanController.Request.Register) {
 			register();
 		} else if (mController.request == BeanController.Request.Login) {
 			login();
 		}
+
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(mWriter);
+			oos.writeObject(mController);
+			oos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void register() {
+	private boolean register() {
 		mController.user.setImageFilePath(writerImageFileAndGetImageFilePath());
+		// DB에 저장.
+
+		// 결과 되돌리기
+		// TEST
+		try {
+			mWriter.writeObject(mController);
+			mWriter.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	private String writerImageFileAndGetImageFilePath() {
+		File dir = new File(HelloDrinkingServer.DEFAULT_IMAGEFILE_DIRECTORY);
+		if (!dir.exists() || !dir.isDirectory())
+			dir.mkdir();
+
 		File file = new File(mController.user.getImageFilePath());
-		File imagefile = new File(HelloDrinkingServer.DEFAULT_IMAGEFILE_DIRECTORY + file.getName());
+		File imagefile = new File(dir, file.getName());
 		FileOutputStream fileWriter = null;
 		for (int temp = 1;; temp++) {
-			if (imagefile.exists())
-				imagefile = new File(HelloDrinkingServer.DEFAULT_IMAGEFILE_DIRECTORY + file.getName() + "[" + temp + "]");
-			else
+			if (imagefile.exists()) {
+				String filename = file.getName();
+				String prefix = "";
+				String postfix = "";
+				
+				int indexOfDot = filename.lastIndexOf('.');
+				if(indexOfDot < 0){
+					prefix = filename;
+				}
+				
+				imagefile = new File(dir, file.getName() + "[" + temp + "]");
+			} else{
 				break;
+			}
 		}
 
 		try {
 			fileWriter = new FileOutputStream(imagefile);
-			int length = 0;
-			byte[] buf = new byte[512];
-			while ((length = mReader.read(buf)) != -1) {
-				fileWriter.write(buf, 0, length);
-				fileWriter.flush();
-			}
+			fileWriter.write(mController.user.getBuffer());
+			fileWriter.flush();
+
 			return imagefile.getAbsolutePath();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -59,12 +93,11 @@ public class RequestProcess extends Thread {
 				imagefile.delete();
 			return null;
 		} finally {
-			if (fileWriter != null)
-				try {
-					fileWriter.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			try {
+				fileWriter.close();
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+			}
 		}
 	}
 

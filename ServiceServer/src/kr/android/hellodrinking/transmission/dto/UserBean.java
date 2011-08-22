@@ -1,5 +1,8 @@
 package kr.android.hellodrinking.transmission.dto;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class UserBean implements Serializable {
@@ -16,6 +19,7 @@ public class UserBean implements Serializable {
 	private String phone = null;
 	private String job = null;
 	private String imageFilePath = null;
+	private byte[] buffer = null;
 
 	public UserBean() {
 		super();
@@ -37,6 +41,7 @@ public class UserBean implements Serializable {
 		this.phone = phone;
 		this.job = job;
 		this.imageFilePath = imageFilePath;
+		convertToBytes();
 	}
 
 	public String getId() {
@@ -101,5 +106,27 @@ public class UserBean implements Serializable {
 
 	public void setImageFilePath(String imageFilePath) {
 		this.imageFilePath = imageFilePath;
+		convertToBytes();
+	}
+
+	private void convertToBytes() {
+		try {
+			File file = new File(imageFilePath);
+			byte[] buf = new byte[(int) file.length()];
+			FileInputStream reader = new FileInputStream(file);
+			reader.read(buf);
+			this.buffer = buf;
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.buffer = null;
+		}
+	}
+
+	public void setBuffer(byte[] buffer) {
+		this.buffer = buffer;
+	}
+
+	public byte[] getBuffer() {
+		return buffer;
 	}
 }
