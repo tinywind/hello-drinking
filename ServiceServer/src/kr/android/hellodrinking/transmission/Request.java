@@ -17,7 +17,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
-import kr.android.hellodrinking.transmission.dto.BeanController;
+import kr.android.hellodrinking.transmission.dto.RequestBeanPackege;
+import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
 
 public class Request implements Requestable {
@@ -167,31 +168,45 @@ public class Request implements Requestable {
 
 	@Override
 	public void register(UserBean user) {
-		BeanController controller = new BeanController(BeanController.Request.Register, user);
+		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.Register, user);
+		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
+
+		TEST(responce);
+	}
+
+	private ResponceBeanPackege sendRequestAndGetResponce(RequestBeanPackege controller) {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(mWriter);
 			oos.writeObject(controller);
 			ObjectInputStream ois = new ObjectInputStream(mReader);
 			oos.flush();
 
-			// TEST : receive
-			BeanController object = (BeanController) ois.readObject();
-			System.out.println(object.toString());
+			return (ResponceBeanPackege) ois.readObject();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		} 
+		}
+		return null;
 	}
 
 	@Override
 	public void login(String id, String password) {
-
+		login(new UserBean(id, password));
 	}
 
 	@Override
-	public void login(UserBean bean) {
+	public void login(UserBean user) {
+		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.Login, user);
+		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
 
+		TEST(responce);
+	}
+
+	private void TEST(ResponceBeanPackege responce) {
+		System.out.println("is Successed? : " + responce.isSuccessed());
+		if (!responce.isSuccessed())
+			System.out.println("Reason : " + responce.getException().getMessage());
 	}
 
 	public boolean isUsable() {

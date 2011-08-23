@@ -9,8 +9,8 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import kr.android.hellodrinking.server.connection.DefaultConnect;
-import kr.android.hellodrinking.transmission.dto.BeanController;
+import kr.android.hellodrinking.server.db.connection.DefaultConnect;
+import kr.android.hellodrinking.transmission.dto.RequestBeanPackege;
 
 public class ClientThread extends Thread {
 	private Socket mSocket = null;
@@ -38,7 +38,7 @@ public class ClientThread extends Thread {
 		}
 		try {
 			while (true) {
-				BeanController controller = (BeanController) ois.readObject();
+				RequestBeanPackege controller = (RequestBeanPackege) ois.readObject();
 				(new RequestProcess(controller, mConnection, ois, oos)).processing();
 			}
 		} catch (ClassNotFoundException e) {

@@ -3,7 +3,7 @@ package kr.android.hellodrinking.transmission.dto;
 
 import java.io.Serializable;
 
-public class BeanController implements Serializable {
+public class RequestBeanPackege implements Serializable {
 	/**
 	 * 
 	 */
@@ -14,16 +14,16 @@ public class BeanController implements Serializable {
 	public UserBean user;
 	public PostBean post;
 	
-	public BeanController(Request request){
+	public RequestBeanPackege(Request request){
 		this.request = request;
 	}
 	
-	public BeanController(Request request, UserBean user){
+	public RequestBeanPackege(Request request, UserBean user){
 		this.request = request;
 		this.user = user;
 	}
 	
-	public BeanController(Request request, PostBean post){
+	public RequestBeanPackege(Request request, PostBean post){
 		this.request = request;
 		this.post = post;
 	}	

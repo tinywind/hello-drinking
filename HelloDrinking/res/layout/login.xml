@@ -42,7 +42,7 @@
 				<EditText
 					android:layout_width="150dip"
 					android:layout_height="40dip"
-					android:id="@+id/main_user_id">
+					android:id="@+id/login_user_id">
 					<requestFocus></requestFocus>
 				</EditText>
 			</LinearLayout>
@@ -60,7 +60,7 @@
 				<EditText
 					android:layout_width="150dip"
 					android:layout_height="40dip"
-					android:id="@+id/main_user_password"></EditText>
+					android:id="@+id/login_user_password"></EditText>
 			</LinearLayout>
 		</LinearLayout>
 		<LinearLayout
@@ -74,7 +74,7 @@
 				android:layout_height="wrap_content"
 				android:src="@drawable/main_login_button" />
 			<Button
-				android:id="@+id/main_button_join" 
+				android:id="@+id/login_button_join"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="JOIN" />

@@ -1,4 +1,4 @@
-package kr.android.hellodrinking.server.connection;
+package kr.android.hellodrinking.server.db.connection;
 
 import java.io.BufferedReader;
 import java.io.File;
