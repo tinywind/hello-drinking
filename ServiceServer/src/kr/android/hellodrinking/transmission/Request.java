@@ -27,6 +27,8 @@ public class Request implements Requestable {
 	private Socket mSocket = null;
 	private InputStream mReader = null;
 	private OutputStream mWriter = null;
+	private ObjectInputStream mObjectReader = null;
+	private ObjectOutputStream mObjectWriter = null;
 
 	private String serverip = "";
 	private int port = 0;
@@ -147,6 +149,8 @@ public class Request implements Requestable {
 		mSocket = new Socket(serverip, port);
 		mReader = mSocket.getInputStream();
 		mWriter = mSocket.getOutputStream();
+		mObjectReader = new ObjectInputStream(mReader);
+		mObjectWriter = new ObjectOutputStream(mWriter);
 		mWriter.flush();
 	}
 
@@ -161,27 +165,27 @@ public class Request implements Requestable {
 	}
 
 	@Override
-	public void register(String id, String name, String password, String age, String sex, String phone, String job, String imageFilePath) {
+	public ResponceBeanPackege register(String id, String name, String password, String age, String sex, String phone, String job,
+			String imageFilePath) {
 		UserBean user = new UserBean(id, password, name, age, sex, phone, job, imageFilePath);
-		register(user);
+		return register(user);
 	}
 
 	@Override
-	public void register(UserBean user) {
+	public ResponceBeanPackege register(UserBean user) {
 		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.Register, user);
 		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
 
 		TEST(responce);
+		return responce;
 	}
 
 	private ResponceBeanPackege sendRequestAndGetResponce(RequestBeanPackege controller) {
 		try {
-			ObjectOutputStream oos = new ObjectOutputStream(mWriter);
-			oos.writeObject(controller);
-			ObjectInputStream ois = new ObjectInputStream(mReader);
-			oos.flush();
+			mObjectWriter.writeObject(controller);
+			mObjectWriter.flush();
 
-			return (ResponceBeanPackege) ois.readObject();
+			return (ResponceBeanPackege) mObjectReader.readObject();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -191,16 +195,17 @@ public class Request implements Requestable {
 	}
 
 	@Override
-	public void login(String id, String password) {
-		login(new UserBean(id, password));
+	public ResponceBeanPackege login(String id, String password) {
+		return login(new UserBean(id, password));
 	}
 
 	@Override
-	public void login(UserBean user) {
+	public ResponceBeanPackege login(UserBean user) {
 		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.Login, user);
 		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
 
 		TEST(responce);
+		return responce;
 	}
 
 	private void TEST(ResponceBeanPackege responce) {

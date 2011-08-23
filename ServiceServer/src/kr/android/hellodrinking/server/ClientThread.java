@@ -16,30 +16,26 @@ public class ClientThread extends Thread {
 	private Socket mSocket = null;
 	private InputStream mReader = null;
 	private OutputStream mWriter = null;
+	private ObjectInputStream mObjectReader = null;
+	private ObjectOutputStream mObjectWriter = null;
 	private Connection mConnection = null;
-
+	
 	public ClientThread(Socket socket) throws IOException, ClassNotFoundException, SQLException {
 		mSocket = socket;
 		mConnection = DefaultConnect.getInstance().getConnection();
 		mReader = mSocket.getInputStream();
 		mWriter = mSocket.getOutputStream();
+
+		mObjectWriter = new ObjectOutputStream(mWriter);
+		mObjectReader = new ObjectInputStream(mReader);
 	}
 
 	@Override
 	public void run() {
-		ObjectOutputStream oos = null;
-		ObjectInputStream ois = null;
-		try {
-			oos = new ObjectOutputStream(mSocket.getOutputStream());
-			oos.flush();
-			ois = new ObjectInputStream(mSocket.getInputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		try {
 			while (true) {
-				RequestBeanPackege controller = (RequestBeanPackege) ois.readObject();
-				(new RequestProcess(controller, mConnection, ois, oos)).processing();
+				RequestBeanPackege controller = (RequestBeanPackege) mObjectReader.readObject();
+				(new RequestProcess(controller, mConnection, mObjectReader, mObjectWriter)).processing();
 			}
 		} catch (ClassNotFoundException e) {
 			System.out.println(mSocket.getInetAddress() + " : " + e.getMessage());

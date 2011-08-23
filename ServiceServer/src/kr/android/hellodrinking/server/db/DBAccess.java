@@ -93,7 +93,8 @@ public class DBAccess {
 			result = pstmt.executeQuery();
 
 			if (result.next()) {
-				return new Message(result.getString("password"));
+				String pw = result.getString("password");
+				return new Message(pw);
 			} else {
 				return new LoginException("Not Exists ID : " + id, LoginException.State.NotFoundId);
 			}

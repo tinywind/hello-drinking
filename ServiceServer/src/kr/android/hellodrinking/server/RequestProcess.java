@@ -112,11 +112,7 @@ public class RequestProcess {
 				responce = new ResponceBeanPackege(true);
 			} else {
 				isSuccessed = false;
-				try {
-					responce = new ResponceBeanPackege(new LoginException("ID와 Password가 일치하지 않습니다.", LoginException.State.NotMatch));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				responce = new ResponceBeanPackege(new LoginException("ID와 Password가 일치하지 않습니다.", LoginException.State.NotMatch));
 			}
 		} else {
 			isSuccessed = false;

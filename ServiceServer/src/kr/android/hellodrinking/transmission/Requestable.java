@@ -1,13 +1,14 @@
 package kr.android.hellodrinking.transmission;
 
+import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
 import kr.android.hellodrinking.transmission.exception.*;
 
 public interface Requestable {
-	public void register(String id, String name, String password, String age, String sex, String phone, String job, String ImageFilePath);
-	public void register(UserBean bean);
-	public void login(String id, String password) ;
-	public void login(UserBean bean);
+	public ResponceBeanPackege register(String id, String name, String password, String age, String sex, String phone, String job, String ImageFilePath);
+	public ResponceBeanPackege register(UserBean bean);
+	public ResponceBeanPackege login(String id, String password) ;
+	public ResponceBeanPackege login(UserBean bean);
 //	public boolean post(String id, String comment, String ImageFilePath);
 //	public boolean modify_Post(String id, String postNum, String comment);
 //	public boolean delete_Post(String id, String postNum);
