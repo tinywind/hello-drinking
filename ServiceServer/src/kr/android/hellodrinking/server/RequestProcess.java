@@ -16,29 +16,46 @@ import kr.android.hellodrinking.transmission.exception.LoginException;
 import kr.android.hellodrinking.transmission.exception.Message;
 
 public class RequestProcess {
-	private RequestBeanPackege mController;
+	private RequestBeanPackege mRequst;
 	private ObjectInputStream mReader;
 	private ObjectOutputStream mWriter;
 	private DBAccess mDBAccess;
 
 	public RequestProcess(RequestBeanPackege controller, Connection connection, ObjectInputStream reader, ObjectOutputStream writer)
 			throws IOException {
-		mController = controller;
+		mRequst = controller;
 		mDBAccess = new DBAccess(connection);
 		mReader = reader;
 		mWriter = writer;
 	}
 
 	public void processing() {
-		if (mController.request == RequestBeanPackege.Request.Register) {
+		if (mRequst.request == RequestBeanPackege.Request.Register) {
 			register();
-		} else if (mController.request == RequestBeanPackege.Request.Login) {
+		} else if (mRequst.request == RequestBeanPackege.Request.Login) {
 			login();
+		} else if (mRequst.request == RequestBeanPackege.Request.UserModify) {
+			useModify();
 		}
 	}
 
+	private boolean useModify() {
+		UserBean user = mRequst.user;
+		Exception exception = mDBAccess.userModify(user.getId(), user.getName(), user.getPassword(), user.getAge(), user.getSex(), user.getPhone(),
+				user.getJob(), "");
+
+		ResponceBeanPackege responce = new ResponceBeanPackege(exception);
+
+		if (responce.isSuccessed()) {
+			user.setImageFilePath(writerImageFileAndGetImageFilePath());
+			mDBAccess.setImageAtUserInfo(user.getId(), user.getImageFilePath());
+		}
+
+		return sendResponce(responce);
+	}
+
 	private boolean register() {
-		UserBean user = mController.user;
+		UserBean user = mRequst.user;
 		Exception exception = mDBAccess.register(user.getId(), user.getName(), user.getPassword(), user.getAge(), user.getSex(), user.getPhone(),
 				user.getJob(), "");
 
@@ -57,7 +74,7 @@ public class RequestProcess {
 		if (!dir.exists() || !dir.isDirectory())
 			dir.mkdir();
 
-		File file = new File(mController.user.getImageFilePath());
+		File file = new File(mRequst.user.getImageFilePath());
 		File imagefile = new File(dir, file.getName());
 		FileOutputStream fileWriter = null;
 		for (int temp = 1;; temp++) {
@@ -82,7 +99,7 @@ public class RequestProcess {
 
 		try {
 			fileWriter = new FileOutputStream(imagefile);
-			fileWriter.write(mController.user.getBuffer());
+			fileWriter.write(mRequst.user.getBuffer());
 			fileWriter.flush();
 
 			return imagefile.getAbsolutePath();
@@ -103,7 +120,7 @@ public class RequestProcess {
 	private boolean login() {
 		boolean isSuccessed;
 
-		UserBean user = mController.user;
+		UserBean user = mRequst.user;
 		Exception exception = mDBAccess.getUserPassword(user.getId());
 		ResponceBeanPackege responce = null;
 		if (exception instanceof Message) {

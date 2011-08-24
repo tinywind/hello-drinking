@@ -1,8 +1,6 @@
 package kr.android.hellodrinking.transmission.exception;
 
-import java.sql.SQLException;
-
-public class LoginException extends SQLException {
+public class LoginException extends Exception {
 	/**
 	 * 
 	 */

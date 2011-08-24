@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import kr.android.hellodrinking.transmission.exception.LoginException;
 import kr.android.hellodrinking.transmission.exception.Message;
+import kr.android.hellodrinking.transmission.exception.UserModifyException;
 
 public class DBAccess {
 	private Connection mConnection;
@@ -109,6 +110,35 @@ public class DBAccess {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public Exception userModify(String id, String name, String password, String age, String sex, String phone, String job, String image) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = mConnection.prepareStatement("UPDATE userinfo SET name=?, password=?, age=?, sex=?, phone=?, job=?, image=? WHERE id=?");
+			pstmt.setString(1, name);
+			pstmt.setString(2, password);
+			pstmt.setString(3, age);
+			pstmt.setString(4, sex);
+			pstmt.setString(5, phone);
+			pstmt.setString(6, job);
+			pstmt.setString(7, image);
+			pstmt.setString(7, id);
+			int result = pstmt.executeUpdate();
+			mConnection.commit();
+			if(result <1)
+				return new UserModifyException("Id와 암호가 일치하지 않습니다.", UserModifyException.State.NotFoundId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return e;
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 }

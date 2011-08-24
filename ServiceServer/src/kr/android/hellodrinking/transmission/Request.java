@@ -208,6 +208,21 @@ public class Request implements Requestable {
 		return responce;
 	}
 
+	@Override
+	public ResponceBeanPackege userModify(String id, String name, String password, String age, String sex, String phone, String job,
+			String imageFilePath) {
+		return userModify(new UserBean(id, password, name, age, sex, phone, job, imageFilePath));
+	}
+
+	@Override
+	public ResponceBeanPackege userModify(UserBean user) {
+		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.UserModify, user);
+		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
+
+		TEST(responce);
+		return responce;
+	}
+
 	private void TEST(ResponceBeanPackege responce) {
 		System.out.println("is Successed? : " + responce.isSuccessed());
 		if (!responce.isSuccessed())
