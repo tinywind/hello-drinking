@@ -1,4 +1,4 @@
-package kr.android.hellodrinking.ar;
+package kr.android.hellodrinking.sensor;
 
 import java.util.ArrayList;
 import java.util.Iterator;

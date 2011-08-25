@@ -8,8 +8,10 @@ import kr.android.hellodrinking.ar.POI;
 import android.app.Application;
 
 public class HelloDrinkingApplication extends Application {
-	public static final String DEFAULT_SERVER = "127.0.0.1";
+	public static final String DEFAULT_SERVER = "192.168.17.144";
 	public static final int DEFAULT_PORT = 18080;
+	
+	private String id = "";
 	
 	private List<POI> mListPOIs;
 	
@@ -48,6 +50,14 @@ public class HelloDrinkingApplication extends Application {
 	
 	public List<POI> getListPOIs(){
 		return mListPOIs;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
 	}
 
 }

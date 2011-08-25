@@ -6,7 +6,7 @@
 	android:layout_height="fill_parent">
 	<ImageView
 		android:layout_width="wrap_content"
-		android:src="@drawable/test"
+		android:src="@drawable/ic_nosearch"
 		android:layout_height="wrap_content"
 		android:id="@+id/userinfo_imageview"></ImageView>
 	<TextView

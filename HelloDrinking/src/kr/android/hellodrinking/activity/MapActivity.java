@@ -4,11 +4,14 @@ import java.util.List;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
+import kr.android.hellodrinking.ar.ARActivity;
 import kr.android.hellodrinking.ar.POI;
+import kr.android.hellodrinking.map.MapContainerView;
 import kr.android.hellodrinking.map.PostsListener;
 import kr.android.hellodrinking.map.PostsModel;
 import kr.android.hellodrinking.map.ValueChangeEvent;
-import android.content.Context;
+import kr.android.hellodrinking.sensor.Compass;
+import kr.android.hellodrinking.sensor.CompassView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -23,7 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
@@ -70,10 +74,17 @@ public class MapActivity extends NMapActivity implements PostsListener {
 	private NMapPOIitem mFloatingPOIitem;
 	private NMapPOIdataOverlay mPoiDataOverlay;
 	private PostsModel mPostsModel;
+	private Compass mCompass;
+	private CompassView mCompassView;
+	
+
+	protected ImageButton mButtonPosts, mButtonMap, mButtonAR, mButtonMember;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.map);
+
 		mMapView = new NMapView(this);
 		mMapView.setApiKey(API_KEY);
 		mMapView.setClickable(true);
@@ -89,21 +100,54 @@ public class MapActivity extends NMapActivity implements PostsListener {
 
 		DEFAULT_IMAGE = getResources().getDrawable(R.drawable.ic_pin_01);
 
-		mMapContainerView = new MapContainerView(this);
-		mMapContainerView.addView(mMapView);
-		setContentView(mMapContainerView);
-
 		mMapController = mMapView.getMapController();
 		mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
 		setMapDataProviderListener(onDataProviderListener);
 		mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 		mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
+
+		mMapContainerView = (MapContainerView) findViewById(R.id.map_mapcontainer);
+		mMapContainerView.addView(mMapView);
+		mMapContainerView.setInit(mOverlayManager);
+
 		mMapLocationManager = new NMapLocationManager(this);
 		mMapLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
 
 		mMapCompassManager = new NMapCompassManager(this);
 		mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
 
+		mCompass = new Compass(this);
+		mCompassView = (CompassView) findViewById(R.id.map_compass);
+		mCompassView.setBackgroundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_compass));
+		mCompassView.setOrientationBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_angle));
+		mCompassView.setCompass(mCompass);
+
+		mButtonPosts = (ImageButton) findViewById(R.id.frame_button_posts);
+		mButtonMap = (ImageButton) findViewById(R.id.frame_button_map);
+		mButtonAR = (ImageButton) findViewById(R.id.frame_button_ar);
+		mButtonMember = (ImageButton) findViewById(R.id.frame_button_member);
+
+		mButtonPosts.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(MapActivity.this, PostsActivity.class));
+			}
+		});
+		mButtonMap.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+			}
+		});
+		mButtonAR.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(MapActivity.this, ARActivity.class));
+			}
+		});
+		mButtonMember.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(MapActivity.this, MemberinfoActivity.class));
+			}
+		});
+
+		
 		startMyLocation();
 		setModel();
 	}
@@ -170,7 +214,7 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		}
 
 		public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {
-			if(item == null)
+			if (item == null)
 				return;
 			Intent intent = new Intent(MapActivity.this, UserInfoDialog.class);
 			intent.putExtra("kr.android.POI", (POI) item.getTag());
@@ -352,51 +396,6 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class MapContainerView extends ViewGroup {
-		public MapContainerView(Context context) {
-			super(context);
-		}
-
-		@Override
-		protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-			final int width = getWidth();
-			final int height = getHeight();
-			final int count = getChildCount();
-			for (int i = 0; i < count; i++) {
-				final View view = getChildAt(i);
-				final int childWidth = view.getMeasuredWidth();
-				final int childHeight = view.getMeasuredHeight();
-				final int childLeft = (width - childWidth) / 2;
-				final int childTop = (height - childHeight) / 2;
-				view.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
-			}
-			if (changed)
-				mOverlayManager.onSizeChanged(width, height);
-		}
-
-		@Override
-		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			int w = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-			int h = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-			int sizeSpecWidth = widthMeasureSpec;
-			int sizeSpecHeight = heightMeasureSpec;
-
-			final int count = getChildCount();
-			for (int i = 0; i < count; i++) {
-				final View view = getChildAt(i);
-				if (view instanceof NMapView) {
-					if (mMapView.isAutoRotateEnabled()) {
-						int diag = (((int) (Math.sqrt(w * w + h * h)) + 1) / 2 * 2);
-						sizeSpecWidth = MeasureSpec.makeMeasureSpec(diag, MeasureSpec.EXACTLY);
-						sizeSpecHeight = sizeSpecWidth;
-					}
-				}
-				view.measure(sizeSpecWidth, sizeSpecHeight);
-			}
-			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		}
-	}
-
 	@Override
 	public void modelChanged(ValueChangeEvent e) {
 		List<POI> list = ((PostsModel) e.getSource()).getModel();
@@ -431,4 +430,5 @@ public class MapActivity extends NMapActivity implements PostsListener {
 	@Override
 	public void postRemoved(ValueChangeEvent e) {
 	}
+
 }

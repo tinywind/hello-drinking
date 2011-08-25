@@ -1,17 +1,18 @@
-package kr.android.hellodrinking.ar;
+package kr.android.hellodrinking.sensor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
-public class CompassView extends ImageView implements SensorEventListener {
+public class CompassView extends ImageButton implements SensorEventListener {
 
 	private Bitmap mBitmapBackground;
 	private Bitmap mBitmapOrient;
@@ -35,6 +36,7 @@ public class CompassView extends ImageView implements SensorEventListener {
 
 	public void setBackgroundBitmap(Bitmap bitmap) {
 		mBitmapBackground = Bitmap.createScaledBitmap(bitmap, getLayoutParams().width, getLayoutParams().height, true);
+		setBackgroundDrawable(new BitmapDrawable(mBitmapBackground));
 	}
 
 	public void setOrientationBitmap(Bitmap bitmap) {
@@ -44,10 +46,6 @@ public class CompassView extends ImageView implements SensorEventListener {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (mValues != null) {
-			if (mBitmapBackground != null) {
-				canvas.drawBitmap(mBitmapBackground, 0, 0, null);
-			}
-
 			Paint paint = new Paint();
 			paint.setStyle(Paint.Style.FILL);
 			paint.setColor(Color.RED);

@@ -6,9 +6,11 @@ import java.util.List;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
+import kr.android.hellodrinking.activity.FrameActivity;
 import kr.android.hellodrinking.activity.UserInfoDialog;
+import kr.android.hellodrinking.sensor.Compass;
+import kr.android.hellodrinking.sensor.CompassView;
 import kr.android.hellodrinking.utillity.Calculations;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,23 +18,20 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.maplib.NGeoPoint;
 
 @SuppressWarnings("deprecation")
-public class ARActivity extends Activity implements SensorEventListener, NMapLocationManager.OnLocationChangeListener {
-	private static final int RE_CALC_RATE = 6;
+public class ARActivity extends FrameActivity implements SensorEventListener, NMapLocationManager.OnLocationChangeListener {
+	private static final int RE_CALC_RATE = 1;
 	private static final double HORIZONAL_VIEWING_ANGLE = Math.toRadians(30);
 	private static final double VERTICAL_VIEWING_ANGLE = Math.toRadians(60);
 	private static final double[] STANDARD_COORDINATE = { 0, 0, 1 };
@@ -52,20 +51,15 @@ public class ARActivity extends Activity implements SensorEventListener, NMapLoc
 	private List<POI> mListPOIs;
 	private float[] mArrayPriorOrient = { 0, 0, 0 };
 
-	private TextView mTextTest;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.ar);
+	protected void loadContent() {
+		mInflater.inflate(R.layout.ar, mViewgroup);
+		mButtonAR.setClickable(false);
 
 		mCompass = new Compass(this);
 		mLayoutPOIs = (AbsoluteLayout) findViewById(R.id.ar_layout_pois);
-		mTextTest = (TextView) findViewById(R.id.ar_text_test);
 
 		mCompassView = (CompassView) findViewById(R.id.ar_compass);
-		mCompassView.setBackgroundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bg_speech));
+		mCompassView.setBackgroundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_compass));
 		mCompassView.setOrientationBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_angle));
 		mCompassView.setCompass(mCompass);
 
@@ -84,8 +78,7 @@ public class ARActivity extends Activity implements SensorEventListener, NMapLoc
 			startActivity(goToSettings);
 			return;
 		}
-		
-		
+
 		setPOIOverlays();
 	}
 
@@ -93,7 +86,7 @@ public class ARActivity extends Activity implements SensorEventListener, NMapLoc
 		List<POI> list = ((HelloDrinkingApplication) getApplication()).getListPOIs();
 		mListPOIs = new ArrayList<POI>(list.size());
 		mLayoutPOIs.removeAllViews();
-		
+
 		Iterator<POI> it = list.iterator();
 		while (it.hasNext()) {
 			final POI poi = it.next();
@@ -103,13 +96,17 @@ public class ARActivity extends Activity implements SensorEventListener, NMapLoc
 			view.setBackgroundColor(Color.GREEN);
 			Bitmap bitmap = BitmapFactory.decodeFile(poi.getImageFilePath());
 			view.setImageBitmap(Bitmap.createScaledBitmap(bitmap, POIOVERLAY_IMAGE_WIDTH, POIOVERLAY_IMAGE_HEIGHT, true));
-			view.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+			AbsoluteLayout.LayoutParams param = new AbsoluteLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, SCREEN_WIDTH,
+					SCREEN_HEIGHT);
+			view.setLayoutParams(param);
+
 			mLayoutPOIs.addView(view);
-			
+
 			view.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
 					Intent intent = new Intent(ARActivity.this, UserInfoDialog.class);
-					intent.putExtra("kr.android.POI",poi);
+					intent.putExtra("kr.android.POI", poi);
 					startActivity(intent);
 				}
 			});
@@ -126,10 +123,9 @@ public class ARActivity extends Activity implements SensorEventListener, NMapLoc
 		coordinate = Calculations.xRotationConvert(coordinate, radiansOrient[1] - radiansOrient[2] - Math.toRadians(-90));
 		coordinate = Calculations.zRotationConvert(coordinate, radiansOrient[2]);// 이해안됨
 
-		if(coordinate[2] < 0)
+		if (coordinate[2] < 0)
 			return null;
-		
-		mTextTest.setText(coordinate[0] + "\n" + coordinate[1] + "\n" + coordinate[2]);
+
 		// 2) 시야각을 고려한 화면 내 상의 위치
 		// 기본 공식은 (좌표/거리)이다. 이중 z축 좌표는 화면상에 표현되지 않고, 단지 거리 계측에만 사용되는 변수이다.
 		// 3차원 좌표상 거리가 1일 때, 0 이면 화면의 중앙이다.
@@ -173,8 +169,8 @@ public class ARActivity extends Activity implements SensorEventListener, NMapLoc
 		for (int index = 0; it.hasNext(); index++) {
 			POI poi = it.next();
 			double[] point = getLocationOfViewOnScreen(event.values, mMyGeoPoint, new NGeoPoint(poi.getLongitude(), poi.getLatitude()));
-			if(point == null)
-				continue;			
+			if (point == null)
+				continue;
 			View view = mLayoutPOIs.getChildAt(index);
 			int width = AbsoluteLayout.LayoutParams.WRAP_CONTENT;
 			int height = AbsoluteLayout.LayoutParams.WRAP_CONTENT;

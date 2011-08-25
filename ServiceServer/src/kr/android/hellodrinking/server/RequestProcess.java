@@ -36,7 +36,25 @@ public class RequestProcess {
 			login();
 		} else if (mRequst.request == RequestBeanPackege.Request.UserModify) {
 			useModify();
+		} else if (mRequst.request == RequestBeanPackege.Request.GetUser) {
+			getUser();
 		}
+	}
+
+	private boolean getUser() {
+		UserBean user = mRequst.user;
+		Exception exception = mDBAccess.getUser(user.getId());
+
+		ResponceBeanPackege responce = null;
+
+		if (exception instanceof Message) {
+			responce = new ResponceBeanPackege(true);
+			responce.setObject(((Message) exception).getObject());
+		} else {
+			responce = new ResponceBeanPackege(exception);
+		}
+
+		return sendResponce(responce);
 	}
 
 	private boolean useModify() {
@@ -75,6 +93,8 @@ public class RequestProcess {
 			dir.mkdir();
 
 		File file = new File(mRequst.user.getImageFilePath());
+		if (file.getName().equals(""))
+			return null;
 		File imagefile = new File(dir, file.getName());
 		FileOutputStream fileWriter = null;
 		for (int temp = 1;; temp++) {

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import kr.android.hellodrinking.transmission.dto.UserBean;
+import kr.android.hellodrinking.transmission.exception.GetUserException;
 import kr.android.hellodrinking.transmission.exception.LoginException;
 import kr.android.hellodrinking.transmission.exception.Message;
 import kr.android.hellodrinking.transmission.exception.UserModifyException;
@@ -123,10 +125,10 @@ public class DBAccess {
 			pstmt.setString(5, phone);
 			pstmt.setString(6, job);
 			pstmt.setString(7, image);
-			pstmt.setString(7, id);
+			pstmt.setString(8, id);
 			int result = pstmt.executeUpdate();
 			mConnection.commit();
-			if(result <1)
+			if (result < 1)
 				return new UserModifyException("Id와 암호가 일치하지 않습니다.", UserModifyException.State.NotFoundId);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -139,6 +141,34 @@ public class DBAccess {
 			}
 		}
 		return null;
+	}
+
+	public Exception getUser(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+		try {
+			pstmt = mConnection.prepareStatement("SELECT * FROM userinfo WHERE id=?");
+			pstmt.setString(1, id);
+			result = pstmt.executeQuery();
+
+			if (result.next()) {
+				UserBean user = new UserBean(result.getString("id"), result.getString("name"), result.getString("password"), result.getString("age"),
+						result.getString("sex"), result.getString("phone"), result.getString("job"), result.getString("image"));
+				return new Message(user);
+			} else {
+				return new GetUserException("Not Exists ID : " + id, GetUserException.State.NotFoundId);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return e;
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
