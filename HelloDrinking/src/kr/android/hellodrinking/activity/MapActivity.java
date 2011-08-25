@@ -4,7 +4,6 @@ import java.util.List;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.ar.ARActivity;
 import kr.android.hellodrinking.ar.POI;
 import kr.android.hellodrinking.map.MapContainerView;
 import kr.android.hellodrinking.map.PostsListener;

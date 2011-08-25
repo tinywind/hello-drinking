@@ -94,6 +94,12 @@
 					android:name="kr.android.hellodrinking.action.POSTS_VIEW" />
 			</intent-filter>
 		</activity>
+
+		<activity
+			android:name=".activity.PostActivity"
+			android:screenOrientation="portrait">
+		</activity>
+
 		<activity
 			android:name=".activity.MapActivity"
 			android:screenOrientation="portrait">
@@ -103,7 +109,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".ar.ARActivity"
+			android:name=".activity.ARActivity"
 			android:screenOrientation="portrait">
 			<intent-filter>
 				<action

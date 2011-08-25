@@ -88,7 +88,7 @@ public class POI implements Serializable {
 		return this.imagefilepath;
 	}
 
-	public void setIconuri(String imagefilepath) {
+	public void setImageFilePath(String imagefilepath) {
 		this.imagefilepath = imagefilepath;
 	}
 

@@ -4,7 +4,6 @@ import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.maplib.NGeoPoint;
 
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.ar.ARActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +21,7 @@ public abstract class FrameActivity extends Activity implements OnClickListener 
 	protected LayoutInflater mInflater;
 	protected ViewGroup mViewgroup;
 	protected ImageButton mButtonPosts, mButtonMap, mButtonAR, mButtonMember;
-	private NMapLocationManager mMapLocationManager;
+	protected NMapLocationManager mMapLocationManager;
 	protected NGeoPoint myLocation;
 
 	/** Called when the activity is first created. */

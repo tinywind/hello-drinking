@@ -268,7 +268,8 @@ public class Request implements Requestable {
 	}
 
 	@Override
-	public ResponceBeanPackege post(String id, String comment, String imageFilePath, double longitude, double latitude) throws OptionalDataException, IOException {
+	public ResponceBeanPackege post(String id, String comment, String imageFilePath, double longitude, double latitude) throws OptionalDataException,
+			IOException {
 		return post(new PostBean(id, comment, imageFilePath, longitude, latitude));
 	}
 
@@ -282,19 +283,22 @@ public class Request implements Requestable {
 	}
 
 	@Override
-	public ResponceBeanPackege getPosts(String id) {
+	public ResponceBeanPackege getPosts(double longitude, double latitude, int distance) throws OptionalDataException, IOException {
+		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.GetPosts, longitude, latitude, distance);
+		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
+
+		TEST(responce);
+		return responce;
+	}
+
+	@Override
+	public ResponceBeanPackege getPost(String id) throws OptionalDataException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ResponceBeanPackege getPosts(int distance) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ResponceBeanPackege getPosts(PostBean post) {
+	public ResponceBeanPackege getPost(PostBean post) throws OptionalDataException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

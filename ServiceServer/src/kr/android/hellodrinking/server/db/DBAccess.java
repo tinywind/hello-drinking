@@ -1,10 +1,14 @@
 package kr.android.hellodrinking.server.db;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.transmission.dto.UserBean;
 import kr.android.hellodrinking.transmission.exception.GetUserException;
 import kr.android.hellodrinking.transmission.exception.LoginException;
@@ -65,7 +69,6 @@ public class DBAccess {
 		}
 		return null;
 	}
-	
 
 	public Exception setImageAtPostInfo(String id, String image) {
 		PreparedStatement pstmt = null;
@@ -222,6 +225,52 @@ public class DBAccess {
 			}
 		}
 		return null;
+	}
+
+	public Exception getPosts(double longitude, double latitude, int distance) {
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+		try {
+			if (longitude == 0 && latitude == 0) {
+				pstmt = mConnection.prepareStatement("SELECT * FROM postinfo");
+				result = pstmt.executeQuery();
+			} else {
+				pstmt = mConnection.prepareStatement(
+						"SELECT * FROM postinfo a, " +
+						"(SELECT a.postnum postnum, (CASE WHEN (midvalue>1) THEN (round(round(6371000.0 * acos(1)))) " +
+						"WHEN (midvalue <= 1) THEN (round(round(6371000.0 * acos(midvalue)))) END) AS distance " +
+						"FROM POSTINFO a, (SELECT postnum, (SIN(latitude*ACOS(-1)/180)*SIN(?*ACOS(-1)/180)) " +
+						"+(COS(latitude*ACOS(-1)/180)*COS(?*ACOS(-1)/180)*COS((longitude-?)*ACOS(-1)/180)) midvalue FROM postinfo) b " +
+						"WHERE a.postnum = b.postnum) b " +
+						"WHERE a.postnum = b.postnum AND distance < ?");
+				pstmt.setDouble(1, latitude);
+				pstmt.setDouble(2, latitude);
+				pstmt.setDouble(3, longitude);
+				pstmt.setInt(4, distance);
+				result = pstmt.executeQuery();
+			}
+			List<PostBean> posts = new ArrayList<PostBean>();
+			while (result.next()) {
+				PostBean post = new PostBean(
+						result.getString("id"),
+						result.getDouble("longitude"), 
+						result.getDouble("latitude"));
+				post.setPostNum(result.getInt("postnum"));
+				post.setComment(result.getString("comment"));
+				post.setImageFilePath(result.getString("image"));
+				posts.add(post);
+			}
+			return new Message((Serializable) posts);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return e;
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

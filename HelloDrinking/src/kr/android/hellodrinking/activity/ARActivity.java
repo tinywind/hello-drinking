@@ -1,4 +1,4 @@
-package kr.android.hellodrinking.ar;
+package kr.android.hellodrinking.activity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,8 +6,7 @@ import java.util.List;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.activity.FrameActivity;
-import kr.android.hellodrinking.activity.UserInfoDialog;
+import kr.android.hellodrinking.ar.POI;
 import kr.android.hellodrinking.sensor.Compass;
 import kr.android.hellodrinking.sensor.CompassView;
 import kr.android.hellodrinking.utillity.Calculations;

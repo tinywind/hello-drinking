@@ -35,7 +35,7 @@ public class ClientThread extends Thread {
 		try {
 			while (true) {
 				RequestBeanPackege request = (RequestBeanPackege) mObjectReader.readObject();
-				(new RequestProcess(request, mConnection, mObjectReader, mObjectWriter)).processing();
+				(new RequestProcess(request, mConnection, mObjectWriter)).processing();
 			}
 		} catch (ClassNotFoundException e) {
 			System.out.println(mSocket.getInetAddress() + " : " + e.getMessage());

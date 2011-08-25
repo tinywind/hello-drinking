@@ -18,9 +18,9 @@ public interface Requestable {
 	public ResponceBeanPackege getUser(UserBean user) throws OptionalDataException, IOException;
 	public ResponceBeanPackege post(String id, String comment, String imageFilePath, double longitude, double latitude) throws OptionalDataException, IOException;
 	public ResponceBeanPackege post(PostBean post) throws OptionalDataException, IOException;
-	public ResponceBeanPackege getPosts(String id);
-	public ResponceBeanPackege getPosts(int distance);
-	public ResponceBeanPackege getPosts(PostBean post);
+	public ResponceBeanPackege getPosts(double longitude, double latitude, int distance) throws OptionalDataException, IOException;
+	public ResponceBeanPackege getPost(String id) throws OptionalDataException, IOException;
+	public ResponceBeanPackege getPost(PostBean post) throws OptionalDataException, IOException;;
 //	public boolean modify_Post(String id, String postNum, String comment);
 //	public boolean delete_Post(String id, String postNum);
 //	public void detail_Post();

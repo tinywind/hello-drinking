@@ -3,10 +3,8 @@ package kr.android.hellodrinking.server;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import kr.android.hellodrinking.server.db.DBAccess;
 import kr.android.hellodrinking.transmission.dto.PostBean;
@@ -17,35 +15,53 @@ import kr.android.hellodrinking.transmission.exception.LoginException;
 import kr.android.hellodrinking.transmission.exception.Message;
 
 public class RequestProcess {
-	private RequestBeanPackege mRequst;
-	private ObjectInputStream mReader;
+	private RequestBeanPackege mRequest;
 	private ObjectOutputStream mWriter;
 	private DBAccess mDBAccess;
 
-	public RequestProcess(RequestBeanPackege controller, Connection connection, ObjectInputStream reader, ObjectOutputStream writer)
+	public RequestProcess(RequestBeanPackege controller, Connection connection, ObjectOutputStream writer)
 			throws IOException {
-		mRequst = controller;
+		mRequest = controller;
 		mDBAccess = new DBAccess(connection);
-		mReader = reader;
 		mWriter = writer;
 	}
 
 	public void processing() {
-		if (mRequst.request == RequestBeanPackege.Request.Register) {
+		if (mRequest.request == RequestBeanPackege.Request.Register) {
 			register();
-		} else if (mRequst.request == RequestBeanPackege.Request.Login) {
+		} else if (mRequest.request == RequestBeanPackege.Request.Login) {
 			login();
-		} else if (mRequst.request == RequestBeanPackege.Request.UserModify) {
+		} else if (mRequest.request == RequestBeanPackege.Request.UserModify) {
 			useModify();
-		} else if (mRequst.request == RequestBeanPackege.Request.GetUser) {
+		} else if (mRequest.request == RequestBeanPackege.Request.GetUser) {
 			getUser();
-		} else if (mRequst.request == RequestBeanPackege.Request.Post) {
+		} else if (mRequest.request == RequestBeanPackege.Request.Post) {
 			post();
+		} else if (mRequest.request == RequestBeanPackege.Request.GetPosts) {
+			getPosts();
 		}
 	}
 
+	private boolean getPosts() {
+		int distance = mRequest.state;
+		double longitude = mRequest.longitude;
+		double latitude = mRequest.latitude;
+		Exception exception = mDBAccess.getPosts(longitude, latitude, distance);
+
+		ResponceBeanPackege responce = null;
+
+		if (exception instanceof Message) {
+			responce = new ResponceBeanPackege(true);
+			responce.setObject(((Message) exception).getObject());
+		} else {
+			responce = new ResponceBeanPackege(exception);
+		}
+
+		return sendResponce(responce);		
+	}
+
 	private boolean getUser() {
-		UserBean user = mRequst.user;
+		UserBean user = mRequest.user;
 		Exception exception = mDBAccess.getUser(user.getId());
 
 		ResponceBeanPackege responce = null;
@@ -61,7 +77,7 @@ public class RequestProcess {
 	}
 
 	private boolean useModify() {
-		UserBean user = mRequst.user;
+		UserBean user = mRequest.user;
 		Exception exception = mDBAccess.userModify(user.getId(), user.getName(), user.getPassword(), user.getAge(), user.getSex(), user.getPhone(),
 				user.getJob(), "");
 
@@ -76,7 +92,7 @@ public class RequestProcess {
 	}
 
 	private boolean register() {
-		UserBean user = mRequst.user;
+		UserBean user = mRequest.user;
 		Exception exception = mDBAccess.register(user.getId(), user.getName(), user.getPassword(), user.getAge(), user.getSex(), user.getPhone(),
 				user.getJob(), "");
 
@@ -91,7 +107,7 @@ public class RequestProcess {
 	}
 
 	private boolean post() {
-		PostBean post = mRequst.post;
+		PostBean post = mRequest.post;
 		Exception exception = mDBAccess.post(post.getId(), post.getComment(), "", post.getLongitude(), post.getLatitude());
 
 		ResponceBeanPackege responce = new ResponceBeanPackege(exception);
@@ -157,7 +173,7 @@ public class RequestProcess {
 	private boolean login() {
 		boolean isSuccessed;
 
-		UserBean user = mRequst.user;
+		UserBean user = mRequest.user;
 		Exception exception = mDBAccess.getUserPassword(user.getId());
 		ResponceBeanPackege responce = null;
 		if (exception instanceof Message) {

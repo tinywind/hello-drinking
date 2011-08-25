@@ -10,6 +10,7 @@ public class ResponceBeanPackege implements Serializable {
 	private boolean isSuccessed;
 	private Exception exception;
 	private Serializable object;
+	private int state;
 
 	public ResponceBeanPackege(boolean isSuccessed) {
 		this.setSuccess(isSuccessed);
@@ -59,5 +60,13 @@ public class ResponceBeanPackege implements Serializable {
 
 	public Serializable getObject() {
 		return object;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public int getState() {
+		return state;
 	}
 }
