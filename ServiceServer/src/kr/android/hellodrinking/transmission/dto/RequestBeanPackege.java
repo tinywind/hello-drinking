@@ -8,7 +8,7 @@ public class RequestBeanPackege implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1021001077959076563L;
-	public enum Request {Login, Register, UserModify, GetUser};
+	public enum Request {Login, Register, UserModify, GetUser, Post, GetPosts};
 
 	public Request request;
 	public UserBean user;

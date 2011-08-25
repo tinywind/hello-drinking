@@ -77,7 +77,6 @@ public class MapActivity extends NMapActivity implements PostsListener {
 	private Compass mCompass;
 	private CompassView mCompassView;
 	
-
 	protected ImageButton mButtonPosts, mButtonMap, mButtonAR, mButtonMember;
 
 	@Override
@@ -156,6 +155,13 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		mPostsModel = new PostsModel(((HelloDrinkingApplication) getApplication()).getListPOIs());
 		mPostsModel.addListener(this);
 		modelChanged(new ValueChangeEvent(mPostsModel));
+	}
+
+	
+	@Override
+	protected void onResume() {
+		startMyLocation();
+		super.onResume();
 	}
 
 	@Override

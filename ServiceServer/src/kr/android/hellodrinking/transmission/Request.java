@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
+import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.transmission.dto.RequestBeanPackege;
 import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
@@ -264,5 +265,37 @@ public class Request implements Requestable {
 
 		TEST(responce);
 		return responce;
+	}
+
+	@Override
+	public ResponceBeanPackege post(String id, String comment, String imageFilePath, double longitude, double latitude) throws OptionalDataException, IOException {
+		return post(new PostBean(id, comment, imageFilePath, longitude, latitude));
+	}
+
+	@Override
+	public ResponceBeanPackege post(PostBean post) throws OptionalDataException, IOException {
+		RequestBeanPackege controller = new RequestBeanPackege(RequestBeanPackege.Request.Post, post);
+		ResponceBeanPackege responce = sendRequestAndGetResponce(controller);
+
+		TEST(responce);
+		return responce;
+	}
+
+	@Override
+	public ResponceBeanPackege getPosts(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponceBeanPackege getPosts(int distance) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponceBeanPackege getPosts(PostBean post) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -65,6 +65,28 @@ public class DBAccess {
 		}
 		return null;
 	}
+	
+
+	public Exception setImageAtPostInfo(String id, String image) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = mConnection.prepareStatement("UPDATE postinfo SET image=? WHERE id=?");
+			pstmt.setString(1, image);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+			mConnection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return e;
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 	public Exception addLoginHistory(String id, boolean isSuccessed) {
 		PreparedStatement pstmt = null;
@@ -152,8 +174,15 @@ public class DBAccess {
 			result = pstmt.executeQuery();
 
 			if (result.next()) {
-				UserBean user = new UserBean(result.getString("id"), result.getString("name"), result.getString("password"), result.getString("age"),
-						result.getString("sex"), result.getString("phone"), result.getString("job"), result.getString("image"));
+				UserBean user = new UserBean();
+				user.setId(result.getString("id"));
+				user.setName(result.getString("name"));
+				user.setPassword(result.getString("password"));
+				user.setAge(result.getString("age"));
+				user.setSex(result.getString("sex"));
+				user.setPhone(result.getString("phone"));
+				user.setJob(result.getString("job"));
+				user.setImageFilePath(result.getString("image"));
 				return new Message(user);
 			} else {
 				return new GetUserException("Not Exists ID : " + id, GetUserException.State.NotFoundId);
@@ -169,6 +198,30 @@ public class DBAccess {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public Exception post(String id, String comment, String imageFilePath, double longitude, double latitude) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = mConnection.prepareStatement("INSERT INTO postinfo VALUES(post_seq.NEXTVAL,?,?,?,?,?)");
+			pstmt.setString(1, id);
+			pstmt.setString(2, comment);
+			pstmt.setString(3, imageFilePath);
+			pstmt.setDouble(4, longitude);
+			pstmt.setDouble(5, latitude);
+			pstmt.executeUpdate();
+			mConnection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return e;
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 }

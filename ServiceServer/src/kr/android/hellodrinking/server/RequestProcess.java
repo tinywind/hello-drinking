@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import kr.android.hellodrinking.server.db.DBAccess;
+import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.transmission.dto.RequestBeanPackege;
 import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
@@ -38,6 +39,8 @@ public class RequestProcess {
 			useModify();
 		} else if (mRequst.request == RequestBeanPackege.Request.GetUser) {
 			getUser();
+		} else if (mRequst.request == RequestBeanPackege.Request.Post) {
+			post();
 		}
 	}
 
@@ -65,7 +68,7 @@ public class RequestProcess {
 		ResponceBeanPackege responce = new ResponceBeanPackege(exception);
 
 		if (responce.isSuccessed()) {
-			user.setImageFilePath(writerImageFileAndGetImageFilePath());
+			user.setImageFilePath(writerImageFileAndGetImageFilePath(user.getImageFilePath(), user.getBuffer()));
 			mDBAccess.setImageAtUserInfo(user.getId(), user.getImageFilePath());
 		}
 
@@ -80,19 +83,33 @@ public class RequestProcess {
 		ResponceBeanPackege responce = new ResponceBeanPackege(exception);
 
 		if (responce.isSuccessed()) {
-			user.setImageFilePath(writerImageFileAndGetImageFilePath());
+			user.setImageFilePath(writerImageFileAndGetImageFilePath(user.getImageFilePath(), user.getBuffer()));
 			mDBAccess.setImageAtUserInfo(user.getId(), user.getImageFilePath());
 		}
 
 		return sendResponce(responce);
 	}
 
-	private String writerImageFileAndGetImageFilePath() {
+	private boolean post() {
+		PostBean post = mRequst.post;
+		Exception exception = mDBAccess.post(post.getId(), post.getComment(), "", post.getLongitude(), post.getLatitude());
+
+		ResponceBeanPackege responce = new ResponceBeanPackege(exception);
+
+		if (responce.isSuccessed()) {
+			post.setImageFilePath(writerImageFileAndGetImageFilePath(post.getImageFilePath(), post.getBuffer()));
+			mDBAccess.setImageAtPostInfo(post.getId(), post.getImageFilePath());
+		}
+
+		return sendResponce(responce);
+	}
+
+	private String writerImageFileAndGetImageFilePath(String filepath, byte[] buffer) {
 		File dir = new File(HelloDrinkingServer.DEFAULT_IMAGEFILE_DIRECTORY);
 		if (!dir.exists() || !dir.isDirectory())
 			dir.mkdir();
 
-		File file = new File(mRequst.user.getImageFilePath());
+		File file = new File(filepath);
 		if (file.getName().equals(""))
 			return null;
 		File imagefile = new File(dir, file.getName());
@@ -119,7 +136,7 @@ public class RequestProcess {
 
 		try {
 			fileWriter = new FileOutputStream(imagefile);
-			fileWriter.write(mRequst.user.getBuffer());
+			fileWriter.write(buffer);
 			fileWriter.flush();
 
 			return imagefile.getAbsolutePath();

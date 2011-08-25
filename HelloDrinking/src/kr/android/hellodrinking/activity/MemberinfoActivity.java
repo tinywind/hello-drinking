@@ -104,8 +104,8 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 
 				String path = file.getName();
 				int index = path.lastIndexOf('\\');
-				String name = path.substring(index+1);
-				
+				String name = path.substring(index + 1);
+
 				File imagefile = new File(cacheDir, name);
 				FileOutputStream fileWriter = null;
 
@@ -133,6 +133,8 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 				e.printStackTrace();
 			}
 
+		} else {
+			Toast.makeText(this, responce.getException().getMessage(), Toast.LENGTH_SHORT).show();
 		}
 	}
 

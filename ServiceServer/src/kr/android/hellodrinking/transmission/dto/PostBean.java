@@ -1,27 +1,33 @@
 package kr.android.hellodrinking.transmission.dto;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
-import com.nhn.android.maps.maplib.NGeoPoint;
-
-public class PostBean implements Serializable{
+public class PostBean implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6460998503969733840L;
-	private String id;
-	private String name;
-	private String Image;
-	private String NumberOfPeople;
-	private String comment;
-	private String date;
-	private String matching;
-	private NGeoPoint point;
 
-	public PostBean(String id, String filepath, double x, double y) {
-		this.id = id;
-		this.Image = filepath;
-		setPoint(new NGeoPoint(x, y));
+	private int postNum = -1;
+	private String id = "";
+	private String comment = "";
+	private String imageFilePath = "";
+	private double longitude = -1, latitude = -1;
+	private byte[] buffer = {};
+
+	public PostBean(String id, double longitude, double latitude) {
+		setId(id);
+		setGeoPoint(longitude, latitude);
+	}
+
+	public PostBean(String id, String comment, String imageFilePath, double longitude, double latitude) {
+		setId(id);
+		setComment(comment);
+		setGeoPoint(longitude, latitude);
+		setImageFilePath(imageFilePath);
 	}
 
 	public String getId() {
@@ -29,63 +35,80 @@ public class PostBean implements Serializable{
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		if (id != null)
+			this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getImageFilePath() {
+		return imageFilePath;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setImageFilePath(String imageFilePath) {
+		if (imageFilePath != null) {
+			this.imageFilePath = imageFilePath;
+			convertToBytes();
+		}
 	}
 
-	public String getImage() {
-		return Image;
+	private void convertToBytes() {
+		try {
+			File file = new File(imageFilePath);
+			if (!file.exists() || !file.isFile())
+				return;
+
+			byte[] buf = new byte[(int) file.length()];
+			FileInputStream reader = new FileInputStream(file);
+			reader.read(buf);
+			this.buffer = buf;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void setImage(String image) {
-		Image = image;
+	public void setBuffer(byte[] buffer) {
+		if (buffer != null)
+			this.buffer = buffer;
 	}
 
-	public String getNumberOfPeople() {
-		return NumberOfPeople;
+	public byte[] getBuffer() {
+		return buffer;
 	}
 
-	public void setNumberOfPeople(String numberOfPeople) {
-		NumberOfPeople = numberOfPeople;
+	public void setComment(String comment) {
+		if (comment != null)
+			this.comment = comment;
 	}
 
 	public String getComment() {
 		return comment;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
-	public String getDate() {
-		return date;
+	public double getLongitude() {
+		return longitude;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
-	public String getMatching() {
-		return matching;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setMatching(String matching) {
-		this.matching = matching;
+	public void setGeoPoint(double longitude, double latitude) {
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
-	public void setPoint(NGeoPoint point) {
-		this.point = point;
+	public void setPostNum(int postNum) {
+		this.postNum = postNum;
 	}
 
-	public NGeoPoint getPoint() {
-		return point;
+	public int getPostNum() {
+		return postNum;
 	}
-
 }

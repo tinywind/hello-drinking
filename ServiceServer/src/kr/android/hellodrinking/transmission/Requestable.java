@@ -3,6 +3,7 @@ package kr.android.hellodrinking.transmission;
 import java.io.IOException;
 import java.io.OptionalDataException;
 
+import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
 
@@ -15,7 +16,11 @@ public interface Requestable {
 	public ResponceBeanPackege modifyUser(UserBean user) throws OptionalDataException, IOException;
 	public ResponceBeanPackege getUser(String id) throws OptionalDataException, IOException;
 	public ResponceBeanPackege getUser(UserBean user) throws OptionalDataException, IOException;
-//	public boolean post(String id, String comment, String ImageFilePath);
+	public ResponceBeanPackege post(String id, String comment, String imageFilePath, double longitude, double latitude) throws OptionalDataException, IOException;
+	public ResponceBeanPackege post(PostBean post) throws OptionalDataException, IOException;
+	public ResponceBeanPackege getPosts(String id);
+	public ResponceBeanPackege getPosts(int distance);
+	public ResponceBeanPackege getPosts(PostBean post);
 //	public boolean modify_Post(String id, String postNum, String comment);
 //	public boolean delete_Post(String id, String postNum);
 //	public void detail_Post();

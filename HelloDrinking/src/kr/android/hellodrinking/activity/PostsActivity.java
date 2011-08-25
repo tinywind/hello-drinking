@@ -8,6 +8,8 @@ public class PostsActivity extends FrameActivity{
 		mInflater.inflate(R.layout.posts, mViewgroup);
 		mButtonPosts.setClickable(false);
 		
+		
+		
 	}
 	
 }

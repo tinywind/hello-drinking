@@ -8,7 +8,7 @@ import kr.android.hellodrinking.ar.POI;
 import android.app.Application;
 
 public class HelloDrinkingApplication extends Application {
-	public static final String DEFAULT_SERVER = "192.168.17.144";
+	public static final String DEFAULT_SERVER = "192.168.10.18";
 	public static final int DEFAULT_PORT = 18080;
 	
 	private String id = "";

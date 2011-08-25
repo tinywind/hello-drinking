@@ -1,6 +1,7 @@
 package kr.android.hellodrinking.activity;
 
-import com.nhn.android.maps.NMapActivity;
+import com.nhn.android.maps.NMapLocationManager;
+import com.nhn.android.maps.maplib.NGeoPoint;
 
 import kr.android.hellodrinking.R;
 import kr.android.hellodrinking.ar.ARActivity;
@@ -8,19 +9,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public abstract class FrameActivity extends Activity implements OnClickListener {
 	protected LayoutInflater mInflater;
 	protected ViewGroup mViewgroup;
 	protected ImageButton mButtonPosts, mButtonMap, mButtonAR, mButtonMember;
+	private NMapLocationManager mMapLocationManager;
+	protected NGeoPoint myLocation;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -42,7 +45,52 @@ public abstract class FrameActivity extends Activity implements OnClickListener 
 		mButtonAR.setOnClickListener(this);
 		mButtonMember.setOnClickListener(this);
 
+		mMapLocationManager = new NMapLocationManager(this);
+		mMapLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
+
+		myLocation = new NGeoPoint(0, 0);
+
 		loadContent();
+	}
+
+	/* MyLocation Listener */
+	private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
+		public boolean onLocationChanged(NMapLocationManager locationManager, NGeoPoint myLocation) {
+			FrameActivity.this.myLocation = myLocation;
+			return true;
+		}
+
+		public void onLocationUpdateTimeout(NMapLocationManager locationManager) {
+			stopMyLocation();
+			Toast.makeText(FrameActivity.this, "Your current location is temporarily unavailable", Toast.LENGTH_LONG).show();
+			FrameActivity.this.myLocation.set(0, 0);
+		}
+	};
+
+	@Override
+	protected void onResume() {
+		startMyLocation();
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		stopMyLocation();
+		super.onStop();
+	}
+
+	private void stopMyLocation() {
+		mMapLocationManager.disableMyLocation();
+	}
+
+	private void startMyLocation() {
+		boolean isMyLocationEnabled = mMapLocationManager.enableMyLocation(false);
+		if (!isMyLocationEnabled) {
+			Toast.makeText(FrameActivity.this, "Please enable a My Location source in system settings", Toast.LENGTH_LONG).show();
+			Intent goToSettings = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			startActivity(goToSettings);
+			return;
+		}
 	}
 
 	@Override

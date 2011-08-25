@@ -30,7 +30,7 @@ import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.maplib.NGeoPoint;
 
 @SuppressWarnings("deprecation")
-public class ARActivity extends FrameActivity implements SensorEventListener, NMapLocationManager.OnLocationChangeListener {
+public class ARActivity extends FrameActivity implements SensorEventListener {
 	private static final int RE_CALC_RATE = 1;
 	private static final double HORIZONAL_VIEWING_ANGLE = Math.toRadians(30);
 	private static final double VERTICAL_VIEWING_ANGLE = Math.toRadians(60);
@@ -46,8 +46,6 @@ public class ARActivity extends FrameActivity implements SensorEventListener, NM
 	private Compass mCompass;
 	private CompassView mCompassView;
 	private AbsoluteLayout mLayoutPOIs;
-	private NMapLocationManager mMapLocationManager;
-	private NGeoPoint mMyGeoPoint;
 	private List<POI> mListPOIs;
 	private float[] mArrayPriorOrient = { 0, 0, 0 };
 
@@ -67,17 +65,6 @@ public class ARActivity extends FrameActivity implements SensorEventListener, NM
 		SCREEN_HEIGHT = getWindowManager().getDefaultDisplay().getHeight();
 
 		mCompass.addListener(this);
-
-		mMyGeoPoint = new NGeoPoint();
-		mMapLocationManager = new NMapLocationManager(this);
-		mMapLocationManager.setOnLocationChangeListener(this);
-
-		boolean isMyLocationEnabled = mMapLocationManager.enableMyLocation(false);
-		if (!isMyLocationEnabled) {
-			Intent goToSettings = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-			startActivity(goToSettings);
-			return;
-		}
 
 		setPOIOverlays();
 	}
@@ -152,9 +139,9 @@ public class ARActivity extends FrameActivity implements SensorEventListener, NM
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if (mMyGeoPoint.getLatitude() == 0 & mMyGeoPoint.getLongitude() == 0)
+		if (myLocation.getLatitude() == 0 & myLocation.getLongitude() == 0)
 			return;
-		if (mMyGeoPoint == null)
+		if (myLocation == null)
 			return;
 
 		if (Math.abs(mArrayPriorOrient[0] - event.values[0]) < RE_CALC_RATE && Math.abs(mArrayPriorOrient[1] - event.values[1]) < RE_CALC_RATE
@@ -168,7 +155,7 @@ public class ARActivity extends FrameActivity implements SensorEventListener, NM
 		Iterator<POI> it = mListPOIs.iterator();
 		for (int index = 0; it.hasNext(); index++) {
 			POI poi = it.next();
-			double[] point = getLocationOfViewOnScreen(event.values, mMyGeoPoint, new NGeoPoint(poi.getLongitude(), poi.getLatitude()));
+			double[] point = getLocationOfViewOnScreen(event.values, myLocation, new NGeoPoint(poi.getLongitude(), poi.getLatitude()));
 			if (point == null)
 				continue;
 			View view = mLayoutPOIs.getChildAt(index);
@@ -183,17 +170,5 @@ public class ARActivity extends FrameActivity implements SensorEventListener, NM
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-	}
-
-	@Override
-	public boolean onLocationChanged(NMapLocationManager locationManager, NGeoPoint myLocation) {
-		mMyGeoPoint.set(myLocation.getLongitude(), myLocation.getLatitude());
-		return true;
-	}
-
-	@Override
-	public void onLocationUpdateTimeout(NMapLocationManager locationManager) {
-		Toast.makeText(this, "Your current location is temporarily unavailable", Toast.LENGTH_SHORT).show();
-		mMyGeoPoint.set(0, 0);
 	}
 }
