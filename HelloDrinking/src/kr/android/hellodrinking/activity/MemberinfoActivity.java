@@ -1,35 +1,29 @@
 package kr.android.hellodrinking.activity;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
 import kr.android.hellodrinking.transmission.Request;
 import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
+import kr.android.hellodrinking.utillity.GraphicUtils;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MemberinfoActivity extends FrameActivity implements OnClickListener {
+public class MemberinfoActivity extends Activity implements OnClickListener {
 	private static final int CAMERA_PIC_REQUEST = 1337;
 
 	private Button mButtonSend;
-	private Button mButtonTakeFile;
 	private Button mButtonTakePhoto;
 
 	private EditText mEditId;
@@ -43,10 +37,10 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 	private ImageView mImagePhoto;
 
 	@Override
-	protected void loadContent() {
-		mInflater.inflate(R.layout.memberinfo, mViewgroup);
-		mButtonMember.setClickable(false);
-		// setContentView(R.layout.memberinfo);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.memberinfo);
 
 		mEditAge = (EditText) findViewById(R.id.memberinfo_edit_age);
 		mEditId = (EditText) findViewById(R.id.memberinfo_edit_id);
@@ -58,14 +52,15 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 		mEditSex = (EditText) findViewById(R.id.memberinfo_edit_sex);
 		mImagePhoto = (ImageView) findViewById(R.id.memberinfo_image);
 		mButtonSend = (Button) findViewById(R.id.memberinfo_button_send);
-		mButtonTakeFile = (Button) findViewById(R.id.memberinfo_button_takefile);
 		mButtonTakePhoto = (Button) findViewById(R.id.memberinfo_button_takephoto);
 		mButtonSend.setOnClickListener(this);
-		mButtonTakeFile.setOnClickListener(this);
 		mButtonTakePhoto.setOnClickListener(this);
 
-		// 불러오기
-		Request request = new Request(HelloDrinkingApplication.DEFAULT_SERVER, HelloDrinkingApplication.DEFAULT_PORT);
+		loadUser();
+	}
+
+	private void loadUser() {
+		Request request = new Request(HelloDrinkingApplication.mServerIp, HelloDrinkingApplication.mServerPort);
 		ResponceBeanPackege responce = null;
 		try {
 			responce = request.getUser(((HelloDrinkingApplication) getApplication()).getId());
@@ -89,50 +84,13 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 			mEditPhone.setText(user.getPhone());
 			mEditSex.setText(user.getSex());
 
-			try {
-				File cacheDir = getCacheDir();
-				try {
-					if (!cacheDir.isDirectory() || !cacheDir.exists())
-						cacheDir.mkdir();
-				} catch (Exception e) {
-					Toast.makeText(this, "Create Folder Error about Cache Directory", Toast.LENGTH_SHORT).show();
-				}
-
-				File file = new File(user.getImageFilePath());
-				if (file.getName().equals(""))
-					return;
-
-				String path = file.getName();
-				int index = path.lastIndexOf('\\');
-				String name = path.substring(index + 1);
-
-				File imagefile = new File(cacheDir, name);
-				FileOutputStream fileWriter = null;
-
-				try {
-					fileWriter = new FileOutputStream(imagefile);
-					fileWriter.write(user.getBuffer());
-					fileWriter.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-					if (imagefile.exists())
-						imagefile.delete();
-					return;
-				} finally {
-					try {
-						fileWriter.close();
-					} catch (IOException e) {
-						System.err.println(e.getMessage());
-					}
-				}
-
-				FileInputStream fis = new FileInputStream(imagefile);
-				Bitmap bitmap = BitmapFactory.decodeStream(fis);
+			File file = new File(user.getImageFilePath());
+			if (!file.getName().equals("")) {
+				File imagefile = GraphicUtils.createImageFile(this, user.getBuffer(), file);
+				Bitmap bitmap = GraphicUtils.createBitmapFromImageFile(imagefile);
+				user.setImageFilePath(imagefile.getAbsolutePath());
 				mImagePhoto.setImageBitmap(bitmap);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			}
-
 		} else {
 			Toast.makeText(this, responce.getException().getMessage(), Toast.LENGTH_SHORT).show();
 		}
@@ -151,9 +109,7 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.memberinfo_button_takefile) {
-			// 갤러리 부르기
-		} else if (view.getId() == R.id.memberinfo_button_takephoto) {
+		if (view.getId() == R.id.memberinfo_button_takephoto) {
 			Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 		} else if (view.getId() == R.id.memberinfo_button_send) {
@@ -165,7 +121,7 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 			String sex = mEditSex.getText().toString().trim();
 			String phone = mEditPhone.getText().toString().trim();
 			String job = mEditJob.getText().toString().trim();
-			String imageFilePath = null;
+			File imagefile = null;
 
 			if (id.length() < 1) {
 				Toast.makeText(this, "ID가 비어 있습니다.", Toast.LENGTH_SHORT).show();
@@ -184,43 +140,12 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 				return;
 			}
 
-			File cacheDir = getCacheDir();
-			try {
-				if (!cacheDir.isDirectory() || !cacheDir.exists())
-					cacheDir.mkdir();
-			} catch (Exception e) {
-				Toast.makeText(this, "Create Folder Error about Cache Directory", Toast.LENGTH_SHORT).show();
-			}
-			try {
-				File file = new File(getCacheDir(), "photo.jpg");
-				if (file.exists()) {
-					file.delete();
-					file.createNewFile();
-				}
-				FileOutputStream fos = new FileOutputStream(file);
+			imagefile = GraphicUtils.createTempImageFile(this, mImagePhoto.getDrawable());
 
-				Drawable drawable = mImagePhoto.getDrawable();
-				Rect rect = drawable.getBounds();
-
-				Bitmap bitmap = Bitmap.createBitmap(rect.right, rect.bottom, Bitmap.Config.ARGB_8888);
-				Canvas canvas = new Canvas(bitmap);
-				drawable.setBounds(0, 0, rect.right, rect.bottom);
-				drawable.draw(canvas);
-
-				bitmap.compress(CompressFormat.JPEG, 80, fos);
-				fos.flush();
-				fos.close();
-
-				imageFilePath = file.getAbsolutePath();
-			} catch (Exception e) {
-				Toast.makeText(this, "Save Error about Image File", Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			}
-
-			Request request = new Request(HelloDrinkingApplication.DEFAULT_SERVER, HelloDrinkingApplication.DEFAULT_PORT);
+			Request request = new Request(HelloDrinkingApplication.mServerIp, HelloDrinkingApplication.mServerPort);
 			ResponceBeanPackege responce = null;
 			try {
-				responce = request.modifyUser(id, name, password, age, sex, phone, job, imageFilePath);
+				responce = request.modifyUser(id, name, password, age, sex, phone, job, imagefile.getAbsolutePath());
 			} catch (Exception e) {
 				e.printStackTrace();
 				Toast.makeText(this, "인터넷 연결이 바르지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -228,8 +153,7 @@ public class MemberinfoActivity extends FrameActivity implements OnClickListener
 			request.close();
 			if (responce.isSuccessed()) {
 				((HelloDrinkingApplication) getApplication()).setId(id);
-				Intent intent = new Intent(this, PostsActivity.class);
-				startActivity(intent);
+				finish();
 			} else {
 				Toast.makeText(this, responce.getException().getMessage(), Toast.LENGTH_LONG).show();
 			}

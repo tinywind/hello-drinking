@@ -15,7 +15,7 @@ public class HelloDrinkingServer {
 	public static final String DEFAULT_JDBC_DRIVER = "oracle:thin";
 	public static final String DEFAULT_JDBC_ID = "xe";
 	public static final String DEFAULT_JDBC_CLASS = "oracle.jdbc.driver.OracleDriver";
-	
+
 	private static final int PORT = 18080;
 	private static ServerSocket server;
 
@@ -30,7 +30,8 @@ public class HelloDrinkingServer {
 				Socket socket = server.accept();
 				ClientThread client = new ClientThread(socket);
 				client.start();
-				System.err.println("socket accept : " + socket.getInetAddress().toString());
+				System.err.println("socket accept : "
+						+ socket.getInetAddress().toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {

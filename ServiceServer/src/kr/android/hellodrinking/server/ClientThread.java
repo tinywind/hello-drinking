@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import kr.android.hellodrinking.server.db.connection.DefaultConnect;
+import kr.android.hellodrinking.server.db.connection.ConnectFromSettingFile;
 import kr.android.hellodrinking.transmission.dto.RequestBeanPackege;
 
 public class ClientThread extends Thread {
@@ -19,10 +19,10 @@ public class ClientThread extends Thread {
 	private ObjectInputStream mObjectReader = null;
 	private ObjectOutputStream mObjectWriter = null;
 	private Connection mConnection = null;
-	
+
 	public ClientThread(Socket socket) throws IOException, ClassNotFoundException, SQLException {
 		mSocket = socket;
-		mConnection = DefaultConnect.getInstance().getConnection();
+		mConnection = ConnectFromSettingFile.getInstance().getConnection();
 		mReader = mSocket.getInputStream();
 		mWriter = mSocket.getOutputStream();
 

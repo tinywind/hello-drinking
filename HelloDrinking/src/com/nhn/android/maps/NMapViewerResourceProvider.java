@@ -41,7 +41,7 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 	private static final int POI_FONT_COLOR_ALPHABET = 0xFFFFFFFF;
 	private static final float POI_FONT_OFFSET_ALPHABET = 6.0F;
-	private static final Typeface POI_FONT_TYPEFACE = null;//Typeface.DEFAULT_BOLD;
+	private static final Typeface POI_FONT_TYPEFACE = null;// Typeface.DEFAULT_BOLD;
 
 	private final Rect mTempRect = new Rect();
 	private final Paint mTextPaint = new Paint();
@@ -55,8 +55,10 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 	/**
 	 * Get drawable for markerId at focused state
 	 * 
-	 * @param markerId unique id for POI or Number icons.
-	 * @param focused true for focused state, false otherwise.
+	 * @param markerId
+	 *            unique id for POI or Number icons.
+	 * @param focused
+	 *            true for focused state, false otherwise.
 	 * @return
 	 */
 	public Drawable getDrawable(int markerId, boolean focused, NMapOverlayItem item) {
@@ -157,21 +159,22 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 	// Resource Ids for single icons
 	private final ResourceIdsOnMap mResourceIdsForMarkerOnMap[] = {
-		// Spot, Pin icons
-		new ResourceIdsOnMap(NMapPOIflagType.PIN, R.drawable.ic_pin_01, R.drawable.ic_pin_02),
-		new ResourceIdsOnMap(NMapPOIflagType.SPOT, R.drawable.ic_pin_01, R.drawable.ic_pin_02),
+			// Spot, Pin icons
+			new ResourceIdsOnMap(NMapPOIflagType.PIN, R.drawable.ic_pin_01, R.drawable.ic_pin_02),
+			new ResourceIdsOnMap(NMapPOIflagType.SPOT, R.drawable.ic_pin_01, R.drawable.ic_pin_02),
 
-		// Direction POI icons: From, To
-		new ResourceIdsOnMap(NMapPOIflagType.FROM, R.drawable.ic_map_start, R.drawable.ic_map_start_over),
-		new ResourceIdsOnMap(NMapPOIflagType.TO, R.drawable.ic_map_arrive, R.drawable.ic_map_arrive_over),
-	};
+			// Direction POI icons: From, To
+			new ResourceIdsOnMap(NMapPOIflagType.FROM, R.drawable.ic_map_start, R.drawable.ic_map_start_over),
+			new ResourceIdsOnMap(NMapPOIflagType.TO, R.drawable.ic_map_arrive, R.drawable.ic_map_arrive_over), };
 
 	/**
 	 * Find resource id corresponding to the markerId.
 	 * 
-	 * @param markerId marker id for a NMapPOIitem.
-	 * @param focused flag to indicated focused or normal state of this marker.
-	 * 	
+	 * @param markerId
+	 *            marker id for a NMapPOIitem.
+	 * @param focused
+	 *            flag to indicated focused or normal state of this marker.
+	 * 
 	 * @return resource id for the given markerId.
 	 * 
 	 * @see NMapPOIflagType
@@ -191,9 +194,13 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 			}
 		}
 
-		if (markerId >= NMapPOIflagType.NUMBER_BASE && markerId < NMapPOIflagType.NUMBER_END) { // Direction Number icons
+		if (markerId >= NMapPOIflagType.NUMBER_BASE && markerId < NMapPOIflagType.NUMBER_END) { // Direction
+																								// Number
+																								// icons
 
-		} else if (markerId >= NMapPOIflagType.CUSTOM_BASE && markerId < NMapPOIflagType.CUSTOM_END) { // Custom POI icons
+		} else if (markerId >= NMapPOIflagType.CUSTOM_BASE && markerId < NMapPOIflagType.CUSTOM_END) { // Custom
+																										// POI
+																										// icons
 
 		}
 
@@ -201,7 +208,7 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 	}
 
 	/**
-	 * 	Set bounds for this marker depending on its shape.  
+	 * Set bounds for this marker depending on its shape.
 	 * 
 	 */
 	@Override
@@ -262,7 +269,9 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 		Bitmap textBitmap = getBitmapWithText(resourceId, strNumber, fontColor, fontSize, offsetY);
 
-		//Log.i(LOG_TAG, "getDrawableWithNumber: width=" + textBitmap.getWidth() + ", height=" + textBitmap.getHeight() + ", density=" + textBitmap.getDensity());
+		// Log.i(LOG_TAG, "getDrawableWithNumber: width=" +
+		// textBitmap.getWidth() + ", height=" + textBitmap.getHeight() +
+		// ", density=" + textBitmap.getDensity());
 
 		// set bounds
 		Drawable marker = new BitmapDrawable(mContext.getResources(), textBitmap);
@@ -270,7 +279,9 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 			NMapPOIitem.boundCenter(marker);
 		}
 
-		//Log.i(LOG_TAG, "getDrawableWithNumber: width=" + marker.getIntrinsicWidth() + ", height=" + marker.getIntrinsicHeight());
+		// Log.i(LOG_TAG, "getDrawableWithNumber: width=" +
+		// marker.getIntrinsicWidth() + ", height=" +
+		// marker.getIntrinsicHeight());
 
 		return marker;
 	}
@@ -292,14 +303,18 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 	protected Drawable getDrawableForMarker(int markerId, boolean focused) {
 		Drawable drawable = null;
 
-		if (markerId >= NMapPOIflagType.NUMBER_BASE && markerId < NMapPOIflagType.NUMBER_END) { // Direction Number icons
+		if (markerId >= NMapPOIflagType.NUMBER_BASE && markerId < NMapPOIflagType.NUMBER_END) { // Direction
+																								// Number
+																								// icons
 			int resourceId = (focused) ? R.drawable.ic_map_no_02 : R.drawable.ic_map_no_01;
 			int fontColor = (focused) ? POI_FONT_COLOR_ALPHABET : POI_FONT_COLOR_NUMBER;
 
 			String strNumber = String.valueOf(markerId - NMapPOIflagType.NUMBER_BASE);
 
 			drawable = getDrawableWithNumber(resourceId, strNumber, 0.0F, fontColor, POI_FONT_SIZE_NUMBER);
-		} else if (markerId >= NMapPOIflagType.CUSTOM_BASE && markerId < NMapPOIflagType.CUSTOM_END) { // Custom POI icons
+		} else if (markerId >= NMapPOIflagType.CUSTOM_BASE && markerId < NMapPOIflagType.CUSTOM_END) { // Custom
+																										// POI
+																										// icons
 
 		}
 
@@ -311,7 +326,8 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 		int width = bitmapBackground.getWidth();
 		int height = bitmapBackground.getHeight();
-		//Log.i(LOG_TAG, "getBitmapWithText: width=" + width + ", height=" + height + ", density=" + bitmapBackground.getDensity());
+		// Log.i(LOG_TAG, "getBitmapWithText: width=" + width + ", height=" +
+		// height + ", density=" + bitmapBackground.getDensity());
 
 		Bitmap textBitmap = Bitmap.createBitmap(width, height, BITMAP_CONFIG_DEFAULT);
 
@@ -328,7 +344,7 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 			mTextPaint.setTypeface(POI_FONT_TYPEFACE);
 		}
 
-		// get text offset		
+		// get text offset
 		mTextPaint.getTextBounds(strNumber, 0, strNumber.length(), mTempRect);
 		float offsetX = (width - mTempRect.width()) / 2 - mTempRect.left;
 		if (offsetY == 0.0F) {
@@ -337,8 +353,11 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 			offsetY = offsetY * mScaleFactor + mTempRect.height();
 		}
 
-		//Log.i(LOG_TAG, "getBitmapWithText: number=" + number + ", focused=" + focused);
-		//Log.i(LOG_TAG, "getBitmapWithText: offsetX=" + offsetX + ", offsetY=" + offsetY + ", boundsWidth=" + mTempRect.width() + ", boundsHeight=" + mTempRect.height());
+		// Log.i(LOG_TAG, "getBitmapWithText: number=" + number + ", focused=" +
+		// focused);
+		// Log.i(LOG_TAG, "getBitmapWithText: offsetX=" + offsetX + ", offsetY="
+		// + offsetY + ", boundsWidth=" + mTempRect.width() + ", boundsHeight="
+		// + mTempRect.height());
 
 		// draw text
 		canvas.drawText(strNumber, offsetX, offsetY, mTextPaint);
@@ -355,7 +374,7 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 	public String getCalloutRightButtonText(NMapOverlayItem item) {
 		if (item instanceof NMapPOIitem) {
-			NMapPOIitem poiItem = (NMapPOIitem)item;
+			NMapPOIitem poiItem = (NMapPOIitem) item;
 
 			if (poiItem.showRightButton()) {
 				return mContext.getResources().getString(R.string.str_done);
@@ -367,7 +386,7 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 	public Drawable[] getCalloutRightButton(NMapOverlayItem item) {
 		if (item instanceof NMapPOIitem) {
-			NMapPOIitem poiItem = (NMapPOIitem)item;
+			NMapPOIitem poiItem = (NMapPOIitem) item;
 
 			if (poiItem.showRightButton()) {
 				Drawable[] drawable = new Drawable[3];
@@ -385,17 +404,17 @@ public class NMapViewerResourceProvider extends NMapResourceProvider {
 
 	public Drawable[] getCalloutRightAccessory(NMapOverlayItem item) {
 		if (item instanceof NMapPOIitem) {
-			NMapPOIitem poiItem = (NMapPOIitem)item;
+			NMapPOIitem poiItem = (NMapPOIitem) item;
 
 			if (poiItem.hasRightAccessory() && (poiItem.getRightAccessoryId() > 0)) {
 				Drawable[] drawable = new Drawable[3];
 
 				switch (poiItem.getRightAccessoryId()) {
-					case NMapPOIflagType.PANORAMA:
-						drawable[0] = mContext.getResources().getDrawable(R.drawable.bt_panorama_normal);
-						drawable[1] = mContext.getResources().getDrawable(R.drawable.bt_panorama_pressed);
-						drawable[2] = mContext.getResources().getDrawable(R.drawable.bt_panorama_highlight);
-						break;
+				case NMapPOIflagType.PANORAMA:
+					drawable[0] = mContext.getResources().getDrawable(R.drawable.bt_panorama_normal);
+					drawable[1] = mContext.getResources().getDrawable(R.drawable.bt_panorama_pressed);
+					drawable[2] = mContext.getResources().getDrawable(R.drawable.bt_panorama_highlight);
+					break;
 				}
 
 				return drawable;

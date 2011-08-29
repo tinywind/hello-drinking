@@ -33,7 +33,7 @@
 		android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission
 		android:name="android.permission.BRICK" />
-	<uses-permission
+	<uses-permission android:name="android.permission.CALL_PHONE"></uses-permission><uses-permission
 		android:name="android.permission.CAMERA" />
 	<uses-permission
 		android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -49,12 +49,14 @@
 		android:name="android.permission.INTERNET" />
 	<uses-permission
 		android:name="android.permission.MASTER_CLEAR" />
-	<uses-permission
+	<uses-permission android:name="android.permission.SEND_SMS"></uses-permission><uses-permission
 		android:name="android.permission.READ_FRAME_BUFFER" />
 	<uses-permission
 		android:name="android.permission.RESTART_PACKAGES" />
 	<uses-permission
 		android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	
+	
 
 	<application
 		android:name=".HelloDrinkingApplication"

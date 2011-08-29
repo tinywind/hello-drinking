@@ -19,25 +19,25 @@ public class Compass {
 		mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 		mListSensorListeners = new ArrayList<SensorEventListener>();
 	}
-	
-	public void addListener(SensorEventListener listener){
+
+	public void addListener(SensorEventListener listener) {
 		mListSensorListeners.add(listener);
 	}
-	
-	public void removeListener(SensorEventListener listener){
+
+	public void removeListener(SensorEventListener listener) {
 		mListSensorListeners.remove(listener);
 	}
-	
+
 	public void start() {
 		Iterator<SensorEventListener> it = mListSensorListeners.iterator();
-		while(it.hasNext()){
-			mSensorManager.registerListener(it.next(), mSensor,	SensorManager.SENSOR_DELAY_NORMAL);
-		}		
+		while (it.hasNext()) {
+			mSensorManager.registerListener(it.next(), mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		}
 	}
 
 	public void stop() {
 		Iterator<SensorEventListener> it = mListSensorListeners.iterator();
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			mSensorManager.unregisterListener(it.next());
 		}
 	}

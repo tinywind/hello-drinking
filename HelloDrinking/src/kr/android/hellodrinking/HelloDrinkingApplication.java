@@ -1,55 +1,51 @@
 package kr.android.hellodrinking;
 
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.android.hellodrinking.ar.POI;
+import kr.android.hellodrinking.transmission.Request;
+import kr.android.hellodrinking.transmission.dto.PostBean;
+import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
+import kr.android.hellodrinking.transmission.dto.UserBean;
+import kr.android.hellodrinking.utillity.GraphicUtils;
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.widget.Toast;
+
+import com.nhn.android.maps.maplib.NGeoPoint;
 
 public class HelloDrinkingApplication extends Application {
-	public static final String DEFAULT_SERVER = "192.168.10.18";
-	public static final int DEFAULT_PORT = 18080;
-	
-	private String id = "";
-	
-	private List<POI> mListPOIs;
-	
-	public HelloDrinkingApplication(){
-		super();
-		mListPOIs = new ArrayList<POI>();
-		
-		/////Test Part//////////
-		POI testPOI = new POI(38, 127);
-		testPOI.setImageFilePath("/sdcard/dcim/camera/1302919924624.jpg");
-		testPOI.setName("전재형");
-		testPOI.setComment("오늘 시간 많아요. 암컷 고양이 구함!");
-		addPOI(testPOI);
-		
-		POI testPOI2 = new POI(37.5, 127);
-		testPOI2.setImageFilePath("/sdcard/dcim/camera/1308565308004.jpg");
-		testPOI2.setName("정길수");
-		testPOI2.setComment("같이 망가보실분");
-		addPOI(testPOI2);
+	public static String mServerIp = "";
+	public static int mServerPort = 0;
+	public static final int DEFAULT_SEARCH_DISTANCE = 10000;
 
-		POI testPOI3 = new POI(37, 126.5);
-		testPOI3.setImageFilePath("/sdcard/dcim/camera/1306249807793.jpg");
-		testPOI3.setName("정찬규");
-		testPOI3.setComment("난 취직했음.");
-		addPOI(testPOI3);
-		/////Test Part//////////
+	private String id = "";
+	private UserBean user = null;
+	private List<PostBean> mListPosts;
+	private Drawable mUserImage = null;
+
+	public HelloDrinkingApplication() {
+		super();
+		mListPosts = new ArrayList<PostBean>();
 	}
-	
-	public void addPOI(POI poi){
-		mListPOIs.add(poi);
+
+	public void addPost(PostBean post) {
+		mListPosts.add(post);
 	}
-	
-	public void removePOI(POI poi){
-		mListPOIs.remove(poi);
+
+	public void removePost(PostBean post) {
+		mListPosts.remove(post);
 	}
-	
-	public List<POI> getListPOIs(){
-		return mListPOIs;
+
+	public List<PostBean> getListPosts() {
+		return mListPosts;
+	}
+
+	public void setListPosts(List<PostBean> posts) {
+		mListPosts = posts;
 	}
 
 	public void setId(String id) {
@@ -60,4 +56,46 @@ public class HelloDrinkingApplication extends Application {
 		return id;
 	}
 
+	@SuppressWarnings("unchecked")
+	public void refreshListPosts(NGeoPoint myLocation, int distance) {
+		List<PostBean> posts = null;
+		Request request = new Request();
+		try {
+			ResponceBeanPackege responce = request.getPosts(myLocation.getLongitude(), myLocation.getLatitude(), distance);
+			posts = (List<PostBean>) responce.getObject();
+			setListPosts(posts);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(this, "연결이 옳바르지 않습니다.", Toast.LENGTH_SHORT).show();
+			return;
+		} finally {
+			request.close();
+		}
+	}
+
+	public void setUser(UserBean user) {
+		this.user = user;
+		setId(user.getId());
+
+		File file = new File(user.getImageFilePath());
+		if (!file.getName().equals("")) {
+			File imagefile = GraphicUtils.createImageFile(this, user.getBuffer(), file);
+			Bitmap bitmap = GraphicUtils.createBitmapFromImageFile(imagefile);
+			user.setImageFilePath(imagefile.getAbsolutePath());
+			setUserImage(new BitmapDrawable(bitmap));
+		}
+
+	}
+
+	public UserBean getUser() {
+		return user;
+	}
+
+	public void setUserImage(Drawable mUserImage) {
+		this.mUserImage = mUserImage;
+	}
+
+	public Drawable getUserImage() {
+		return mUserImage;
+	}
 }

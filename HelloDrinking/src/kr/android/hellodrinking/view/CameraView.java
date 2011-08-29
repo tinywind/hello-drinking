@@ -1,4 +1,4 @@
-package kr.android.hellodrinking.ar;
+package kr.android.hellodrinking.view;
 
 import java.io.IOException;
 
@@ -36,8 +36,8 @@ public class CameraView extends SurfaceView implements Callback {
 		param.set("orientation", "portrait");
 		param.setPreviewSize(getWidth(), getHeight());
 		param.setPictureFormat(PixelFormat.JPEG);
-		mCamera.setParameters(param);
 		mCamera.setDisplayOrientation(90);
+		mCamera.setParameters(param);
 		try {
 			mCamera.setPreviewDisplay(mSurfaceHolder);
 		} catch (IOException e) {
@@ -52,7 +52,6 @@ public class CameraView extends SurfaceView implements Callback {
 		param.setPreviewSize(width, height);
 		param.setPictureFormat(PixelFormat.JPEG);
 		mCamera.setParameters(param);
-		mCamera.setDisplayOrientation(90);
 		mCamera.startPreview();
 	}
 

@@ -13,6 +13,7 @@ import kr.android.hellodrinking.transmission.dto.UserBean;
 import kr.android.hellodrinking.transmission.exception.GetUserException;
 import kr.android.hellodrinking.transmission.exception.LoginException;
 import kr.android.hellodrinking.transmission.exception.Message;
+import kr.android.hellodrinking.transmission.exception.PostException;
 import kr.android.hellodrinking.transmission.exception.UserModifyException;
 
 public class DBAccess {
@@ -70,14 +71,17 @@ public class DBAccess {
 		return null;
 	}
 
-	public Exception setImageAtPostInfo(String id, String image) {
+	public Exception setImageAtPostInfo(int postNum, String image) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = mConnection.prepareStatement("UPDATE postinfo SET image=? WHERE id=?");
+			pstmt = mConnection.prepareStatement("UPDATE postinfo SET image=? WHERE postnum=?");
 			pstmt.setString(1, image);
-			pstmt.setString(2, id);
-			pstmt.executeUpdate();
+			pstmt.setInt(2, postNum);
+			int result = pstmt.executeUpdate();
 			mConnection.commit();
+			if (result == 0) {
+				return new PostException("알 수 없는 버그임", PostException.State.NotKnownError);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return e;
@@ -235,14 +239,12 @@ public class DBAccess {
 				pstmt = mConnection.prepareStatement("SELECT * FROM postinfo");
 				result = pstmt.executeQuery();
 			} else {
-				pstmt = mConnection.prepareStatement(
-						"SELECT * FROM postinfo a, " +
-						"(SELECT a.postnum postnum, (CASE WHEN (midvalue>1) THEN (round(round(6371000.0 * acos(1)))) " +
-						"WHEN (midvalue <= 1) THEN (round(round(6371000.0 * acos(midvalue)))) END) AS distance " +
-						"FROM POSTINFO a, (SELECT postnum, (SIN(latitude*ACOS(-1)/180)*SIN(?*ACOS(-1)/180)) " +
-						"+(COS(latitude*ACOS(-1)/180)*COS(?*ACOS(-1)/180)*COS((longitude-?)*ACOS(-1)/180)) midvalue FROM postinfo) b " +
-						"WHERE a.postnum = b.postnum) b " +
-						"WHERE a.postnum = b.postnum AND distance < ?");
+				pstmt = mConnection.prepareStatement("SELECT * FROM postinfo a, "
+						+ "(SELECT a.postnum postnum, (CASE WHEN (midvalue>1) THEN (round(round(6371000.0 * acos(1)))) "
+						+ "WHEN (midvalue <= 1) THEN (round(round(6371000.0 * acos(midvalue)))) END) AS distance "
+						+ "FROM POSTINFO a, (SELECT postnum, (SIN(latitude*ACOS(-1)/180)*SIN(?*ACOS(-1)/180)) "
+						+ "+(COS(latitude*ACOS(-1)/180)*COS(?*ACOS(-1)/180)*COS((longitude-?)*ACOS(-1)/180)) midvalue FROM postinfo) b "
+						+ "WHERE a.postnum = b.postnum) b " + "WHERE a.postnum = b.postnum AND distance < ?");
 				pstmt.setDouble(1, latitude);
 				pstmt.setDouble(2, latitude);
 				pstmt.setDouble(3, longitude);
@@ -251,10 +253,7 @@ public class DBAccess {
 			}
 			List<PostBean> posts = new ArrayList<PostBean>();
 			while (result.next()) {
-				PostBean post = new PostBean(
-						result.getString("id"),
-						result.getDouble("longitude"), 
-						result.getDouble("latitude"));
+				PostBean post = new PostBean(result.getString("id"), result.getDouble("longitude"), result.getDouble("latitude"));
 				post.setPostNum(result.getInt("postnum"));
 				post.setComment(result.getString("comment"));
 				post.setImageFilePath(result.getString("image"));

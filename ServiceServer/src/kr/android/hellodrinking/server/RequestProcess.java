@@ -19,8 +19,7 @@ public class RequestProcess {
 	private ObjectOutputStream mWriter;
 	private DBAccess mDBAccess;
 
-	public RequestProcess(RequestBeanPackege controller, Connection connection, ObjectOutputStream writer)
-			throws IOException {
+	public RequestProcess(RequestBeanPackege controller, Connection connection, ObjectOutputStream writer) throws IOException {
 		mRequest = controller;
 		mDBAccess = new DBAccess(connection);
 		mWriter = writer;
@@ -57,7 +56,7 @@ public class RequestProcess {
 			responce = new ResponceBeanPackege(exception);
 		}
 
-		return sendResponce(responce);		
+		return sendResponce(responce);
 	}
 
 	private boolean getUser() {
@@ -108,14 +107,10 @@ public class RequestProcess {
 
 	private boolean post() {
 		PostBean post = mRequest.post;
-		Exception exception = mDBAccess.post(post.getId(), post.getComment(), "", post.getLongitude(), post.getLatitude());
+		post.setImageFilePath(writerImageFileAndGetImageFilePath(post.getImageFilePath(), post.getBuffer()));
+		Exception exception = mDBAccess.post(post.getId(), post.getComment(), post.getImageFilePath(), post.getLongitude(), post.getLatitude());
 
 		ResponceBeanPackege responce = new ResponceBeanPackege(exception);
-
-		if (responce.isSuccessed()) {
-			post.setImageFilePath(writerImageFileAndGetImageFilePath(post.getImageFilePath(), post.getBuffer()));
-			mDBAccess.setImageAtPostInfo(post.getId(), post.getImageFilePath());
-		}
 
 		return sendResponce(responce);
 	}
@@ -188,7 +183,8 @@ public class RequestProcess {
 			isSuccessed = false;
 			responce = new ResponceBeanPackege(exception);
 		}
-		mDBAccess.addLoginHistory(user.getId(), isSuccessed);
+		if (user.getId() != null)
+			mDBAccess.addLoginHistory(user.getId(), isSuccessed);
 
 		return sendResponce(responce);
 	}

@@ -1,36 +1,32 @@
 package kr.android.hellodrinking.activity;
 
+import java.io.File;
 import java.util.List;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.ar.POI;
-import kr.android.hellodrinking.map.MapContainerView;
-import kr.android.hellodrinking.map.PostsListener;
-import kr.android.hellodrinking.map.PostsModel;
-import kr.android.hellodrinking.map.ValueChangeEvent;
-import kr.android.hellodrinking.sensor.Compass;
-import kr.android.hellodrinking.sensor.CompassView;
+import kr.android.hellodrinking.dialog.UserInfoDialog;
+import kr.android.hellodrinking.transmission.dto.PostBean;
+import kr.android.hellodrinking.utillity.GraphicUtils;
+import kr.android.hellodrinking.view.CompassView;
+import kr.android.hellodrinking.view.MapContainerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
-import com.nhn.android.maps.NMapCalloutBasicOverlay;
 import com.nhn.android.maps.NMapCompassManager;
 import com.nhn.android.maps.NMapController;
 import com.nhn.android.maps.NMapLocationManager;
@@ -48,11 +44,10 @@ import com.nhn.android.mapviewer.overlay.NMapMyLocationOverlay;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 
-public class MapActivity extends NMapActivity implements PostsListener {
+public class MapActivity extends NMapActivity {
 	private static final String LOG_TAG = "NMapViewer";
 	private static final boolean DEBUG = false;
 	private static final String API_KEY = "6dff5a14ec0abea130009332080cc6fc";
-	private static Drawable DEFAULT_IMAGE;
 	private MapContainerView mMapContainerView;
 	private NMapView mMapView;
 	private NMapController mMapController;
@@ -61,8 +56,6 @@ public class MapActivity extends NMapActivity implements PostsListener {
 	private static final String KEY_ZOOM_LEVEL = "NMapViewer.zoomLevel";
 	private static final String KEY_CENTER_LONGITUDE = "NMapViewer.centerLongitudeE6";
 	private static final String KEY_CENTER_LATITUDE = "NMapViewer.centerLatitudeE6";
-	private static final int POIOVERLAY_IMAGE_WIDTH = 150;
-	private static final int POIOVERLAY_IMAGE_HEIGHT = 150;
 	private SharedPreferences mPreferences;
 	private NMapOverlayManager mOverlayManager;
 	private NMapMyLocationOverlay mMyLocationOverlay;
@@ -72,16 +65,27 @@ public class MapActivity extends NMapActivity implements PostsListener {
 	private NMapPOIdataOverlay mFloatingPOIdataOverlay;
 	private NMapPOIitem mFloatingPOIitem;
 	private NMapPOIdataOverlay mPoiDataOverlay;
-	private PostsModel mPostsModel;
-	private Compass mCompass;
 	private CompassView mCompassView;
-	
-	protected ImageButton mButtonPosts, mButtonMap, mButtonAR, mButtonMember;
+
+	protected ImageButton mButtonPosts;
+	protected ImageButton mButtonMap;
+	protected ImageButton mButtonAR;
+	protected ImageButton mButtonMember;
+
+	private ImageButton mButtonRefresh;
+	private ImageButton mButtonPost;
+	private EditText mEditDistance;
+	private NGeoPoint myLocation;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
+
+		mButtonRefresh = (ImageButton) findViewById(R.id.frame_button_refresh);
+		mButtonPost = (ImageButton) findViewById(R.id.frame_button_post);
+		mEditDistance = (EditText) findViewById(R.id.frame_edit_distance);
+		mEditDistance.setText(HelloDrinkingApplication.DEFAULT_SEARCH_DISTANCE + "");
 
 		mMapView = new NMapView(this);
 		mMapView.setApiKey(API_KEY);
@@ -95,8 +99,6 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		mMapView.setOnMapViewDelegate(onMapViewTouchDelegate);
 		mMapView.setBuiltInZoomControls(true, new NMapView.LayoutParams(NMapView.LayoutParams.WRAP_CONTENT, NMapView.LayoutParams.WRAP_CONTENT,
 				NMapView.LayoutParams.BOTTOM_RIGHT));
-
-		DEFAULT_IMAGE = getResources().getDrawable(R.drawable.ic_pin_01);
 
 		mMapController = mMapView.getMapController();
 		mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
@@ -114,11 +116,8 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		mMapCompassManager = new NMapCompassManager(this);
 		mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
 
-		mCompass = new Compass(this);
 		mCompassView = (CompassView) findViewById(R.id.map_compass);
 		mCompassView.setBackgroundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_compass));
-		mCompassView.setOrientationBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_angle));
-		mCompassView.setCompass(mCompass);
 
 		mButtonPosts = (ImageButton) findViewById(R.id.frame_button_posts);
 		mButtonMap = (ImageButton) findViewById(R.id.frame_button_map);
@@ -145,18 +144,49 @@ public class MapActivity extends NMapActivity implements PostsListener {
 			}
 		});
 
-		
+		mButtonPost.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				Intent intent = new Intent(MapActivity.this, PostActivity.class);
+				intent.putExtra("kr.android.hellodrinking.MYLOCATION_LONGITUDE", myLocation.getLongitude());
+				intent.putExtra("kr.android.hellodrinking.MYLOCATION_LATITUDE", myLocation.getLatitude());
+				startActivity(intent);
+			}
+		});
+
+		mButtonRefresh.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				((HelloDrinkingApplication) getApplication()).refreshListPosts(myLocation, Integer.parseInt(mEditDistance.getText().toString()));
+				presentPosts();
+			}
+		});
+
 		startMyLocation();
-		setModel();
+		presentPosts();
 	}
 
-	private void setModel() {
-		mPostsModel = new PostsModel(((HelloDrinkingApplication) getApplication()).getListPOIs());
-		mPostsModel.addListener(this);
-		modelChanged(new ValueChangeEvent(mPostsModel));
+	private void presentPosts() {
+		List<PostBean> posts = ((HelloDrinkingApplication) getApplication()).getListPosts();
+
+		NMapPOIdata poiData = new NMapPOIdata(posts.size(), mMapViewerResourceProvider);
+		poiData.beginPOIdata(posts.size());
+		for (int index = 0; index < posts.size(); index++) {
+			PostBean post = posts.get(index);
+			File file = new File(post.getImageFilePath());
+			Bitmap bitmap = null;
+			if (!file.getName().equals("")) {
+				File imagefile = GraphicUtils.createImageFile(this, post.getBuffer(), file);
+				bitmap = GraphicUtils.createBitmapFromImageFile(imagefile);
+				post.setImageFilePath(imagefile.getAbsolutePath());
+			}
+			Drawable image = GraphicUtils.getOverlayDrawableFromBitmap(bitmap);
+			poiData.addPOIitem(new NGeoPoint(post.getLongitude(), post.getLatitude()), post.getId(), image, post);
+		}
+		poiData.endPOIdata();
+
+		mPoiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+		mPoiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
 	}
 
-	
 	@Override
 	protected void onResume() {
 		startMyLocation();
@@ -184,7 +214,7 @@ public class MapActivity extends NMapActivity implements PostsListener {
 				if (!mMapView.isAutoRotateEnabled()) {
 					mMyLocationOverlay.setCompassHeadingVisible(true);
 					mMapCompassManager.enableCompass();
-					mMapView.setAutoRotateEnabled(true, false);
+					mMapView.setAutoRotateEnabled(false, false);
 					mMapContainerView.requestLayout();
 				} else {
 					stopMyLocation();
@@ -221,8 +251,10 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {
 			if (item == null)
 				return;
+
+			PostBean post = (PostBean) item.getTag();
 			Intent intent = new Intent(MapActivity.this, UserInfoDialog.class);
-			intent.putExtra("kr.android.POI", (POI) item.getTag());
+			intent.putExtra("kr.android.hellodrinking.POST", post);
 			startActivity(intent);
 		}
 	};
@@ -251,6 +283,7 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		public boolean onLocationChanged(NMapLocationManager locationManager, NGeoPoint myLocation) {
 			if (mMapController != null)
 				mMapController.animateTo(myLocation);
+			MapActivity.this.myLocation = myLocation;
 			return true;
 		}
 
@@ -341,9 +374,7 @@ public class MapActivity extends NMapActivity implements PostsListener {
 			}
 
 			mMapController.animateTo(overlayItem.getPoint());
-			// return new NMapCalloutCustomOverlay(itemOverlay, overlayItem,
-			// itemBounds, mMapViewerResourceProvider);
-			return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
+			return null;
 		}
 	};
 
@@ -367,73 +398,4 @@ public class MapActivity extends NMapActivity implements PostsListener {
 		edit.putInt(KEY_ZOOM_LEVEL, level);
 		edit.commit();
 	}
-
-	/* Menus */
-	private static final int MENU_ITEM_CLEAR_MAP = 10;
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuItem menuItem = menu.add(Menu.NONE, MENU_ITEM_CLEAR_MAP, Menu.CATEGORY_SECONDARY, "Clear Map");
-		menuItem.setIcon(android.R.drawable.ic_menu_revert);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu pMenu) {
-		super.onPrepareOptionsMenu(pMenu);
-		pMenu.findItem(MENU_ITEM_CLEAR_MAP).setEnabled(mOverlayManager.sizeofOverlays() > 0);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case MENU_ITEM_CLEAR_MAP:
-			if (mMyLocationOverlay != null)
-				mOverlayManager.removeOverlay(mMyLocationOverlay);
-			mMapController.setMapViewMode(NMapView.VIEW_MODE_VECTOR);
-			mMapController.setMapViewTrafficMode(false);
-			mMapController.setMapViewBicycleMode(false);
-			mOverlayManager.clearOverlays();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void modelChanged(ValueChangeEvent e) {
-		List<POI> list = ((PostsModel) e.getSource()).getModel();
-
-		NMapPOIdata poiData = new NMapPOIdata(list.size(), mMapViewerResourceProvider);
-		poiData.beginPOIdata(list.size());
-		for (int index = 0; index < list.size(); index++) {
-			POI poi = list.get(index);
-
-			Drawable image;
-			Bitmap bitmap = BitmapFactory.decodeFile(poi.getImageFilePath());
-			if (bitmap != null) {
-				bitmap = Bitmap.createScaledBitmap(bitmap, POIOVERLAY_IMAGE_WIDTH, POIOVERLAY_IMAGE_HEIGHT, true);
-				image = new BitmapDrawable(bitmap);
-			} else
-				image = DEFAULT_IMAGE;
-			image.setAlpha(180);
-
-			poiData.addPOIitem(new NGeoPoint(poi.getLongitude(), poi.getLatitude()), poi.getName(), image, poi);
-		}
-		poiData.endPOIdata();
-
-		mPoiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-		mPoiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
-		mPoiDataOverlay.selectPOIitem(0, true);
-	}
-
-	@Override
-	public void postAdded(ValueChangeEvent e) {
-	}
-
-	@Override
-	public void postRemoved(ValueChangeEvent e) {
-	}
-
 }

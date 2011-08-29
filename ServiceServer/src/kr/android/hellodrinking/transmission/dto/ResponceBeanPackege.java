@@ -24,7 +24,8 @@ public class ResponceBeanPackege implements Serializable {
 		setException(exception);
 	}
 
-	public ResponceBeanPackege(boolean isSuccessed, Exception exception) {
+	public ResponceBeanPackege(boolean isSuccessed,
+			Exception exception) {
 		this.setSuccess(isSuccessed);
 		if (exception != null)
 			setException(exception);

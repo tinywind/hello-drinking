@@ -83,14 +83,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
-
-		<TextView
-			android:layout_width="100dip"
-			android:textSize="20dip"
-			android:layout_height="wrap_content"
-			android:text="Design By 손인엽"
-			android:textColor="#000000"
-			android:layout_gravity="center" />
 		<!-- 재형아 s('')a -->
 		<!-- 여기가 회원가입 버튼 -->
 		<ImageButton

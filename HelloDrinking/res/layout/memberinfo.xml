@@ -28,11 +28,6 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/memberinfo_button_takephoto"
 							android:text="Take Photo"></Button>
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:id="@+id/memberinfo_button_takefile"
-							android:text="사진으로부터"></Button>
 
 					</LinearLayout>
 					<ImageView

@@ -10,7 +10,7 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/userinfo_imageview"></ImageView>
 	<TextView
-		android:id="@+id/userinfo_textview_name"
+		android:id="@+id/userinfo_textview_id"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="id"></TextView>
@@ -19,5 +19,15 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:id="@+id/userinfo_textview_comment"></TextView>
+	<Button
+		android:text="Call"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/userinfo_button_call" />
 
+	<Button
+		android:text="Letter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/userinfo_button_letter" />
 </LinearLayout> 

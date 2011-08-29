@@ -1,8 +1,10 @@
 package kr.android.hellodrinking.activity;
 
 import com.nhn.android.maps.NMapLocationManager;
+import com.nhn.android.maps.NMapLocationManager.OnLocationChangeListener;
 import com.nhn.android.maps.maplib.NGeoPoint;
 
+import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
 import android.app.Activity;
 import android.content.Context;
@@ -14,13 +16,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public abstract class FrameActivity extends Activity implements OnClickListener {
+public abstract class FrameActivity extends Activity implements OnClickListener, OnLocationChangeListener {
 	protected LayoutInflater mInflater;
 	protected ViewGroup mViewgroup;
-	protected ImageButton mButtonPosts, mButtonMap, mButtonAR, mButtonMember;
+	protected ImageButton mButtonPosts;
+	protected ImageButton mButtonMap;
+	protected ImageButton mButtonAR;
+	protected ImageButton mButtonMember;
+	protected Button mButtonRefresh;
+	protected Button mButtonPost;
+	protected EditText mEditDistance;
+
 	protected NMapLocationManager mMapLocationManager;
 	protected NGeoPoint myLocation;
 
@@ -45,26 +56,34 @@ public abstract class FrameActivity extends Activity implements OnClickListener 
 		mButtonMember.setOnClickListener(this);
 
 		mMapLocationManager = new NMapLocationManager(this);
-		mMapLocationManager.setOnLocationChangeListener(onMyLocationChangeListener);
+		mMapLocationManager.setOnLocationChangeListener(this);
 
 		myLocation = new NGeoPoint(0, 0);
 
+		mButtonPost = (Button) findViewById(R.id.frame_button_post);
+		mButtonRefresh = (Button) findViewById(R.id.frame_button_refresh);
+		mEditDistance = (EditText) findViewById(R.id.frame_edit_distance);
+
+		mEditDistance.setText(HelloDrinkingApplication.DEFAULT_SEARCH_DISTANCE + "");
+
+		mButtonPost.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				Intent intent = new Intent(FrameActivity.this, PostActivity.class);
+				intent.putExtra("kr.android.hellodrinking.MYLOCATION_LONGITUDE", myLocation.getLongitude());
+				intent.putExtra("kr.android.hellodrinking.MYLOCATION_LATITUDE", myLocation.getLatitude());
+				startActivity(intent);
+			}
+		});
+
+		mButtonRefresh.setOnClickListener(new OnClickListener() {
+			public void onClick(View paramView) {
+				((HelloDrinkingApplication) getApplication()).refreshListPosts(myLocation, Integer.parseInt(mEditDistance.getText().toString()));
+				presentPosts();
+			}
+		});
+
 		loadContent();
 	}
-
-	/* MyLocation Listener */
-	private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
-		public boolean onLocationChanged(NMapLocationManager locationManager, NGeoPoint myLocation) {
-			FrameActivity.this.myLocation = myLocation;
-			return true;
-		}
-
-		public void onLocationUpdateTimeout(NMapLocationManager locationManager) {
-			stopMyLocation();
-			Toast.makeText(FrameActivity.this, "Your current location is temporarily unavailable", Toast.LENGTH_LONG).show();
-			FrameActivity.this.myLocation.set(0, 0);
-		}
-	};
 
 	@Override
 	protected void onResume() {
@@ -105,5 +124,23 @@ public abstract class FrameActivity extends Activity implements OnClickListener 
 		}
 	}
 
+	@Override
+	public boolean onLocationChanged(NMapLocationManager paramNMapLocationManager, NGeoPoint point) {
+		myLocation = point;
+		presentLocationChanged();
+		return true;
+	}
+
+	@Override
+	public void onLocationUpdateTimeout(NMapLocationManager paramNMapLocationManager) {
+		stopMyLocation();
+		Toast.makeText(FrameActivity.this, "Your current location is temporarily unavailable", Toast.LENGTH_LONG).show();
+		FrameActivity.this.myLocation.set(0, 0);
+	}
+
 	protected abstract void loadContent();
+
+	protected abstract void presentPosts();
+
+	protected abstract void presentLocationChanged();
 }

@@ -35,7 +35,8 @@ public class NMapPOIflagType {
 
 	// Direction Number icons
 	private static final int MAX_NUMBER_COUNT = 1000;
-	public static final int NUMBER_BASE = 0x1000; // set NUMBER_BASE + 1 for '1' number
+	public static final int NUMBER_BASE = 0x1000; // set NUMBER_BASE + 1 for '1'
+													// number
 	public static final int NUMBER_END = NUMBER_BASE + MAX_NUMBER_COUNT;
 
 	// Custom POI icons
@@ -47,11 +48,11 @@ public class NMapPOIflagType {
 		boolean boundsCentered = false;
 
 		switch (markerId) {
-			default:
-				if (markerId >= NMapPOIflagType.NUMBER_BASE && markerId < NMapPOIflagType.NUMBER_END) {
-					boundsCentered = true;
-				}
-				break;
+		default:
+			if (markerId >= NMapPOIflagType.NUMBER_BASE && markerId < NMapPOIflagType.NUMBER_END) {
+				boundsCentered = true;
+			}
+			break;
 		}
 
 		return boundsCentered;
@@ -67,9 +68,12 @@ public class NMapPOIflagType {
 		int poiFlagType = UNKNOWN;
 
 		// Alphabet POI icons
-		if (markerId >= NUMBER_BASE && markerId < NUMBER_END) { // Direction Number icons
+		if (markerId >= NUMBER_BASE && markerId < NUMBER_END) { // Direction
+																// Number icons
 			poiFlagType = NUMBER_BASE;
-		} else if (markerId >= CUSTOM_BASE && markerId < CUSTOM_END) { // Custom POI icons
+		} else if (markerId >= CUSTOM_BASE && markerId < CUSTOM_END) { // Custom
+																		// POI
+																		// icons
 			poiFlagType = CUSTOM_BASE;
 		} else if (markerId > SINGLE_POI_BASE) {
 			poiFlagType = markerId;
@@ -81,9 +85,12 @@ public class NMapPOIflagType {
 	public static int getPOIflagIconIndex(int markerId) {
 		int iconIndex = 0;
 
-		if (markerId >= NUMBER_BASE && markerId < NUMBER_END) { // Direction Number icons
+		if (markerId >= NUMBER_BASE && markerId < NUMBER_END) { // Direction
+																// Number icons
 			iconIndex = markerId - (NUMBER_BASE + 1);
-		} else if (markerId >= CUSTOM_BASE && markerId < CUSTOM_END) { // Custom POI icons
+		} else if (markerId >= CUSTOM_BASE && markerId < CUSTOM_END) { // Custom
+																		// POI
+																		// icons
 			iconIndex = markerId - (CUSTOM_BASE + 1);
 		} else if (markerId > SINGLE_POI_BASE) {
 			iconIndex = 0;

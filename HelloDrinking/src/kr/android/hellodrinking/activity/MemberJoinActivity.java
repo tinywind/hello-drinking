@@ -1,23 +1,15 @@
 package kr.android.hellodrinking.activity;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OptionalDataException;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
 import kr.android.hellodrinking.transmission.Request;
 import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
+import kr.android.hellodrinking.utillity.GraphicUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +22,6 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 	private static final int CAMERA_PIC_REQUEST = 1337;
 
 	private Button mButtonTakePhoto;
-	private Button mButtonTakeFile;
 	private Button mButtonSend;
 	private EditText mEditId;
 	private EditText mEditPw;
@@ -47,7 +38,6 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.memberjoin);
 
-		mButtonTakeFile = (Button) findViewById(R.id.memberjoin_button_takefile);
 		mButtonTakePhoto = (Button) findViewById(R.id.memberjoin_button_takephoto);
 		mButtonSend = (Button) findViewById(R.id.memberjoin_button_send);
 
@@ -79,9 +69,7 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.memberjoin_button_takefile) {
-			// 갤러리 부르기
-		} else if (view.getId() == R.id.memberjoin_button_takephoto) {
+		if (view.getId() == R.id.memberjoin_button_takephoto) {
 			Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 		} else if (view.getId() == R.id.memberjoin_button_send) {
@@ -93,7 +81,7 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 			String sex = mEditSex.getText().toString().trim();
 			String phone = mEditPhone.getText().toString().trim();
 			String job = mEditJob.getText().toString().trim();
-			String imageFilePath = null;
+			File imagefile = null;
 
 			if (id.length() < 1) {
 				Toast.makeText(this, "ID가 비어 있습니다.", Toast.LENGTH_SHORT).show();
@@ -112,43 +100,12 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 				return;
 			}
 
-			File cacheDir = getCacheDir();
-			try {
-				if (!cacheDir.isDirectory() || !cacheDir.exists())
-					cacheDir.mkdir();
-			} catch (Exception e) {
-				Toast.makeText(this, "Create Folder Error about Cache Directory", Toast.LENGTH_SHORT).show();
-			}
-			try {
-				File file = new File(getCacheDir(),"photo.jpg"); 
-				if(file.exists()){
-					file.delete();
-					file.createNewFile();
-				}
-				FileOutputStream fos = new FileOutputStream(file); 
-				
-				Drawable drawable = mImagePhoto.getDrawable();
-				Rect rect = drawable.getBounds();
-				
-				Bitmap bitmap = Bitmap.createBitmap(rect.right, rect.bottom, Bitmap.Config.ARGB_8888);
-				Canvas canvas = new Canvas(bitmap);
-				drawable.setBounds(0, 0, rect.right, rect.bottom);
-				drawable.draw(canvas);
-				
-				bitmap.compress(CompressFormat.JPEG, 80 , fos); 
-				fos.flush(); 
-				fos.close();
+			imagefile = GraphicUtils.createTempImageFile(this, mImagePhoto.getDrawable());
 
-				imageFilePath = file.getAbsolutePath();
-			} catch (Exception e) {
-				Toast.makeText(this, "Save Error about Image File", Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			}
-
-			Request request = new Request(HelloDrinkingApplication.DEFAULT_SERVER, HelloDrinkingApplication.DEFAULT_PORT);
+			Request request = new Request(HelloDrinkingApplication.mServerIp, HelloDrinkingApplication.mServerPort);
 			ResponceBeanPackege responce = null;
 			try {
-				responce = request.register(id, name, password, age, sex, phone, job, imageFilePath);
+				responce = request.register(id, name, password, age, sex, phone, job, imagefile.getAbsolutePath());
 			} catch (Exception e) {
 				e.printStackTrace();
 				Toast.makeText(this, "인터넷 연결이 바르지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -156,8 +113,7 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 			request.close();
 			if (responce.isSuccessed()) {
 				((HelloDrinkingApplication) getApplication()).setId(id);
-				Intent intent = new Intent(this, PostsActivity.class);
-				startActivity(intent);
+				finish();
 			} else {
 				Toast.makeText(this, responce.getException().getMessage(), Toast.LENGTH_LONG).show();
 			}

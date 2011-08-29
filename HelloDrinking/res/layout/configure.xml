@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/ar_frame"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<TextView
+				android:text="Ip"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+			<EditText
+				android:id="@+id/configure_edit_ip"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<TextView
+				android:text="Port"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+			<EditText
+				android:id="@+id/configure_edit_port"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/configure_button_save"
+			android:text="SAVE"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+	</LinearLayout>
+</FrameLayout>

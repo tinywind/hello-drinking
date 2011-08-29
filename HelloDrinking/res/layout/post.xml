@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<ScrollView
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+						<Button
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:id="@+id/post_button_takephoto"
+							android:text="Take Photo"></Button>
+
+					</LinearLayout>
+					<ImageView
+						android:id="@+id/post_image"
+						android:src="@drawable/bt_panorama_normal"
+						android:layout_height="wrap_content"
+						android:layout_width="wrap_content"></ImageView>
+
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="ID" />
+					<EditText
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:id="@+id/post_edit_id"
+						android:editable="false"
+						android:clickable="false"
+						android:enabled="false">
+						<requestFocus></requestFocus>
+					</EditText>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+					<TextView
+						android:id="@+id/textView8"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="할 말"></TextView>
+					<EditText
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/post_edit_comment"></EditText>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_height="wrap_content"
+					android:layout_width="fill_parent">
+					<Button
+						android:text="Send"
+						android:id="@+id/post_button_send"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"></Button>
+				</LinearLayout>
+			</LinearLayout>
+		</ScrollView>
+	</LinearLayout>
+</FrameLayout>

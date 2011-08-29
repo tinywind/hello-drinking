@@ -4,27 +4,42 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
-	<FrameLayout
-		android:id="@+id/frame_frame_contents"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"/>
 
-	<LinearLayout
+	<RelativeLayout
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 
-		<ScrollView
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="8">
-		</ScrollView>
-
 		<LinearLayout
+			android:id="@+id/frame_linear_search"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			android:layout_weight="1">
+			android:layout_alignParentTop="true">
+			<Button
+				android:id="@+id/frame_button_post"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="POST" />
+
+			<EditText
+				android:id="@+id/frame_edit_distance"
+				android:layout_width="150dip"
+				android:layout_height="wrap_content" />
+			<Button
+				android:id="@+id/frame_button_refresh"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="REFRESH" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/frame_linear_activities"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_alignParentBottom="true">
 
 			<LinearLayout
 				android:layout_height="wrap_content"
@@ -78,7 +93,16 @@
 					android:layout_gravity="center_vertical|center_horizontal"></ImageButton>
 			</LinearLayout>
 		</LinearLayout>
-	</LinearLayout>
+
+		<FrameLayout
+			android:id="@+id/frame_frame_contents"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_below="@id/frame_linear_search"
+			android:layout_above="@id/frame_linear_activities"
+			android:layout_marginBottom="10dip"
+			android:layout_marginTop="10dip" />
+	</RelativeLayout>
 
 </FrameLayout>
 
