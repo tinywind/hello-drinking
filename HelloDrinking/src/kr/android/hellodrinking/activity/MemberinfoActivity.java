@@ -74,8 +74,7 @@ public class MemberinfoActivity extends Activity implements OnClickListener {
 		if (responce == null) {
 			Toast.makeText(this, "통신이 원할하지 않습니다.", Toast.LENGTH_SHORT).show();
 			onBackPressed();
-		}
-		if (responce.isSuccessed()) {
+		} else if (responce.isSuccessed()) {
 			UserBean user = (UserBean) responce.getObject();
 			mEditAge.setText(user.getAge());
 			mEditId.setText(user.getId());
@@ -105,6 +104,7 @@ public class MemberinfoActivity extends Activity implements OnClickListener {
 				}
 			}
 		}
+		((HelloDrinkingApplication) getApplication()).setServerFromPreferences();
 	}
 
 	@Override
@@ -149,9 +149,13 @@ public class MemberinfoActivity extends Activity implements OnClickListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 				Toast.makeText(this, "인터넷 연결이 바르지 않습니다.", Toast.LENGTH_SHORT).show();
+			} finally {
+				request.close();
 			}
-			request.close();
-			if (responce.isSuccessed()) {
+
+			if (responce == null) {
+				Toast.makeText(this, "인터넷 연결이 옳지 않습니다.", Toast.LENGTH_LONG).show();
+			} else if (responce.isSuccessed()) {
 				((HelloDrinkingApplication) getApplication()).setId(id);
 				finish();
 			} else {

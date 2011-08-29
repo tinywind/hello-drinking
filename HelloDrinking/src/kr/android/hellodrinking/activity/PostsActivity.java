@@ -40,7 +40,8 @@ public class PostsActivity extends FrameActivity {
 	@Override
 	protected void presentPosts() {
 		List<PostBean> posts = ((HelloDrinkingApplication) getApplication()).getListPosts();
-		mListViewPosts.setAdapter(new PostAdapter(this, R.layout.posts_row, posts));
+		PostAdapter adapter = new PostAdapter(this, R.layout.posts_row, posts);
+		mListViewPosts.setAdapter(adapter);
 		presentLocationChanged();
 	}
 

@@ -119,7 +119,11 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".activity.UserInfoDialog"
+			android:name=".dialog.UserInfoDialog"
+			android:screenOrientation="portrait"
+			android:theme="@android:style/Theme.Dialog"></activity>
+		<activity
+			android:name=".dialog.ConfigureDialog"
 			android:screenOrientation="portrait"
 			android:theme="@android:style/Theme.Dialog"></activity>
 	</application>

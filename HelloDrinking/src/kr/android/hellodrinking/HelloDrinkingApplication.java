@@ -10,6 +10,7 @@ import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
 import kr.android.hellodrinking.transmission.dto.UserBean;
 import kr.android.hellodrinking.utillity.GraphicUtils;
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,9 +19,9 @@ import android.widget.Toast;
 import com.nhn.android.maps.maplib.NGeoPoint;
 
 public class HelloDrinkingApplication extends Application {
+	public static final int DEFAULT_SEARCH_DISTANCE = 10000;
 	public static String mServerIp = "";
 	public static int mServerPort = 0;
-	public static final int DEFAULT_SEARCH_DISTANCE = 10000;
 
 	private String id = "";
 	private UserBean user = null;
@@ -32,6 +33,12 @@ public class HelloDrinkingApplication extends Application {
 		mListPosts = new ArrayList<PostBean>();
 	}
 
+	public void setServerFromPreferences(){
+		SharedPreferences settings = getSharedPreferences("Server", MODE_PRIVATE);
+		HelloDrinkingApplication.mServerIp = settings.getString("ip", "10.0.2.2");
+		HelloDrinkingApplication.mServerPort = settings.getInt("port", 18080);	
+	}
+	
 	public void addPost(PostBean post) {
 		mListPosts.add(post);
 	}

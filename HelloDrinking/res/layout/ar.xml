@@ -4,7 +4,7 @@
 	android:id="@+id/ar_frame"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<kr.android.hellodrinking.ar.CameraView
+	<kr.android.hellodrinking.view.CameraView
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
 	<AbsoluteLayout
@@ -16,7 +16,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:orientation="vertical">
-		<kr.android.hellodrinking.sensor.CompassView
+		<kr.android.hellodrinking.view.CompassView
 			android:id="@+id/ar_compass"
 			android:layout_width="100dip"
 			android:layout_height="100dip" />

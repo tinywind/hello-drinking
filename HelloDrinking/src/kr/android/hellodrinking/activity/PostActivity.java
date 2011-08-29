@@ -62,6 +62,7 @@ public class PostActivity extends Activity implements OnClickListener {
 				}
 			}
 		}
+		((HelloDrinkingApplication) getApplication()).setServerFromPreferences();
 	}
 
 	@Override
@@ -87,7 +88,9 @@ public class PostActivity extends Activity implements OnClickListener {
 			} finally {
 				request.close();
 			}
-			if (responce.isSuccessed()) {
+			if (responce == null) {
+				Toast.makeText(this, "인터넷 연결이 옳지 않습니다.", Toast.LENGTH_LONG).show();
+			} else if (responce.isSuccessed()) {
 				finish();
 			} else {
 				Toast.makeText(this, responce.getException().getMessage(), Toast.LENGTH_LONG).show();

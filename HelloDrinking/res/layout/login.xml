@@ -18,9 +18,6 @@
 			android:layout_height="wrap_content">
 
 			<TableRow>
-
-				<!-- 재형아 -->
-				<!-- 보시다시피 아이디 입력 부분 s(..)a -->
 				<TextView
 					android:text="아 이 디"
 					android:textSize="17dip"
@@ -33,15 +30,9 @@
 					android:id="@+id/login_text_id"
 					android:layout_width="150dip"
 					android:layout_height="37dip" />
-				<!-- 재형아 -->
-				<!-- 보시다시피 아이디 입력 부분 s('')a -->
-
 			</TableRow>
 
 			<TableRow>
-
-				<!-- 재형아 -->
-				<!-- 보시다시피 비밀번호 입력 부분 s(..)a -->
 				<TextView
 					android:text="비밀번호"
 					android:textSize="17dip"
@@ -53,9 +44,8 @@
 				<EditText
 					android:id="@+id/login_text_pw"
 					android:layout_width="150dip"
-					android:layout_height="37dip" />
-				<!-- 재형아 -->
-				<!-- 보시다시피 비밀번호 입력 부분 s('')a -->
+					android:layout_height="37dip"
+					android:password="true" />
 
 			</TableRow>
 		</TableLayout>
@@ -65,16 +55,11 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 
-
-			<!-- 재형아 s(..)a -->
-			<!-- 여기가 로그인 버튼 -->
 			<ImageButton
 				android:id="@+id/login_button_login"
 				android:src="@drawable/main_login_button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" />
-			<!-- 재형아 s('')a -->
-			<!-- 여기가 로그인 버튼 -->
 
 		</LinearLayout>
 	</LinearLayout>
@@ -83,17 +68,12 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
-		<!-- 재형아 s('')a -->
-		<!-- 여기가 회원가입 버튼 -->
 		<ImageButton
 			android:id="@+id/login_button_join"
 			android:src="@drawable/main_join_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center|right" />
-
-		<!-- 재형아 s('')a -->
-		<!-- 여기가 회원가입 버튼 -->
 	</LinearLayout>
 </LinearLayout>
 

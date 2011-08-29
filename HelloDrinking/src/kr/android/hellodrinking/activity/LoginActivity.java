@@ -32,10 +32,8 @@ public class LoginActivity extends Activity {
 
 		GraphicUtils.setDefaultNoSearchImage(getResources(), R.drawable.ic_pin_01);
 
-		SharedPreferences settings = getSharedPreferences("Server", MODE_PRIVATE);
-		HelloDrinkingApplication.mServerIp = settings.getString("ip", "10.0.2.2");
-		HelloDrinkingApplication.mServerPort = settings.getInt("port", 18080);
-
+		((HelloDrinkingApplication)getApplication()).setServerFromPreferences();
+		
 		mEditId = (EditText) findViewById(R.id.login_text_id);
 		mEditPw = (EditText) findViewById(R.id.login_text_pw);
 
@@ -78,8 +76,7 @@ public class LoginActivity extends Activity {
 				}
 				if (responce == null) {
 					Toast.makeText(LoginActivity.this, "서버와 바르게 연결되지 않았습니다.", Toast.LENGTH_SHORT).show();
-				}
-				if (responce.isSuccessed()) {
+				} else if (responce.isSuccessed()) {
 					((HelloDrinkingApplication) getApplication()).setId(id);
 					Intent intent = new Intent(LoginActivity.this, PostsActivity.class);
 					startActivity(intent);

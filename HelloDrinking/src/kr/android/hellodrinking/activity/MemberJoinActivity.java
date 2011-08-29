@@ -65,6 +65,7 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 				}
 			}
 		}
+		((HelloDrinkingApplication) getApplication()).setServerFromPreferences();
 	}
 
 	@Override
@@ -102,17 +103,22 @@ public class MemberJoinActivity extends Activity implements OnClickListener {
 
 			imagefile = GraphicUtils.createTempImageFile(this, mImagePhoto.getDrawable());
 
-			Request request = new Request(HelloDrinkingApplication.mServerIp, HelloDrinkingApplication.mServerPort);
+			Request request = new Request();
+
 			ResponceBeanPackege responce = null;
 			try {
 				responce = request.register(id, name, password, age, sex, phone, job, imagefile.getAbsolutePath());
 			} catch (Exception e) {
 				e.printStackTrace();
 				Toast.makeText(this, "인터넷 연결이 바르지 않습니다.", Toast.LENGTH_SHORT).show();
+			} finally {
+				request.close();
 			}
-			request.close();
-			if (responce.isSuccessed()) {
+			if (responce == null) {
+				Toast.makeText(this, "인터넷 연결이 바르지 않습니다.", Toast.LENGTH_LONG).show();
+			} else if (responce.isSuccessed()) {
 				((HelloDrinkingApplication) getApplication()).setId(id);
+				startActivity(new Intent(this, PostsActivity.class));
 				finish();
 			} else {
 				Toast.makeText(this, responce.getException().getMessage(), Toast.LENGTH_LONG).show();

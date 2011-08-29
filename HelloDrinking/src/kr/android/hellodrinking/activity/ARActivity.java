@@ -8,6 +8,7 @@ import com.nhn.android.maps.maplib.NGeoPoint;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
+import kr.android.hellodrinking.dialog.UserInfoDialog;
 import kr.android.hellodrinking.sensor.Compass;
 import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.utillity.Calculations;
@@ -90,9 +91,8 @@ public class ARActivity extends FrameActivity implements SensorEventListener {
 			mLayoutPOIs.addView(view);
 			view.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					Intent intent = new Intent(ARActivity.this, PostActivity.class);
-					intent.putExtra("kr.android.hellodrinking.MYLOCATION_LONGITUDE", myLocation.getLongitude());
-					intent.putExtra("kr.android.hellodrinking.MYLOCATION_LATITUDE", myLocation.getLatitude());
+					Intent intent = new Intent(ARActivity.this, UserInfoDialog.class);
+					intent.putExtra("kr.android.hellodrinking.POST", post);
 					startActivity(intent);
 				}
 			});

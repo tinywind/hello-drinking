@@ -60,7 +60,8 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
-					android:id="@+id/memberjoin_edit_pw" />
+					android:id="@+id/memberjoin_edit_pw"
+					android:password="true" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="fill_parent"
@@ -74,7 +75,8 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
-					android:id="@+id/memberjoin_edit_pw2"></EditText>
+					android:id="@+id/memberjoin_edit_pw2"
+					android:password="true"></EditText>
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="fill_parent"
