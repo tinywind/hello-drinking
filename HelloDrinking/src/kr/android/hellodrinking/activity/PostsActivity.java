@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.List;
 import com.nhn.android.maps.maplib.NGeoPoint;
-import kr.android.hellodrinking.dialog.UserInfoDialog;
+import kr.android.hellodrinking.dialog.PostInfoDialog;
 import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.utillity.Calculations;
 import kr.android.hellodrinking.utillity.GraphicUtils;
@@ -111,7 +111,7 @@ public class PostsActivity extends FrameActivity {
 
 			convertView.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					Intent intent = new Intent(PostsActivity.this, UserInfoDialog.class);
+					Intent intent = new Intent(PostsActivity.this, PostInfoDialog.class);
 					intent.putExtra("kr.android.hellodrinking.POST", post);
 					startActivity(intent);
 				}

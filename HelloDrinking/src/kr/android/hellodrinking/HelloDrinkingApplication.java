@@ -1,19 +1,13 @@
 package kr.android.hellodrinking;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import kr.android.hellodrinking.transmission.Request;
 import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.transmission.dto.ResponceBeanPackege;
-import kr.android.hellodrinking.transmission.dto.UserBean;
-import kr.android.hellodrinking.utillity.GraphicUtils;
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.nhn.android.maps.maplib.NGeoPoint;
@@ -24,9 +18,7 @@ public class HelloDrinkingApplication extends Application {
 	public static int mServerPort = 0;
 
 	private String id = "";
-	private UserBean user = null;
 	private List<PostBean> mListPosts;
-	private Drawable mUserImage = null;
 
 	public HelloDrinkingApplication() {
 		super();
@@ -78,31 +70,5 @@ public class HelloDrinkingApplication extends Application {
 		} finally {
 			request.close();
 		}
-	}
-
-	public void setUser(UserBean user) {
-		this.user = user;
-		setId(user.getId());
-
-		File file = new File(user.getImageFilePath());
-		if (!file.getName().equals("")) {
-			File imagefile = GraphicUtils.createImageFile(this, user.getBuffer(), file);
-			Bitmap bitmap = GraphicUtils.createBitmapFromImageFile(imagefile);
-			user.setImageFilePath(imagefile.getAbsolutePath());
-			setUserImage(new BitmapDrawable(bitmap));
-		}
-
-	}
-
-	public UserBean getUser() {
-		return user;
-	}
-
-	public void setUserImage(Drawable mUserImage) {
-		this.mUserImage = mUserImage;
-	}
-
-	public Drawable getUserImage() {
-		return mUserImage;
 	}
 }

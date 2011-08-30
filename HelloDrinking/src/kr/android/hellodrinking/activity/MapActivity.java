@@ -5,7 +5,7 @@ import java.util.List;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.dialog.UserInfoDialog;
+import kr.android.hellodrinking.dialog.PostInfoDialog;
 import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.utillity.GraphicUtils;
 import kr.android.hellodrinking.view.CompassView;
@@ -174,7 +174,7 @@ public class MapActivity extends NMapFrameActivity {
 				return;
 
 			PostBean post = (PostBean) item.getTag();
-			Intent intent = new Intent(MapActivity.this, UserInfoDialog.class);
+			Intent intent = new Intent(MapActivity.this, PostInfoDialog.class);
 			intent.putExtra("kr.android.hellodrinking.POST", post);
 			startActivity(intent);
 		}

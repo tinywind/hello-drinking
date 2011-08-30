@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UserInfoDialog extends Activity implements OnClickListener {
+public class PostInfoDialog extends Activity implements OnClickListener {
 	private ImageView mImage;
 	private TextView mTextId;
 	private TextView mTextComment;

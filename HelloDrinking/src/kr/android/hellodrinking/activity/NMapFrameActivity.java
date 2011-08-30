@@ -39,15 +39,15 @@ public abstract class NMapFrameActivity extends NMapActivity implements OnClickL
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.nmapframe);
+		setContentView(R.layout.frame);
 
 		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mViewgroup = (ViewGroup) findViewById(R.id.nmapframe_nmapframe_contents);
+		mViewgroup = (ViewGroup) findViewById(R.id.frame_frame_contents);
 
-		mButtonPosts = (ImageButton) findViewById(R.id.nmapframe_button_posts);
-		mButtonMap = (ImageButton) findViewById(R.id.nmapframe_button_map);
-		mButtonAR = (ImageButton) findViewById(R.id.nmapframe_button_ar);
-		mButtonMember = (ImageButton) findViewById(R.id.nmapframe_button_member);
+		mButtonPosts = (ImageButton) findViewById(R.id.frame_button_posts);
+		mButtonMap = (ImageButton) findViewById(R.id.frame_button_map);
+		mButtonAR = (ImageButton) findViewById(R.id.frame_button_ar);
+		mButtonMember = (ImageButton) findViewById(R.id.frame_button_member);
 
 		mButtonPosts.setOnClickListener(this);
 		mButtonMap.setOnClickListener(this);
@@ -59,9 +59,9 @@ public abstract class NMapFrameActivity extends NMapActivity implements OnClickL
 
 		myLocation = new NGeoPoint(0, 0);
 
-		mButtonPost = (Button) findViewById(R.id.nmapframe_button_post);
-		mButtonRefresh = (Button) findViewById(R.id.nmapframe_button_refresh);
-		mEditDistance = (EditText) findViewById(R.id.nmapframe_edit_distance);
+		mButtonPost = (Button) findViewById(R.id.frame_button_post);
+		mButtonRefresh = (Button) findViewById(R.id.frame_button_refresh);
+		mEditDistance = (EditText) findViewById(R.id.frame_edit_distance);
 
 		mEditDistance.setText(HelloDrinkingApplication.DEFAULT_SEARCH_DISTANCE + "");
 
@@ -99,20 +99,20 @@ public abstract class NMapFrameActivity extends NMapActivity implements OnClickL
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.nmapframe_button_posts) {
+		if (view.getId() == R.id.frame_button_posts) {
 			startActivity(new Intent(this, PostsActivity.class));
-		} else if (view.getId() == R.id.nmapframe_button_map) {
+		} else if (view.getId() == R.id.frame_button_map) {
 			startActivity(new Intent(this, MapActivity.class));
-		} else if (view.getId() == R.id.nmapframe_button_ar) {
+		} else if (view.getId() == R.id.frame_button_ar) {
 			startActivity(new Intent(this, ARActivity.class));
-		} else if (view.getId() == R.id.nmapframe_button_member) {
+		} else if (view.getId() == R.id.frame_button_member) {
 			startActivity(new Intent(this, MemberinfoActivity.class));
-		} else if (view.getId() == R.id.nmapframe_button_post) {
+		} else if (view.getId() == R.id.frame_button_post) {
 			Intent intent = new Intent(this, PostActivity.class);
 			intent.putExtra("kr.android.hellodrinking.MYLOCATION_LONGITUDE", myLocation.getLongitude());
 			intent.putExtra("kr.android.hellodrinking.MYLOCATION_LATITUDE", myLocation.getLatitude());
 			startActivity(intent);
-		} else if (view.getId() == R.id.nmapframe_button_refresh) {
+		} else if (view.getId() == R.id.frame_button_refresh) {
 			((HelloDrinkingApplication) getApplication()).refreshListPosts(myLocation, Integer.parseInt(mEditDistance.getText().toString()));
 			presentPosts();
 		}

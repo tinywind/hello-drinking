@@ -8,7 +8,7 @@ import com.nhn.android.maps.maplib.NGeoPoint;
 
 import kr.android.hellodrinking.HelloDrinkingApplication;
 import kr.android.hellodrinking.R;
-import kr.android.hellodrinking.dialog.UserInfoDialog;
+import kr.android.hellodrinking.dialog.PostInfoDialog;
 import kr.android.hellodrinking.sensor.Compass;
 import kr.android.hellodrinking.transmission.dto.PostBean;
 import kr.android.hellodrinking.utillity.Calculations;
@@ -28,9 +28,10 @@ import android.widget.ImageView;
 
 @SuppressWarnings("deprecation")
 public class ARActivity extends FrameActivity implements SensorEventListener {
+	public static final double HORIZONAL_VIEWING_ANGLE = Math.toRadians(30);
+	public static final double VERTICAL_VIEWING_ANGLE = Math.toRadians(60);
+	
 	private static final int RE_CALC_RATE = 1;
-	private static final double HORIZONAL_VIEWING_ANGLE = Math.toRadians(30);
-	private static final double VERTICAL_VIEWING_ANGLE = Math.toRadians(60);
 	private static final double[] STANDARD_COORDINATE = { 0, 0, 1 };
 	private static final double LEFT_ON_SCREEN = Calculations.yRotationConvert(STANDARD_COORDINATE, HORIZONAL_VIEWING_ANGLE / 2)[0];
 	private static final double UP_ON_SCREEN = Calculations.xRotationConvert(STANDARD_COORDINATE, VERTICAL_VIEWING_ANGLE / 2)[1];
@@ -91,7 +92,7 @@ public class ARActivity extends FrameActivity implements SensorEventListener {
 			mLayoutPOIs.addView(view);
 			view.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					Intent intent = new Intent(ARActivity.this, UserInfoDialog.class);
+					Intent intent = new Intent(ARActivity.this, PostInfoDialog.class);
 					intent.putExtra("kr.android.hellodrinking.POST", post);
 					startActivity(intent);
 				}
