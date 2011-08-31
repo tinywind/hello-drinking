@@ -25,8 +25,6 @@ public class Request implements Requestable {
 	private String serverip = "";
 	private int port = 0;
 
-	private boolean isUsable = false;
-
 	public Request() {
 		serverip = HelloDrinkingApplication.mServerIp;
 		port = HelloDrinkingApplication.mServerPort;
@@ -155,10 +153,6 @@ public class Request implements Requestable {
 		System.out.println("is Successed? : " + responce.isSuccessed());
 		if (!responce.isSuccessed())
 			System.out.println("Reason : " + responce.getException().getMessage());
-	}
-
-	public boolean isUsable() {
-		return isUsable;
 	}
 
 	@Override

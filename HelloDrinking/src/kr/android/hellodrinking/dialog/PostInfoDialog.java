@@ -27,13 +27,13 @@ public class PostInfoDialog extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.userinfo);
+		setContentView(R.layout.postinfo);
 
-		mImage = (ImageView) findViewById(R.id.userinfo_imageview);
-		mTextId = (TextView) findViewById(R.id.userinfo_textview_id);
-		mTextComment = (TextView) findViewById(R.id.userinfo_textview_comment);
-		mButtonCall = (Button) findViewById(R.id.userinfo_button_call);
-		mButtonLetter = (Button) findViewById(R.id.userinfo_button_letter);
+		mImage = (ImageView) findViewById(R.id.postinfo_imageview);
+		mTextId = (TextView) findViewById(R.id.postinfo_textview_id);
+		mTextComment = (TextView) findViewById(R.id.postinfo_textview_comment);
+		mButtonCall = (Button) findViewById(R.id.postinfo_button_call);
+		mButtonLetter = (Button) findViewById(R.id.postinfo_button_letter);
 
 		PostBean post = (PostBean) getIntent().getSerializableExtra("kr.android.hellodrinking.POST");
 
@@ -57,10 +57,10 @@ public class PostInfoDialog extends Activity implements OnClickListener {
 			Toast.makeText(this, "인터넷 연결이 옳바르지 않습니다.", Toast.LENGTH_SHORT);
 			return;
 		}
-		if (view.getId() == R.id.userinfo_button_call) {
+		if (view.getId() == R.id.postinfo_button_call) {
 			Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + user.getPhone()));
 			startActivity(intent);
-		} else if (view.getId() == R.id.userinfo_button_letter) {
+		} else if (view.getId() == R.id.postinfo_button_letter) {
 			Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("sms:" + user.getPhone()));
 			startActivity(intent);
 		}
